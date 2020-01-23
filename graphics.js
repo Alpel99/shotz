@@ -1,5 +1,3 @@
-
-
 function pictures() {
     back = createGraphics(80, 50);
     redback = createGraphics(80, 50);

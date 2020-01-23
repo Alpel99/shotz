@@ -76,22 +76,22 @@ draw() {
 	}
 	textAlign(LEFT, CENTER);
 	if (this.counter < 15) {
-		var ssize = 20 + this.counter*10;
+		var ssize = 20 + this.counter*13;
 	} else {
 		ssize = 220;
 	}
 	if (this.counter < 25) {
-		var hsize = 20 + this.counter*5;
+		var hsize = 20 + this.counter*7;
 	} else {
 		hsize = 200;
 	}
 	if (this.counter < 40) {
-		var osize = 20 + this.counter*3;
+		var osize = 20 + this.counter*4;
 	} else {
 		osize = 180;
 	}
 	if (this.counter < 50) {
-		var tsize = 20 + this.counter*2.5;
+		var tsize = 20 + this.counter*3;
 	} else {
 		tsize = 180;
 	}
@@ -107,11 +107,9 @@ draw() {
 	pop();
 
 	push();
-	translate(width/3 - 80, 140)
 	rotate(-0.07);
 	textSize(hsize);
-	translate(-(width/4 + 20), -50)
-	text('h', 480 + 20 + this.counter/80, 50 + this.counter/65);
+	text('h', 550 + this.counter/80, 180 + this.counter/65);
 	pop();
 
 	textSize(osize);
@@ -123,11 +121,11 @@ draw() {
 	text('t', 990 + this.counter/25 - 180, 90 + this.counter/40);
 	pop();
 
-	if(this.counter > 60) {
+	if(this.counter > 51   ) {
 		push();
 		rotate(0.1)
 		textSize(zsize);
-		text('z', 950 + this.counter*6 - 65*6 - 80, 50 + this.counter/40);
+		text('z', 1020 + this.counter*6 - 65*6 - 80, 50 + this.counter/40);
 		pop();
 	}
 	this.counter = this.counter + 2;

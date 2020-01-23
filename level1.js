@@ -5,9 +5,10 @@ constructor() {
     this.color2 = color(0);
 
     this.name = "Level 1";
-
-    this.c = color(255,0,0)
-    this.ship = new Ship(width/2, height/2, this.c);
+    
+    //ship (only holds position and rotates vectors)
+    this.ship_color = color(255,0,0)
+    this.ship = new Ship(width/2, height/2, ship1_vectors);
 
    //misc
     this.score = 0;
@@ -66,13 +67,23 @@ draw() {
     this.enemies.forEach(element => element.update());
     //game1Bullets.forEach(element => element.show());
     // game1Bullets.forEach(element => element.update());
-    this.ship.draw(color(255));
-    /*
-    game1Movement();
-    game1DrawShip1();
-    game1Layout();
+    
+    //reset specific Vectors
+    vectorsShip1();
+    //rotate vectors in object
+    this.ship.update();    
+    //drawing specific ship
+    push();
+    imageMode(CENTER);
+    img_ship1 = createGraphics(150,150);
+    drawShip1(this.ship_color);
+    image(img_ship1, this.ship.x, this.ship.y);
+    img_ship1.remove();
+    //move ship object
+    this.ship.move();
+    pop();
+    //game1Layout();
 
-    */
 }
 
 }
