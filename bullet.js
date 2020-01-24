@@ -48,7 +48,7 @@ update() {
                         if(game.screen.wave < game.screen.waveMax) {
                             game.screen.wave++;
                         } else {
-                            //game.screen = new Post();
+                            game.screen.end();
                         }
                         game.screen.speed += game.screen.speedincrease;
                         for(let i = 0; i < game.screen.enemies.length; i++) {

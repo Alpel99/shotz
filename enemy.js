@@ -43,17 +43,18 @@ show() {
 }
 
 update() {
-
     for(let i = 0; i < game.screen.ship.vectors.length; i++) {
         if(dist(game.screen.ship.vectors[i].x + game.screen.ship.x, game.screen.ship.vectors[i].y + game.screen.ship.y, this.x, this.y) < this.size/2) {
             //Check with Server
+            this.reset();
             if(game.screen.PlayerHP > 1) {
                 game.screen.PlayerHP--;
             } else {
                 game.screen.PlayerHP = 0;
-                //game.screen = new Post();
+                game.screen.end();
+                return;
             }
-            this.reset();
+
         }
     }
 

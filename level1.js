@@ -8,6 +8,7 @@ constructor() {
 
     this.prep = new Prep(this.color0, this.color1, this.color2, this.name);
     this.prepshow = true;
+    this.postshow = false;
     //ship (only holds position and rotates vectors)
     this.ship_color = color(255,0,0);
     this.ship = new Ship(width/2, height/2, ship1_vectors);
@@ -58,9 +59,23 @@ constructor() {
     this.skillPointsSPDInc = 1.5;
 }
 
+end() {
+//check with server, send to server
+var exp = this.wave*100 + this.score*10;
+var coinz = floor(this.wave/2);
+var ammo2 = floor(exp/15);
+
+this.str_exp = "Experience: " + exp;
+this.str_coinz = "Coinz: " + coinz;
+this.str_ammo = "x2 Ammo: " + ammo2;
+this.str_etc = "";
+
+this.postshow = true;
+}
+
 back() {
 if(this.prepshow == true) {
-    game.screen = new Level_menu();
+        this.prep.back();
 } else {
     game.screen = new Pause();
 }
@@ -103,6 +118,9 @@ draw() {
     pop();
     //game1Layout();
     this.keyCheck();
+    }
+    if(this.postshow == true) {
+        game.screen = new Post(this.color0, this.color1, this.color2, this.name, this.str_exp, this.str_coinz, this.str_ammo, this.str_etc);
     }
 }
 

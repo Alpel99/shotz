@@ -22,6 +22,6 @@ draw() {
 }
 
 back() {
-game.screen = new Level_menu();
+    game.screen = new Level_menu();
 }
 }
