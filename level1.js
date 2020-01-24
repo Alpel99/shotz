@@ -12,10 +12,12 @@ constructor() {
 
    //misc
     this.score = 0;
-    this.wave = 0;
     this.scoreMax = 10;
+    this.wave = 0;
+    this.waveMax = 10;
     this.speed = 200;
     this.speedincrease = 100;
+    this.ammo = ammo2;
 
     //enemies
     this.enemies = [];
@@ -29,10 +31,11 @@ constructor() {
 
 
     //Player
-    this.bulletspeed = 300;
+    this.bulletspeed = 20;
+    this.bulletspeed = 15;
     this.PlayerHP = 3;
     this.PlayerDMG = 10;
-    this.PlayerSPD = 10;
+    this.PlayerSPD = 5;
     this.PlayerRNG = 500;
 
     //Skilltree
@@ -67,8 +70,8 @@ draw() {
     background(game.screen.color0);
     this.enemies.forEach(element => element.show());
     this.enemies.forEach(element => element.update());
-    //game1Bullets.forEach(element => element.show());
-    // game1Bullets.forEach(element => element.update());
+    this.bullets.forEach(element => element.show());
+    this.bullets.forEach(element => element.update());
     
     //reset specific Vectors
     vectorsShip1();
@@ -85,7 +88,18 @@ draw() {
     this.ship.move();
     pop();
     //game1Layout();
+    this.keyCheck();
+}
 
+keyCheck() {
+    if(keyIsDown(32)) {
+        for(let i = 0; i < this.bullets.length; i++) {
+            if(this.bullets[i].visible == false) {
+                   this.bullets[i].start();
+               return;
+            }
+        }
+    }
 }
 
 }

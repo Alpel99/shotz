@@ -20,7 +20,7 @@ vectorsShip1();
 }
 
 function setup() {
-frameRate(30);
+frameRate(60);
 createCanvas(width, height);
 game = new Game();
 

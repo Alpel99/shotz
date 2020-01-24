@@ -1,7 +1,7 @@
 class Ammo {
 constructor(d, a, c) {
-    this.amount = d;
-    this.damage = a;
+    this.amount = a;
+    this.damage = d;
     this.color = c;
 }
 decrease() {

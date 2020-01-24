@@ -6,7 +6,7 @@ this.visible = false;
 show() {
     if(this.visible == true) {
     push();
-    fill(255);
+    fill(game.screen.ammo.color);
     ellipse(this.x,this.y,this.size)
     pop();
     }
@@ -14,7 +14,7 @@ show() {
 
 start() {
     this.ammo = game.screen.ammo;
-    this.size = game.screen.playerDamage/2;
+    this.size = game.screen.PlayerDMG/2;
     this.x = game.screen.ship.x;
     this.y = game.screen.ship.y;
     this.xorig = this.x;
@@ -44,11 +44,11 @@ update() {
                     this.visible = false;
 
                     if(game.screen.score >= game.screen.scoreMax) {
-                        score = 0;
+                        game.screen.score = 0;
                         if(game.screen.wave < game.screen.waveMax) {
                             game.screen.wave++;
                         } else {
-                            game.screen = new Post();
+                            //game.screen = new Post();
                         }
                         game.screen.speed += game.screen.speedincrease;
                         for(let i = 0; i < game.screen.enemies.length; i++) {
