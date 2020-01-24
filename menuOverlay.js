@@ -12,6 +12,7 @@ textSize(40);
 textStyle(NORMAL);
 textAlign(LEFT, TOP);
 strokeWeight(1);
+stroke(255);
 text(this.money, width - textWidth(this.money) - 95, 30);
 pop();
 //coin image

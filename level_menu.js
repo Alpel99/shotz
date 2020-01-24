@@ -3,11 +3,11 @@ constructor() {
     this.color0 = color(15,15,128);
     this.color1 = color(128);
     this.levels = [];
-    this.levels[0] = new LevelMenuItem("Level1", height/6, 800, 1000);
-    this.levels[1] = new LevelMenuItem("Level2", height/6 + 150, 200, 2000);
-    this.levels[2] = new LevelMenuItem("Level3", height/6 + 300, 351, 1000);
-    this.levels[3] = new LevelMenuItem("Level4", height/6 + 450, 351, 1000);
-    this.levels[4] = new LevelMenuItem("Level5", height/6 + 600, 351, 1000);
+    this.levels[0] = new LevelMenuItem("Level1", 800, 1000);
+    this.levels[1] = new LevelMenuItem("Level2", 200, 2000);
+    this.levels[2] = new LevelMenuItem("Level3", 351, 1000);
+    this.levels[3] = new LevelMenuItem("Level4", 351, 1000);
+    this.levels[4] = new LevelMenuItem("Level5", 351, 1000);
     this.name = "level_menu"
     this.page = 1;
 }
@@ -37,9 +37,8 @@ back() {
 }
 
 class LevelMenuItem {
-constructor(t, y, exp, maxexp) {
+constructor(t, exp, maxexp) {
     this.x = width/3 - 100;
-    this.y = y;
     this.text = t;
     this.exp = exp;
     this.maxexp = maxexp;
@@ -49,7 +48,7 @@ draw(hover, y) {
     this.y = y;
     push();
     fill(game.screen.color1);
-    textAlign(LEFT, TOP)
+    textAlign(LEFT, TOP);
     textSize(50);
     if(hover === false) {
         textStyle(NORMAL);

@@ -1,7 +1,8 @@
 function keyPressed() {
 if(keyCode === 81) {
     game.screen.back();
-    try{
+
+    try {
         game.screen.reset();
     } catch(error) {
 

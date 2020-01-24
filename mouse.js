@@ -31,7 +31,6 @@ if(game.screen.name == "start_menu") {
 if(game.screen.name == "level_menu") {
     if(game.screen.levels[0].checkHover() === true) {
         game.screen = new Level1();
-        game.screen.setup();
     } else
     if(game.screen.levels[1].checkHover() === true) {
         console.log("Level2");
@@ -39,7 +38,12 @@ if(game.screen.name == "level_menu") {
     if(game.screen.levels[2].checkHover() === true) {
         console.log("Level3");
     }
-}
+} else
 
+try {
+if(game.screen.prepshow == true) {
+    game.screen.setup();
+}
+} catch (error) {}
 
 }
