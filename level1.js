@@ -13,8 +13,9 @@ constructor() {
    //misc
     this.score = 0;
     this.wave = 0;
-    this.gamespeed = 200;
-    this.gamespeedincrease = 100;
+    this.scoreMax = 10;
+    this.speed = 200;
+    this.speedincrease = 100;
 
     //enemies
     this.enemies = [];
@@ -22,6 +23,10 @@ constructor() {
     this.minsize = 50;
     this.maxsize = 300;
     this.chase = false;
+
+    //bullets
+    this.bullets = [];
+
 
     //Player
     this.bulletspeed = 300;
@@ -53,12 +58,9 @@ setup() {
         this.enemies[i] = new Enemy();
     }
 
-    /*
-    this.bullets = [];
     for(let i = 0; i < 1; i++) {
         this.bullets[i] = new Bullet();
     }
-    */
 }
 
 draw() {

@@ -1,4 +1,6 @@
 function mouseClicked() {
+//if weglassen und try/catch verwenden?
+
 //start_menu
 if(game.screen.name == "start_menu") {
     if(game.screen.level.checkHover() === true) {
