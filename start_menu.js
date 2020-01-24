@@ -125,9 +125,9 @@ draw() {
 		push();
 		rotate(0.1)
 		textSize(zsize);
-		text('z', 1020 + this.counter*6 - 65*6 - 80, 50 + this.counter/40);
+		text('z', 530 + this.counter*6 + this.counter**2 / 50, 50 + this.counter/40);
 		pop();
 	}
-	this.counter = this.counter + 2;
+	this.counter = this.counter + 1;
 }
 }
