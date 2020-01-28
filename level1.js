@@ -16,12 +16,13 @@ constructor() {
 
     this.prep = new Prep(this.color0, this.color1, this.color2, this.name);
     this.pause = new Pause(this.color0, this.color1, this.color2, this.name);
+    //post defined after loss
 
     //ship (only holds position and rotates vectors)
     this.ship_color = color(255,0,0);
     this.ship = new Ship(width/2, height/2, ship1_vectors);
 
-   //misc
+    //misc
     this.score = 0;
     this.scoreMax = 10;
     this.wave = 0;
@@ -106,6 +107,7 @@ setup() {
         this.bullets[i] = new Bullet();
     }
     //change this
+    vectorsShip1();
     this.mode = "run";
 }
 

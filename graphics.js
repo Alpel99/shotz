@@ -377,8 +377,8 @@ function vectorsShip2() {
     ship2_vectors[0] = img_ship2.createVector(-30, 20);
     ship2_vectors[1] = img_ship2.createVector(-40, -20);
     ship2_vectors[2] = img_ship2.createVector(0, 20);
-    ship2_vectors[9] = img_ship2.createVector(-ship1_vectors[0].x, 20);
-    ship2_vectors[10] = img_ship2.createVector(-ship1_vectors[1].x, -20);
+    ship2_vectors[9] = img_ship2.createVector(-ship2_vectors[0].x, 20);
+    ship2_vectors[10] = img_ship2.createVector(-ship2_vectors[1].x, -20);
 
     //Main
     ship2_vectors[3] = img_ship2.createVector(0, -50);
@@ -387,12 +387,12 @@ function vectorsShip2() {
 
     //White
     ship2_vectors[6] = img_ship2.createVector(-20, 20);
-    ship2_vectors[11] = img_ship2.createVector(-ship1_vectors[6].x, 20);
+    ship2_vectors[11] = img_ship2.createVector(-ship2_vectors[6].x, 20);
 
     //Bridge
     ship2_vectors[7] = img_ship2.createVector(0, -5);
     ship2_vectors[8] = img_ship2.createVector(5, 10);
-    ship2_vectors[12] = img_ship2.createVector(-ship1_vectors[8].x, 10);
+    ship2_vectors[12] = img_ship2.createVector(-ship2_vectors[8].x, 10);
 
     img_ship2.pop();
 }
