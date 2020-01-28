@@ -13,10 +13,9 @@ draw() {
     textSize(65);
     textAlign(CENTER);
     fill(this.color1);
-    text(this.text, width/2, height/2 - 100);
-    textSize(40);
+    text(this.text, width/2, height/2 - 150);
     textStyle(BOLD);
-    text("PAUSE", width/2, height/2 - 15);
+    text("PAUSE", width/2, height/2 - 25);
     textStyle(NORMAL);
     textSize(25);
     fill(this.color2);

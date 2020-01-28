@@ -1,12 +1,19 @@
 let game;
-let width = window.innerWidth - 20;
-let height = window.innerHeight - 20;
 let ship1_vectors = [];
+let width
+let height
 
 function preload() {
-//oder in prep
 user = new User(); //get Serverdata
-menuOverlay = new MenuOverlay();
+
+width = window.innerWidth - 20;
+height = window.innerHeight - 20;
+if(width > 1901) {
+    width = 1900;
+}
+if(height > 1061) {
+    height = 1060;
+}
 //pictures();
 
 //tryouts
@@ -19,12 +26,18 @@ function setup() {
 frameRate(60);
 createCanvas(width, height);
 game = new Game();
-
+menuOverlay = new MenuOverlay();
+levelOverlay = new LevelOverlay();
 }
 
 function draw() {
 game.draw();
+try {
 if(game.screen.name.search("Level") == -1) {
     menuOverlay.draw();
 }
+if(game.screen.name.search("Level") > -1 && (game.screen.mode == "run" || game.screen.mode == "pause")) {
+    levelOverlay.draw();
+}
+} catch(error){}
 }

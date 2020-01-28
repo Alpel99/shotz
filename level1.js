@@ -12,10 +12,9 @@ constructor() {
     prep: preparation, before game begins
     run: game running
     post: end, game over (0hp)
-    pause: game pause (after pressing esc)
-    */
+    pause: game pause (after pressing esc) */
+
     this.prep = new Prep(this.color0, this.color1, this.color2, this.name);
-    this.post;
     this.pause = new Pause(this.color0, this.color1, this.color2, this.name);
 
     //ship (only holds position and rotates vectors)
@@ -51,7 +50,7 @@ constructor() {
     this.PlayerSPD = 5;
     this.PlayerRNG = 500;
 
-    //Skilltree
+    //Skilltree (ins ship)
     this.skillPointsmax = 16;
     this.skillPointsHP = 0;
     this.skillPointsDMG = 0;
@@ -70,7 +69,7 @@ constructor() {
 }
 
 end() {
-//check with server, send to server
+//check with server, send to server(this.wave; this.score)
 var exp = this.wave*100 + this.score*10;
 var coinz = floor(this.wave/2);
 var ammo2 = floor(exp/15);
@@ -111,10 +110,10 @@ setup() {
 }
 
 draw() {
+    background(game.screen.color0);
     if(this.mode == "prep") {
         this.prep.draw();
     } else if(this.mode == "run") {
-    background(game.screen.color0);
     this.enemies.forEach(element => element.show());
     this.enemies.forEach(element => element.update());
     this.bullets.forEach(element => element.show());
