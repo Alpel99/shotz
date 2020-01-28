@@ -45,8 +45,12 @@ if(game.screen.mode == "prep") {
     game.screen.setup();
 }
 
-if(game.screen.mode == "post"){
+if(game.screen.mode == "post") {
     game.screen = new Level1();
+}
+
+if(game.screen.mode == "pause") {
+    game.screen.mode = "run";
 }
 
 } catch (error) {}

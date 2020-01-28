@@ -16,6 +16,7 @@ constructor() {
     */
     this.prep = new Prep(this.color0, this.color1, this.color2, this.name);
     this.post;
+    this.pause = new Pause(this.color0, this.color1, this.color2, this.name);
 
     //ship (only holds position and rotates vectors)
     this.ship_color = color(255,0,0);
@@ -84,11 +85,16 @@ this.mode = "post";
 }
 
 back() {
-if(this.mode == "prep" || this.mode == "post") {
+if(this.mode == "prep") {
         this.prep.back();
+}
+if(this.mode == "post") {
+        this.post.back();
+}
+if(this.mode == "pause") {
+        this.pause.back();
 } else {
-    game.screen = new Pause();
-    //implement it
+    this.mode = "pause";
 }
 }
 
@@ -133,6 +139,9 @@ draw() {
     } else if(this.mode == "post") {
         //change post to intern in game -> dann this.post.draw();
         this.post.draw();
+    } else if(this.mode == "pause") {
+        //change post to intern in game -> dann this.post.draw();
+        this.pause.draw();
     }
 }
 
