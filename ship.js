@@ -4,12 +4,15 @@ constructor(x, y, v) {
     this.y = y;
     //get the vectors form the ship
     this.vectors = v;
+    this.prevangle = 0;
+    this.angle = 0;
 }
 
 update() {
     //update the vectors from the ship
-    this.angle = atan2(mouseY - this.y, mouseX - this.x);
-    this.vectors.forEach(element => element.rotate(this.angle+PI*0.5));
+    this.angle = atan2(mouseY - this.y, mouseX - this.x) + PI*0.5;
+    this.vectors.forEach(element => element.rotate(this.angle-this.prevangle));
+    this.prevangle = this.angle;
     }
 
 move() {

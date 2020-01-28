@@ -114,26 +114,20 @@ draw() {
     if(this.mode == "prep") {
         this.prep.draw();
     } else if(this.mode == "run") {
+    //Ship
+    this.ship.update();
+    this.ship.move();
+    push();
+    imageMode(CENTER);
+    drawShip1(this.ship_color);
+    image(img_ship1, this.ship.x, this.ship.y);
+    pop();
+
     this.enemies.forEach(element => element.show());
     this.enemies.forEach(element => element.update());
     this.bullets.forEach(element => element.show());
     this.bullets.forEach(element => element.update());
-    
-    //reset specific Vectors
-    vectorsShip1();
-    //rotate vectors in object
-    this.ship.update();    
-    //drawing specific ship
-    push();
-    imageMode(CENTER);
-    img_ship1 = createGraphics(150,150);
-    drawShip1(this.ship_color);
-    image(img_ship1, this.ship.x, this.ship.y);
-    img_ship1.remove();
-    //move ship object
-    this.ship.move();
-    pop();
-    //game1Layout();
+
     this.keyCheck();
     } else if(this.mode == "post") {
         //change post to intern in game -> dann this.post.draw();

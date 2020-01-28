@@ -344,6 +344,7 @@ function vectorsShip1() {
 }
 
 function drawShip1(a) {
+    img_ship1.background(game.screen.color0);
     img_ship1.push();
     img_ship1.translate(75,75);
     img_ship1.stroke(128);
