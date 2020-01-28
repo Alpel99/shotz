@@ -41,9 +41,14 @@ if(game.screen.name == "level_menu") {
 } else
 
 try {
-if(game.screen.prepshow == true) {
+if(game.screen.mode == "prep") {
     game.screen.setup();
 }
+
+if(game.screen.mode == "post"){
+    game.screen = new Level1();
+}
+
 } catch (error) {}
 
 }

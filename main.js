@@ -5,10 +5,6 @@ let ship1_vectors = [];
 
 function preload() {
 //oder in prep
-ammo1 = new Ammo(1, 100, color(255));
-ammo2 = new Ammo(2, 300, color(120, 20 ,20));
-ammo3 = new Ammo(3, 10, color(0,255,0));
-ammo4 = new Ammo(4, 1000, color(0));
 user = new User(); //get Serverdata
 menuOverlay = new MenuOverlay();
 //pictures();

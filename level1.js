@@ -6,9 +6,17 @@ constructor() {
 
     this.name = "Level 1";
 
+    //mode
+    this.mode = "prep";
+    /* modes:
+    prep: preparation, before game begins
+    run: game running
+    post: end, game over (0hp)
+    pause: game pause (after pressing esc)
+    */
     this.prep = new Prep(this.color0, this.color1, this.color2, this.name);
-    this.prepshow = true;
-    this.postshow = false;
+    this.post;
+
     //ship (only holds position and rotates vectors)
     this.ship_color = color(255,0,0);
     this.ship = new Ship(width/2, height/2, ship1_vectors);
@@ -20,7 +28,8 @@ constructor() {
     this.waveMax = 10;
     this.speed = 200;
     this.speedincrease = 100;
-    this.ammo = ammo2;
+    this.ammo = user.ammo[0];
+    //variable vor ammo selection! like user.selectedammo = 0;
 
     //enemies
     this.enemies = [];
@@ -65,19 +74,21 @@ var exp = this.wave*100 + this.score*10;
 var coinz = floor(this.wave/2);
 var ammo2 = floor(exp/15);
 
-this.str_exp = "Experience: " + exp;
-this.str_coinz = "Coinz: " + coinz;
-this.str_ammo = "x2 Ammo: " + ammo2;
-this.str_etc = "";
+var str_exp = "Experience: " + exp;
+var str_coinz = "Coinz: " + coinz;
+var str_ammo = "x2 Ammo: " + ammo2;
+var str_etc = "";
 
-this.postshow = true;
+this.post = new Post(this.color0, this.color1, this.color2, this.name, str_exp, str_coinz, str_ammo, str_etc);
+this.mode = "post";
 }
 
 back() {
-if(this.prepshow == true) {
+if(this.mode == "prep" || this.mode == "post") {
         this.prep.back();
 } else {
     game.screen = new Pause();
+    //implement it
 }
 }
 
@@ -89,13 +100,14 @@ setup() {
     for(let i = 0; i < 1; i++) {
         this.bullets[i] = new Bullet();
     }
-    this.prepshow = false;
+    //change this
+    this.mode = "run";
 }
 
 draw() {
-    if(this.prepshow == true) {
+    if(this.mode == "prep") {
         this.prep.draw();
-    } else {
+    } else if(this.mode == "run") {
     background(game.screen.color0);
     this.enemies.forEach(element => element.show());
     this.enemies.forEach(element => element.update());
@@ -118,9 +130,9 @@ draw() {
     pop();
     //game1Layout();
     this.keyCheck();
-    }
-    if(this.postshow == true) {
-        game.screen = new Post(this.color0, this.color1, this.color2, this.name, this.str_exp, this.str_coinz, this.str_ammo, this.str_etc);
+    } else if(this.mode == "post") {
+        //change post to intern in game -> dann this.post.draw();
+        this.post.draw();
     }
 }
 
