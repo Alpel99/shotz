@@ -22,3 +22,6 @@
 *.iml
 
 # End of https://www.gitignore.io/api/linux,pycharm
+
+### Mac OS ###
+.DS_Store
