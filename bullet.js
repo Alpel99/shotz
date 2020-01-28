@@ -15,8 +15,8 @@ show() {
 start() {
     this.ammo = game.screen.ammo;
     this.size = game.screen.PlayerDMG/2;
-    this.x = game.screen.ship.x;
-    this.y = game.screen.ship.y;
+    this.x = game.screen.ship.vectors[0].x + game.screen.ship.x;
+    this.y = game.screen.ship.vectors[0].y + game.screen.ship.y;
     this.xorig = this.x;
     this.yorig = this.y;
     this.v = createVector(mouseX - this.x, mouseY - this.y);

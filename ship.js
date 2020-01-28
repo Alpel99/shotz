@@ -11,7 +11,7 @@ constructor(x, y, v) {
 update() {
     //update the vectors from the ship
     this.angle = atan2(mouseY - this.y, mouseX - this.x) + PI*0.5;
-    this.vectors.forEach(element => element.rotate(this.angle-this.prevangle));
+    this.vectors.forEach(element => element.rotate(this.angle - this.prevangle));
     this.prevangle = this.angle;
     }
 

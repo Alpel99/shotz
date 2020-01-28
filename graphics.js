@@ -320,14 +320,14 @@ function vectorsShip1() {
     img_ship1.translate(75,75);
 
     //Flügel
-    ship1_vectors[0] = img_ship1.createVector(-30, 20);
+    ship1_vectors[3] = img_ship1.createVector(-30, 20);
     ship1_vectors[1] = img_ship1.createVector(-40, -20);
     ship1_vectors[2] = img_ship1.createVector(0, 20);
-    ship1_vectors[9] = img_ship1.createVector(-ship1_vectors[0].x, 20);
+    ship1_vectors[9] = img_ship1.createVector(-ship1_vectors[3].x, 20);
     ship1_vectors[10] = img_ship1.createVector(-ship1_vectors[1].x, -20);
 
     //Main
-    ship1_vectors[3] = img_ship1.createVector(0, -50);
+    ship1_vectors[0] = img_ship1.createVector(0, -50);
     ship1_vectors[4] = img_ship1.createVector(-30, 20);
     ship1_vectors[5] = img_ship1.createVector(30, 20);
 
@@ -352,16 +352,16 @@ function drawShip1(a) {
     img_ship1.fill(0);
 
     //Flügel
-    img_ship1.triangle(ship1_vectors[0].x,ship1_vectors[0].y,ship1_vectors[1].x,ship1_vectors[1].y,ship1_vectors[2].x,ship1_vectors[2].y);
+    img_ship1.triangle(ship1_vectors[3].x,ship1_vectors[3].y,ship1_vectors[1].x,ship1_vectors[1].y,ship1_vectors[2].x,ship1_vectors[2].y);
     img_ship1.triangle(ship1_vectors[9].x,ship1_vectors[9].y,ship1_vectors[10].x,ship1_vectors[10].y,ship1_vectors[2].x,ship1_vectors[2].y);
 
     //Main
-    img_ship1.triangle(ship1_vectors[3].x,ship1_vectors[3].y,ship1_vectors[4].x,ship1_vectors[4].y,ship1_vectors[5].x,ship1_vectors[5].y);
+    img_ship1.triangle(ship1_vectors[0].x,ship1_vectors[0].y,ship1_vectors[4].x,ship1_vectors[4].y,ship1_vectors[5].x,ship1_vectors[5].y);
 
     //White
     img_ship1.fill(a);
-    img_ship1.triangle(ship1_vectors[3].x,ship1_vectors[3].y,ship1_vectors[4].x,ship1_vectors[4].y,ship1_vectors[6].x,ship1_vectors[6].y);
-    img_ship1.triangle(ship1_vectors[3].x,ship1_vectors[3].y,ship1_vectors[5].x,ship1_vectors[5].y,ship1_vectors[11].x,ship1_vectors[11].y);
+    img_ship1.triangle(ship1_vectors[0].x,ship1_vectors[0].y,ship1_vectors[4].x,ship1_vectors[4].y,ship1_vectors[6].x,ship1_vectors[6].y);
+    img_ship1.triangle(ship1_vectors[0].x,ship1_vectors[0].y,ship1_vectors[5].x,ship1_vectors[5].y,ship1_vectors[11].x,ship1_vectors[11].y);
 
     //Bridge
     img_ship1.fill(230);
