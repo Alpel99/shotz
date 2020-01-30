@@ -14,7 +14,7 @@ if(game.screen.name == "start_menu") {
         console.log("pvp");
     } else
     if(game.screen.inventory.checkHover() === true) {
-        console.log("inventory");
+        game.screen = new Ship_menu();
     } else
     if(game.screen.user.checkHover() === true) {
         console.log("user");

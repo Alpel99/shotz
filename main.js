@@ -4,6 +4,7 @@ let width
 let height
 
 function preload() {
+
 user = new User(); //get Serverdata
 
 width = window.innerWidth - 20;
@@ -18,16 +19,14 @@ if(height > 1061) {
 
 //tryouts
 img_ship1 = createGraphics(150, 150);
-
+game = new Game();
 vectorsShip1();
 }
 
 function setup() {
 frameRate(60);
 createCanvas(width, height);
-game = new Game();
-menuOverlay = new MenuOverlay();
-levelOverlay = new LevelOverlay();
+
 }
 
 function draw() {
