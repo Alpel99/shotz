@@ -19,12 +19,11 @@ constructor() {
     //post defined after loss
 
     //ship (only holds position and rotates vectors)
-    this.ship_color = color(255,0,0);
     this.ship = new Ship(width/2, height/2, ship1_vectors);
 
     //misc
     this.score = 0;
-    this.scoreMax = 10;
+    this.scoreMax = 50;
     this.wave = 0;
     this.waveMax = 10;
     this.speed = 200;
@@ -35,21 +34,9 @@ constructor() {
     //enemies
     this.enemies = [];
     this.maxenemies = 5;
-    this.minsize = 50;
-    this.maxsize = 300;
-    this.chase = false;
 
     //bullets
     this.bullets = [];
-
-
-    //Player
-    this.bulletspeed = 20;
-    this.bulletspeed = 15;
-    this.PlayerHP = 3;
-    this.PlayerDMG = 10;
-    this.PlayerSPD = 5;
-    this.PlayerRNG = 500;
 
     //Skilltree (ins ship)
     this.skillPointsmax = 16;
@@ -70,39 +57,33 @@ constructor() {
 }
 
 end() {
-//check with server, send to server(this.wave; this.score)
-var exp = this.wave*100 + this.score*10;
-var coinz = floor(this.wave/2);
-var ammo2 = floor(exp/15);
+    //check with server, send to server(this.wave; this.score)
+    var exp = this.wave*100 + this.score*10;
+    var coinz = floor(this.wave/2);
+    var ammo2 = floor(exp/15);
 
-var str_exp = "Experience: " + exp;
-var str_coinz = "Coinz: " + coinz;
-var str_ammo = "x2 Ammo: " + ammo2;
-var str_etc = "";
+    var str_exp = "Experience: " + exp;
+    var str_coinz = "Coinz: " + coinz;
+    var str_ammo = "x2 Ammo: " + ammo2;
+    var str_etc = "";
 
-this.post = new Post(this.color0, this.color1, this.color2, this.name, str_exp, str_coinz, str_ammo, str_etc);
-this.mode = "post";
+    this.post = new Post(this.color0, this.color1, this.color2, this.name, str_exp, str_coinz, str_ammo, str_etc);
+    this.mode = "post";
 }
 
 back() {
-if(this.mode == "prep") {
+    if (this.mode == "prep") {
         this.prep.back();
-}
-if(this.mode == "post") {
+    } else if (this.mode == "post") {
         this.post.back();
-}
-if(this.mode == "pause") {
+    } else if (this.mode == "pause") {
         this.pause.back();
-} else {
-    this.mode = "pause";
-}
+    } else {
+        this.mode = "pause";
+    }
 }
 
 setup() {
-    for(let i = 0; i < this.maxenemies; i++) {
-        this.enemies[i] = new Enemy();
-    }
-
     for(let i = 0; i < 1; i++) {
         this.bullets[i] = new Bullet();
     }
@@ -113,29 +94,42 @@ setup() {
 
 draw() {
     background(game.screen.color0);
-    if(this.mode == "prep") {
+
+    if (this.mode == "prep") {
         this.prep.draw();
-    } else if(this.mode == "run") {
-    //Ship
-    this.ship.update();
-    this.ship.move();
-    push();
-    imageMode(CENTER);
-    drawShip1(this.ship_color);
-    image(img_ship1, this.ship.x, this.ship.y);
-    pop();
+    } else if (this.mode == "run") {
+        //Ship
+        this.ship.update();
+        this.ship.move();
+        push();
+        imageMode(CENTER);
+        drawShip1(this.ship.color);
+        image(img_ship1, this.ship.x, this.ship.y);
+        pop();
 
-    this.enemies.forEach(element => element.show());
-    this.enemies.forEach(element => element.update());
-    this.bullets.forEach(element => element.show());
-    this.bullets.forEach(element => element.update());
+        if (this.enemies.length < this.maxenemies) {
+            this.enemies.push(new Enemy(this.speed, this.color1));
+        }
 
-    this.keyCheck();
-    } else if(this.mode == "post") {
-        //change post to intern in game -> dann this.post.draw();
+        this.enemies.forEach(e => e.update());
+        this.bullets.forEach(b => b.update());
+
+        if (this.score > this.scoreMax) {
+            this.score = 0;
+            if (this.wave < this.waveMax) {
+                this.wave++;
+            } else {
+                this.end();
+            }
+            this.speed += this.speedincrease;
+        }
+
+        this.keyCheck();
+    } else if (this.mode == "post") {
+        // change post to intern in game -> dann this.post.draw();
         this.post.draw();
     } else if(this.mode == "pause") {
-        //change post to intern in game -> dann this.post.draw();
+        // change post to intern in game -> dann this.post.draw();
         this.pause.draw();
     }
 }
@@ -150,5 +144,4 @@ keyCheck() {
         }
     }
 }
-
 }

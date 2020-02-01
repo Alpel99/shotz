@@ -26,7 +26,7 @@ vectorsShip1();
 function setup() {
 frameRate(60);
 createCanvas(width, height);
-
+menuOverlay = new MenuOverlay();
 }
 
 function draw() {
