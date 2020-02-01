@@ -109,6 +109,7 @@ draw() {
 
         if (this.enemies.length < this.maxenemies) {
             this.enemies.push(new Bot(this.speed));
+            // this.enemies.push(new Enemy(this.speed, this.color1))
         }
 
         this.enemies.forEach(e => e.update());

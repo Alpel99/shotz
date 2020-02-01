@@ -2,6 +2,8 @@ class Bullet {
 constructor(color) {
 this.visible = false;
 this.color = color
+this.damage = game.screen.ship.PlayerDMG * game.screen.ammo.damage;
+
 }
 
 show() {
@@ -35,16 +37,8 @@ update() {
 
         game.screen.enemies.forEach((e) => {
             if (e.isHit(this)) {
-                let dmg = game.screen.ship.PlayerDMG * game.screen.ammo.damage;
-                if (!e.isDead(dmg)) {
-                    e.size -= dmg;
-                    this.visible = false;
-                } else if (e.isDead(dmg)) {
-                    game.screen.score += e.score;
-                    // Diesen Gegner aus Liste entfernen
-                    game.screen.enemies.splice(game.screen.enemies.indexOf(e), 1);
-                    this.visible = false;
-                }
+                e.handleHit(this);
+                this.visible = false;
             }
         });
         this.show();
