@@ -6,6 +6,14 @@ constructor(x, y, v) {
     this.vectors = v;
     this.prevangle = 0;
     this.angle = 0;
+    this.color = color(255,0,0);
+
+    //Player - from level
+    this.bulletspeed = 15;
+    this.PlayerHP = 3;
+    this.PlayerDMG = 10;
+    this.PlayerSPD = 5;
+    this.PlayerRNG = 500;
 }
 
 update() {
@@ -16,18 +24,17 @@ update() {
     }
 
 move() {
-    
-    if(keyIsDown(LEFT_ARROW)||keyIsDown(65)) {
-      this.x = this.x - game.screen.PlayerSPD;
+    if (keyIsDown(LEFT_ARROW)||keyIsDown(65)) {
+      this.x -= this.PlayerSPD;
     }
-    if(keyIsDown(RIGHT_ARROW)||keyIsDown(68)) {
-      this.x = this.x + game.screen.PlayerSPD;
+    if (keyIsDown(RIGHT_ARROW)||keyIsDown(68)) {
+      this.x += this.PlayerSPD;
     }
-    if(keyIsDown(UP_ARROW)||keyIsDown(87)) {
-      this.y = this.y - game.screen.PlayerSPD;
+    if (keyIsDown(UP_ARROW)||keyIsDown(87)) {
+      this.y -= this.PlayerSPD;
     }
     if(keyIsDown(DOWN_ARROW)||keyIsDown(83)) {
-      this.y = this.y + game.screen.PlayerSPD;
+      this.y += this.PlayerSPD;
     }
 
     var xmin = width;
@@ -51,16 +58,16 @@ move() {
     }
 
     if(xmin < 0) {
-        this.x = this.x + game.screen.PlayerSPD;
+        this.x = this.x + this.PlayerSPD;
     }
-        if(ymin < 0) {
-        this.y = this.y + game.screen.PlayerSPD;
+    if(ymin < 0) {
+        this.y = this.y + this.PlayerSPD;
     }
     if(xmax > width) {
-        this.x = this.x - game.screen.PlayerSPD;
+        this.x = this.x - this.PlayerSPD;
     }
     if(ymax > height) {
-        this.y = this.y - game.screen.PlayerSPD;
+        this.y = this.y - this.PlayerSPD;
     }
 
 }
