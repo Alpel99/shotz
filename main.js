@@ -27,6 +27,7 @@ function setup() {
 frameRate(60);
 createCanvas(width, height);
 menuOverlay = new MenuOverlay();
+levelOverlay = new LevelOverlay();
 }
 
 function draw() {

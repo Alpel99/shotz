@@ -111,7 +111,6 @@ isDead(dmg) {
 }
 }
 
-
 class Bot extends Enemy {
 constructor(speed) {
     super();
@@ -160,7 +159,7 @@ setStartSpot() {
 show() {
     let a = this.w*2/5;
     let b = 3/5*this.w;
-    let grundfläche = 3*((2*this.w)-2*(a));
+    let grundflaeche = 3*((2*this.w)-2*(a));
 
     // Spikes
     fill(this.secondaryColor)
