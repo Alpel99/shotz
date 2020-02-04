@@ -28,7 +28,11 @@ constructor() {
     this.waveMax = 10;
     this.speed = 200;
     this.speedincrease = 100;
+
+    //ammo
     this.ammo = user.ammo[0];
+    user.slots[0].active = true;
+
     //variable vor ammo selection! like user.selectedammo = 0;
 
     //enemies
@@ -109,7 +113,7 @@ draw() {
 
         if (this.enemies.length < this.maxenemies) {
             this.enemies.push(new Bot(this.speed));
-            // this.enemies.push(new Enemy(this.speed, this.color1))
+            //this.enemies.push(new Enemy(this.speed, this.color1))
         }
 
         this.enemies.forEach(e => e.update());
