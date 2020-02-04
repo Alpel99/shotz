@@ -8,6 +8,7 @@ if(keyCode === 81) {
 
     }
 }
+
 if((keyCode === 68  || keyCode === RIGHT_ARROW) && game.screen.name == "level_menu") {
     game.screen.page++;
 }

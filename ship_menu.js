@@ -13,4 +13,9 @@ this.g = noise(this.g)*255;
 this.b = noise(this.b)*255;
 background(this.r,this.g,this.b);
 }
+
+back() {
+  game.screen = new Start_menu();
+
+}
 }

@@ -9,7 +9,7 @@ fill(0);
 rect(width/2, 40, 300, 20, 5);
 rectMode(CORNER);
 fill(230,40,40);
-rect(width/2 - 148, 32, map(game.screen.PlayerHP, 0, 3 + game.screen.skillPointsHP, 0, 296), 16, 5);
+rect(width/2 - 148, 32, map(game.screen.ship.PlayerHP, 0, 3 + game.screen.skillPointsHP, 0, 296), 16, 5);
 pop();
 
 push();
