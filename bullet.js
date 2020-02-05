@@ -3,12 +3,11 @@ constructor(color) {
 this.visible = false;
 this.color = color
 this.damage = game.screen.ship.PlayerDMG * game.screen.ammo.damage;
-
 }
 
 show() {
     if (this.visible) {
-        fill(game.screen.ammo.color);
+        fill(this.ammo.color);
         ellipse(this.x,this.y,this.size)
     }
 }

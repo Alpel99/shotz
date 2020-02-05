@@ -3,6 +3,7 @@ constructor() {
     this.color0 = color(90);
     this.color1 = color(40,200,40);
     this.color2 = color(0);
+    this.color3 = color(255,128); //color3 = gegenteil zu color 2
 
     this.name = "Level 1";
 
@@ -128,6 +129,8 @@ draw() {
             }
             this.speed += this.speedincrease;
         }
+
+        user.slots.forEach(s => s.update());
 
         this.keyCheck();
     } else if (this.mode == "post") {
