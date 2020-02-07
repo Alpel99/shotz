@@ -1,3 +1,7 @@
+/*IMPORTANT:
+ *der 0te Vektor im vectors array muss die Spitze sein (dort wo die Kugeln herausschießen)
+ *Lösung für 2 Vektoren (Doppelschuss) mit 0 & 1?
+*/
 class Ship {
 constructor() {
     this.x = width/2;
@@ -123,8 +127,8 @@ createVectors() {
 
 draw() {
     push();
-        this.img.background(game.screen.color0);
         this.img.push();
+        this.img.clear();
         this.img.translate(75,75);
         this.img.stroke(128);
         this.img.strokeWeight(2);
