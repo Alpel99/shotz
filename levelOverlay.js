@@ -37,11 +37,14 @@ pop();
 }
 
 class Slot {
-constructor(index, id, use) {
+constructor(index, id, use, at, cdt, ) {
+    //index(numbers), id(key), use(usage), activetime(seconds), cooldown(seconds)
     this.index = index;
     this.id = id;
     this.use = use;
     this.active = false;
+    this.activeTime = at*60;
+    this.cooldownTime = cdt*60;
     this.counter = 0;
     this.activeCounter = -1;
 }
@@ -51,8 +54,6 @@ draw() {
     this.y = height - 100; //corner
     fill(game.screen.color2);
     rect(this.x, this.y, 50, 50, 2);
-
-
 
     push();
     imageMode(CORNER);
@@ -104,7 +105,7 @@ draw() {
 
     if(this.counter > 0) {
         //cooldown
-        var a = map(this.counter, 0, this.cd*60, -PI/2, PI*1.5);
+        var a = map(this.counter, 0, this.cooldownTime, -PI/2, PI*1.5);
         push();
             fill(game.screen.color3);
             arc(this.x + 25, this.y + 25, 45, 45, -PI/2, a);
@@ -120,21 +121,23 @@ draw() {
 activate() {
 switch (this.use) {
   case "ISH":
-    this.activeCounter = 120;
+
     break;
   case "MINE":
-    this.activeCounter = 15;
+
     break;
   case "SMB":
-    this.activeCounter = 150;
+
     break;
   case "SPECIAL":
-    this.activeCounter = 180;
+
     break;
   default:
     //
     break;
+
 }
+this.activeCounter = this.activeTime;
 }
 
 update() {
@@ -145,27 +148,7 @@ if(this.activeCounter > 0) {
     this.activeCounter--;
 } else {
     if(this.activeCounter == 0) {
-        switch (this.use) {
-          case "ISH":
-            this.cd = 30;
-            this.counter = this.cd*60;
-            break;
-          case "MINE":
-            this.cd = 15;
-            this.counter = this.cd*60;
-            break;
-          case "SMB":
-            this.cd = 30;
-            this.counter = this.cd*60;
-            break;
-          case "SPECIAL":
-            this.cd = 60;
-            this.counter = this.cd*60;
-            break;
-          default:
-            //
-            break;
-        }
+        this.counter = this.cooldownTime;
         this.activeCounter = -1;
     }
 }
