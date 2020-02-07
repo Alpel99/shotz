@@ -107,7 +107,7 @@ draw() {
         var a = map(this.counter, 0, this.cd*60, -PI/2, PI*1.5);
         push();
             fill(game.screen.color3);
-            arc(this.x + 25, this.y + 25, 40, 40, -PI/2, a);
+            arc(this.x + 25, this.y + 25, 45, 45, -PI/2, a);
         pop();
     }
 

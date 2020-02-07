@@ -20,7 +20,7 @@ constructor() {
     //post defined after loss
 
     //ship (only holds position and rotates vectors)
-    this.ship = new Ship(width/2, height/2, ship1_vectors);
+    this.ship = new Ship1(width/2, height/2, color("blue"));
 
     //misc
     this.score = 0;
@@ -105,12 +105,7 @@ draw() {
     } else if (this.mode == "run") {
         //Ship
         this.ship.update();
-        this.ship.move();
-        push();
-        imageMode(CENTER);
-        drawShip1(this.ship.color);
-        image(img_ship1, this.ship.x, this.ship.y);
-        pop();
+        this.ship.draw();
 
         if (this.enemies.length < this.maxenemies) {
             this.enemies.push(new Bot(this.speed));
