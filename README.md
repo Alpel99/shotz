@@ -5,22 +5,23 @@ https://trello.com/b/2Vm2EXmP/shotz
 
 ## Goals:
 * shooter gameplay
-* different levels with different gameplay, shipts etc
-* exp for each levels
-* levelups -> skillpoints for skilltree (specific to level)
+* different levels with different gameplay etc
+* exp for each level
+* levelups -> skillpoints for skilltree -> each ship own skilltree
 * different item drops from each level -> usable in all levels (through some sort of quickslot bar)
 * inventory page
+* different ships with different uses (glasscannon, tank, utility)
 
 
 ## long time goals:
 * auto idling
-* authentification
+* authentication
 * hack protection
 * pvp
-* rankings
 * premium
 * support
 * user page with statistics
+* rankings
 * designs for each ship (just change one specific triangle every time)
 
 

@@ -1,4 +1,5 @@
 let game;
+let user;
 let ship1_vectors = [];
 let width
 let height
@@ -27,6 +28,7 @@ function setup() {
 frameRate(60);
 createCanvas(width, height);
 menuOverlay = new MenuOverlay();
+levelOverlay = new LevelOverlay();
 }
 
 function draw() {

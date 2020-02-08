@@ -14,10 +14,10 @@ if(game.screen.name == "start_menu") {
         console.log("pvp");
     } else
     if(game.screen.inventory.checkHover() === true) {
-        game.screen = new Ship_menu();
+       console.log("inventory");
     } else
-    if(game.screen.user.checkHover() === true) {
-        console.log("user");
+    if(game.screen.ships.checkHover() === true) {
+        game.screen = new Ship_menu();
     } else
     if(game.screen.rankings.checkHover() === true) {
         console.log("rankings");

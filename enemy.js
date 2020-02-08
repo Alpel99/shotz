@@ -111,7 +111,6 @@ isDead(dmg) {
 }
 }
 
-
 class SpikeOrbitter extends Enemy {
 constructor(speed) {
     super();
