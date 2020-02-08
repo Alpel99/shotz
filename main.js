@@ -1,4 +1,5 @@
 let game;
+let user;
 let ship1_vectors = [];
 let width
 let height

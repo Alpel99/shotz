@@ -3,6 +3,7 @@ constructor() {
     this.color0 = color(90);
     this.color1 = color(40,200,40);
     this.color2 = color(0);
+    this.color3 = color(255,128); //color3 = gegenteil zu color 2
 
     this.name = "Level 1";
 
@@ -19,7 +20,7 @@ constructor() {
     //post defined after loss
 
     //ship (only holds position and rotates vectors)
-    this.ship = new Ship(width/2, height/2, ship1_vectors);
+    this.ship = new Ship1(width/2, height/2, color("blue"));
 
     //misc
     this.score = 0;
@@ -28,7 +29,11 @@ constructor() {
     this.waveMax = 10;
     this.speed = 200;
     this.speedincrease = 100;
+
+    //ammo
     this.ammo = user.ammo[0];
+    user.slots[0].active = true;
+
     //variable vor ammo selection! like user.selectedammo = 0;
 
     //enemies
@@ -100,16 +105,11 @@ draw() {
     } else if (this.mode == "run") {
         //Ship
         this.ship.update();
-        this.ship.move();
-        push();
-        imageMode(CENTER);
-        drawShip1(this.ship.color);
-        image(img_ship1, this.ship.x, this.ship.y);
-        pop();
+        this.ship.draw();
 
         if (this.enemies.length < this.maxenemies) {
             this.enemies.push(new Bot(this.speed));
-            // this.enemies.push(new Enemy(this.speed, this.color1))
+            //this.enemies.push(new Enemy(this.speed, this.color1))
         }
 
         this.enemies.forEach(e => e.update());
@@ -124,6 +124,8 @@ draw() {
             }
             this.speed += this.speedincrease;
         }
+
+        user.slots.forEach(s => s.update());
 
         this.keyCheck();
     } else if (this.mode == "post") {
