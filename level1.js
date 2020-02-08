@@ -38,7 +38,7 @@ constructor() {
 
     //enemies
     this.enemies = [];
-    this.maxenemies = 5;
+    this.maxenemies = 1;
 
     //bullets
     this.bullets = [];
@@ -107,9 +107,9 @@ draw() {
         this.ship.update();
         this.ship.draw();
 
-        if (this.enemies.length < this.maxenemies) {
-            this.enemies.push(new Bot(this.speed));
-            //this.enemies.push(new Enemy(this.speed, this.color1))
+        if (this.enemies.length < this.maxenemies) { // Theoretisch braucht man speed nicht übergeben, da ja lvl den speed später direkt manipuiert. Theoretisch könnte jeder Gegnertyp seine eigene Geschwindigkeit haben...
+            this.enemies.push(new SpikeOrbitter(this.speed));
+            // this.enemies.push(new Enemy(this.speed, this.color1))
         }
 
         this.enemies.forEach(e => e.update());

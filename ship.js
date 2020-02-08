@@ -12,6 +12,7 @@ constructor() {
     this.angle = 0;
 
     //Player - from level
+    this.crashDamage = 150;
     this.bulletspeed = 15;
     this.PlayerHP = 3;
     this.PlayerDMG = 10;
