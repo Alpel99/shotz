@@ -1,9 +1,10 @@
 class Prep {
-constructor(c0, c1, c2, l) {
+constructor(c0, c1, c2, lvl) {
     this.color0 = c0;
     this.color1 = c1;
     this.color2 = c2;
-    this.text = l;
+    this.lvl = lvl;
+    this.text = this.lvl.name;
     this.name = "prep";
 }
 
@@ -23,5 +24,14 @@ draw() {
 
 back() {
     game.screen = new Level_menu();
+}
+
+controls(mode) {
+    if (mode === 'keyPress') {
+        if (keyCode === ENTER) this.lvl.mode = 'run';
+    } else if (mode === 'mousePress') {
+    } else if (mode === 'mouseClick') {
+        this.lvl.mode = 'run';
+    }
 }
 }

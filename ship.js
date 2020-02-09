@@ -11,7 +11,6 @@ constructor() {
     this.prevangle = 0;
     this.angle = 0;
 
-    //Player - from level
     this.crashDamage = 150;
     this.bulletspeed = 15;
     this.PlayerHP = 3;
@@ -19,6 +18,11 @@ constructor() {
     this.PlayerSPD = 5;
     this.PlayerRNG = 500;
     this.img = createGraphics(150,150);
+
+    this.bullets = [];
+    for(let i = 0; i < 1; i++) {
+        this.bullets[i] = new Bullet(this, 'white'); // needs this.PlayerDMG
+    }
 }
 
 update() {
@@ -27,22 +31,10 @@ update() {
     this.vectors.forEach(element => element.rotate(this.angle - this.prevangle));
     this.prevangle = this.angle;
     this.move();
+    this.bullets.forEach(b => b.update());
     }
 
 move() {
-    if (keyIsDown(LEFT_ARROW)||keyIsDown(65)) {
-      this.x -= this.PlayerSPD;
-    }
-    if (keyIsDown(RIGHT_ARROW)||keyIsDown(68)) {
-      this.x += this.PlayerSPD;
-    }
-    if (keyIsDown(UP_ARROW)||keyIsDown(87)) {
-      this.y -= this.PlayerSPD;
-    }
-    if(keyIsDown(DOWN_ARROW)||keyIsDown(83)) {
-      this.y += this.PlayerSPD;
-    }
-
     var xmin = width;
     var ymin = height;
     var xmax = 0;
@@ -75,7 +67,36 @@ move() {
     if(ymax > height) {
         this.y = this.y - this.PlayerSPD;
     }
+}
 
+controls(mode) {
+    if (mode === 'keyPress') {
+    } else if (mode === 'mousePress') {
+    } else if (mode === 'mouseClick') {
+    } else if (mode === 'keyDown') {
+
+        if (keyIsDown(32)) {
+            for(let i = 0; i < this.bullets.length; i++) {
+                if(this.bullets[i].visible == false) {
+                       this.bullets[i].start();
+                   return;
+                }
+            }
+        }
+
+        if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
+            this.x -= this.PlayerSPD;
+        }
+        if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) {
+            this.x += this.PlayerSPD;
+        }
+        if (keyIsDown(UP_ARROW) || keyIsDown(87)) {
+            this.y -= this.PlayerSPD;
+        }
+        if(keyIsDown(DOWN_ARROW) || keyIsDown(83)) {
+            this.y += this.PlayerSPD;
+        }
+    }
 }
 }
 
@@ -84,7 +105,7 @@ constructor(x, y, c) {
     super();
     this.x = x;
     this.y = y;
-    //get the vectors form the ship
+    //get the vectors from the ship
     this.vectors = [];
 
     this.color = c;
@@ -96,7 +117,7 @@ constructor(x, y, c) {
     this.PlayerDMG = 10;
     this.PlayerSPD = 5;
     this.PlayerRNG = 500;
-    
+
     this.createVectors();
 }
 
@@ -134,19 +155,19 @@ draw() {
         this.img.stroke(128);
         this.img.strokeWeight(2);
         this.img.fill(0);
-    
+
         //Wings
         this.img.triangle(this.vectors[3].x,this.vectors[3].y,this.vectors[1].x,this.vectors[1].y,this.vectors[2].x,this.vectors[2].y);
         this.img.triangle(this.vectors[9].x,this.vectors[9].y,this.vectors[10].x,this.vectors[10].y,this.vectors[2].x,this.vectors[2].y);
-    
+
         //Main
         this.img.triangle(this.vectors[0].x,this.vectors[0].y,this.vectors[4].x,this.vectors[4].y,this.vectors[5].x,this.vectors[5].y);
-    
+
         //Color
         this.img.fill(this.color);
         this.img.triangle(this.vectors[0].x,this.vectors[0].y,this.vectors[4].x,this.vectors[4].y,this.vectors[6].x,this.vectors[6].y);
         this.img.triangle(this.vectors[0].x,this.vectors[0].y,this.vectors[5].x,this.vectors[5].y,this.vectors[11].x,this.vectors[11].y);
-    
+
         //Bridge
         this.img.fill(230);
         this.img.triangle(this.vectors[7].x,this.vectors[7].y,this.vectors[8].x,this.vectors[8].y,this.vectors[12].x,this.vectors[12].y);

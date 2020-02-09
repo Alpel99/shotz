@@ -6,7 +6,7 @@ function pictures() {
     coin = createGraphics(50,50);
     exclamation = createGraphics(50,50);
     img_ship = createGraphics(150,150);
-    img_ship1 = createGraphics(150,150);
+    // img_ship1 = createGraphics(150,150);
     img_ship2 = createGraphics(150,150);
     img_ammo1 = createGraphics(80,80);
     img_ammo2 = createGraphics(80,80);
@@ -34,8 +34,6 @@ function pictures() {
     drawCoin();
     drawExclamation();
     drawShip();
-    vectorsShip1();
-    drawShip1(color(255));
     vectorsShip2();
     drawShip2();
     drawSkillup();
@@ -313,60 +311,6 @@ img_damage.stroke(0);
 img_damage.stroke(90);
 img_damage.strokeWeight(6);
 img_damage.line(10,90,30,70);
-}
-
-function vectorsShip1() {
-    img_ship1.push();
-    img_ship1.translate(75,75);
-
-    //Flügel
-    ship1_vectors[3] = img_ship1.createVector(-30, 20);
-    ship1_vectors[1] = img_ship1.createVector(-40, -20);
-    ship1_vectors[2] = img_ship1.createVector(0, 20);
-    ship1_vectors[9] = img_ship1.createVector(-ship1_vectors[3].x, 20);
-    ship1_vectors[10] = img_ship1.createVector(-ship1_vectors[1].x, -20);
-
-    //Main
-    ship1_vectors[0] = img_ship1.createVector(0, -50);
-    ship1_vectors[4] = img_ship1.createVector(-30, 20);
-    ship1_vectors[5] = img_ship1.createVector(30, 20);
-
-    //White
-    ship1_vectors[6] = img_ship1.createVector(-20, 20);
-    ship1_vectors[11] = img_ship1.createVector(-ship1_vectors[6].x, 20);
-
-    //Bridge
-    ship1_vectors[7] = img_ship1.createVector(0, -5);
-    ship1_vectors[8] = img_ship1.createVector(5, 10);
-    ship1_vectors[12] = img_ship1.createVector(-ship1_vectors[8].x, 10);
-
-    img_ship1.pop();
-}
-
-function drawShip1(a) {
-    img_ship1.background(game.screen.color0);
-    img_ship1.push();
-    img_ship1.translate(75,75);
-    img_ship1.stroke(128);
-    img_ship1.strokeWeight(2);
-    img_ship1.fill(0);
-
-    //Flügel
-    img_ship1.triangle(ship1_vectors[3].x,ship1_vectors[3].y,ship1_vectors[1].x,ship1_vectors[1].y,ship1_vectors[2].x,ship1_vectors[2].y);
-    img_ship1.triangle(ship1_vectors[9].x,ship1_vectors[9].y,ship1_vectors[10].x,ship1_vectors[10].y,ship1_vectors[2].x,ship1_vectors[2].y);
-
-    //Main
-    img_ship1.triangle(ship1_vectors[0].x,ship1_vectors[0].y,ship1_vectors[4].x,ship1_vectors[4].y,ship1_vectors[5].x,ship1_vectors[5].y);
-
-    //White
-    img_ship1.fill(a);
-    img_ship1.triangle(ship1_vectors[0].x,ship1_vectors[0].y,ship1_vectors[4].x,ship1_vectors[4].y,ship1_vectors[6].x,ship1_vectors[6].y);
-    img_ship1.triangle(ship1_vectors[0].x,ship1_vectors[0].y,ship1_vectors[5].x,ship1_vectors[5].y,ship1_vectors[11].x,ship1_vectors[11].y);
-
-    //Bridge
-    img_ship1.fill(230);
-    img_ship1.triangle(ship1_vectors[7].x,ship1_vectors[7].y,ship1_vectors[8].x,ship1_vectors[8].y,ship1_vectors[12].x,ship1_vectors[12].y);
-    img_ship1.pop();
 }
 
 function vectorsShip2() {
