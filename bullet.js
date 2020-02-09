@@ -1,14 +1,17 @@
 class Bullet {
-constructor(color) {
-this.visible = false;
-this.color = color
-this.damage = game.screen.ship.PlayerDMG * game.screen.ammo.damage;
+constructor(shooter, color) {
+    this.shooter = shooter;
+    this.visible = false;
+    this.color = color;
+    // this.damage = this.shooter.PlayerDMG * game.screen.ammo.damage;
+    this.damage = this.shooter.PlayerDMG;
+
 }
 
 show() {
     if (this.visible) {
         fill(this.ammo.color);
-        ellipse(this.x,this.y,this.size)
+        ellipse(this.x, this.y, this.size)
     }
 }
 

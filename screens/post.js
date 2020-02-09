@@ -1,14 +1,15 @@
 class Post {
-constructor(c0, c1, c2, t, l1, l2, l3, l4) {
+constructor(c0, c1, c2, lvl, l1, l2, l3, l4) {
     this.color0 = c0;
     this.color1 = c1;
     this.color2 = c2;
+    this.lvl = lvl;
     //check with server:
     this.loot1 = l1;
     this.loot2 = l2;
     this.loot3 = l3;
     this.loot4 = l4;
-    this.text = t;
+    this.text = this.lvl.name;
     this.name = "post";
 }
 
@@ -49,4 +50,11 @@ back() {
     game.screen = new Level_menu();
 }
 
+controls(mode) {
+    if (mode === 'keyPress') {
+    } else if (mode === 'mousePress') {
+    } else if (mode === 'mouseClick') {
+        game.screen = new Level1();
+    }
+}
 }

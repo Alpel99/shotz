@@ -1,9 +1,10 @@
 class Pause {
-constructor(c0, c1, c2, l) {
+constructor(c0, c1, c2, lvl) {
     this.color0 = c0;
     this.color1 = c1;
     this.color2 = c2;
-    this.text = l;
+    this.lvl = lvl;
+    this.text = this.lvl.name;
     this.name = "pause";
 }
 
@@ -25,6 +26,14 @@ draw() {
 }
 
 back() {
-    game.screen.mode = "run";
+    this.lvl.mode = "run";
+}
+
+controls(mode) {
+    if (mode === 'keyPress') {
+    } else if (mode === 'mousePress') {
+    } else if (mode === 'mouseClick') {
+        this.lvl.mode = 'run';
+    }
 }
 }
