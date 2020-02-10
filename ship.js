@@ -13,17 +13,18 @@ constructor() {
 
     this.crashDamage = 150;
     // Diese Player-Variablen in den User?!?!
-    this.shotDelay = 200;   // in milliseconds
-    this.bulletspeed = 0.8; // mulitplies to native bullet speed
-    this.PlayerHP = 3;
-    this.PlayerDMG = 10;
-    this.PlayerSPD = 5;
-    this.PlayerRNG = 500;
+    this.shotDelay = 400 - user.skillup.Ship1.FR*30;
+    this.bulletspeed = 0.8 + user.skillup.Ship1.BSPD*0.1;
+    this.PlayerHP = 3 + user.skillup.Ship1.HP;
+    this.PlayerDMG = 10 + user.skillup.Ship1.DMG*2;
+    this.PlayerSPD = 5 + user.skillup.Ship1.SPD;
+    this.PlayerRNG = 500 + user.skillup.Ship1.RNG*100;
 
     this.img = createGraphics(150,150);
 
-    this.dir = createVector(10, 0);
-    this.pos = createVector(this.x, this.y);
+    // bullets
+    this.dir = createVector(10, 0);             // ship facing direction
+    this.pos = createVector(this.x, this.y);    // ship position
     this.timestamps = [millis(), millis(), millis()];  // for evaluating shot delay
     this.bullets = [];
 }
@@ -126,14 +127,6 @@ constructor(x, y, c) {
 
     this.color = c;
     //this.color = color(255,0,0);
-
-    //Player - from level
-    this.firerate = 100 - user.skillup.Ship1.FR*4;
-    this.bulletspeed = 10 + user.skillup.Ship1.BSPD*3;
-    this.PlayerHP = 3 + user.skillup.Ship1.HP;
-    this.PlayerDMG = 10 + user.skillup.Ship1.DMG;
-    this.PlayerSPD = 5 + user.skillup.Ship1.SPD;
-    this.PlayerRNG = 500 + user.skillup.Ship1.RNG;
     this.createVectors();
 }
 

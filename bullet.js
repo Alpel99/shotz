@@ -54,7 +54,8 @@ class Laser extends Bullet {
     show() {
         push();
             stroke(game.screen.ammo.color || this.color);
-            strokeWeight(this.damage/5 || 1);
+            if (this.damage/5 > 1) strokeWeight(this.damage/5);
+            else strokeWeight(1);
 
             line(this.pos.x, this.pos.y, (this.pos.x+this.vel.x), (this.pos.y+this.vel.y));
         pop();

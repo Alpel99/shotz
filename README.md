@@ -25,15 +25,6 @@ https://trello.com/b/2Vm2EXmP/shotz
 * designs for each ship (just change one specific triangle every time)
 
 
-## Update Jan 09.02.2020
-* Controls handler eingefügt zur Steuerung aller Eingaben direkt am verantwortlichen Element
-  control() wird in main.js durch die entsprechenden p5-EventHandler aufgerufen und die
-  Funktionalität wird an das entsprechende Element delegiert -- Die Files keys.js
-  und mouse.js sind überflüssig geworden und gelöscht
-* Drawing level menu items fixed
-* Screen-Dateien in den entsprechenden Ordner gelegt
-* Bullet-Array vom Level ins Ship verlagert - Schüsse werden jetzt vom Ship ausgelöst
-
 ## Update Jan 10.02.2020
 Bullet überarbeitet:
   * Funktion shoot() in ship.js eingeführt - jetzt lässt sich das shot delay millisekundenweise
