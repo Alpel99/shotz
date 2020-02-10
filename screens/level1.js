@@ -24,7 +24,6 @@ constructor() {
     this.score = 0;
     this.scoreMax = 50;
     this.wave = 0;
-    this.waveMax = 10;
     this.speedincrease = 10;
 
     // ammo
@@ -64,11 +63,18 @@ end() {
     var coinz = floor(this.wave/2);
     var ammo2 = floor(exp/15);
 
+    user.experience.Level1.exp += exp;
+    while(user.experience.Level1.exp > user.experience.Level1.lvl*1000) {
+        user.experience.Level1.exp - user.experience.Level1.lvl*1000;
+        user.experience.Level1.lvl++;
+    }
+
     var str_exp = "Experience: " + exp;
     var str_coinz = "Coinz: " + coinz;
     var str_ammo = "x2 Ammo: " + ammo2;
     var str_etc = "";
 
+    //actually send to the server
     this.post = new Post(this.color0, this.color1, this.color2, this, str_exp, str_coinz, str_ammo, str_etc);
     this.mode = "post";
 }
@@ -89,11 +95,6 @@ draw() {
 
         if (this.score > this.scoreMax) {
             this.score = 0;
-            if (this.wave < this.waveMax) {
-                this.wave++;
-            } else {
-                this.end();
-            }
             this.speed += this.speedincrease;
         }
 

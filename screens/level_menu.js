@@ -3,11 +3,11 @@ constructor() {
     this.color0 = color(15,15,128);
     this.color1 = color(128);
     this.levels = [
-        new LevelMenuItem("Level1", 800, 1000),
-        new LevelMenuItem("Level2", 200, 2000),
-        new LevelMenuItem("Level3", 351, 1000),
-        new LevelMenuItem("Level4", 1000, 1000),
-        new LevelMenuItem("Level5", 351, 1000)
+        new LevelMenuItem("Level1", user.experience.Level1.exp, user.experience.Level1.lvl*1000),
+        new LevelMenuItem("Level2", user.experience.Level2.exp, user.experience.Level2.lvl*1000),
+        new LevelMenuItem("Level3", user.experience.Level3.exp, user.experience.Level3.lvl*1000),
+        new LevelMenuItem("Level4", user.experience.Level4.exp, user.experience.Level4.lvl*1000),
+        new LevelMenuItem("Level5", user.experience.Level5.exp, user.experience.Level5.lvl*1000)
     ];
     this.page = 1;
     this.mod = 5;

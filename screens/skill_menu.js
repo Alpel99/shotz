@@ -3,7 +3,7 @@ constructor(ship) {
     this.ship = ship;
     this.ship.x = width/6;
     this.ship.y = height/4;
-    this.skillItems = [];
+
     this.hp = createGraphics(100, 100);
     this.speed = createGraphics(100, 100);
     this.range = createGraphics(100, 100);
@@ -16,16 +16,19 @@ constructor(ship) {
     this.skillButton = createGraphics(200, 75);
     this.skillButtonRed = createGraphics(200, 75);
     this.drawSkillups()
-    this.skillItems[0] = new SkillItem(this.hp, "HP");
+
+    this.skillItems = [
+    new SkillItem(this.hp, "HP"),
+    new SkillItem(this.damage, "DMG"),
+    new SkillItem(this.speed, "SPD"),
+    new SkillItem(this.range, "RNG"),
+    new SkillItem(this.bulletspeed, "BSPD"),
+    new SkillItem(this.firerate, "FR"),
+    new SkillItem(this.special, "SPC"),
+    new SkillItem(this.loot, "LT"),
+    new SkillItem(this.exp, "EXP")
+    ];
     this.skillItems[0].active = true;
-    this.skillItems[1] = new SkillItem(this.damage, "DMG");
-    this.skillItems[2] = new SkillItem(this.speed, "SPD");
-    this.skillItems[3] = new SkillItem(this.range, "RNG");
-    this.skillItems[4] = new SkillItem(this.bulletspeed, "BSPD");
-    this.skillItems[5] = new SkillItem(this.firerate, "FR");
-    this.skillItems[6] = new SkillItem(this.special, "SPC");
-    this.skillItems[7] = new SkillItem(this.loot, "LT");
-    this.skillItems[8] = new SkillItem(this.exp, "EXP");
 }
 
 draw() {

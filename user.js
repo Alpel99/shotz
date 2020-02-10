@@ -50,6 +50,28 @@ this.skillup = {
         "EXP": 0
     }
 }
+this.experience = {
+    "Level1": {
+        "exp": 0,
+        "lvl": 1
+    },
+    "Level2": {
+        "exp": 0,
+        "lvl": 1
+    },
+    "Level3": {
+        "exp": 0,
+        "lvl": 1
+    },
+    "Level4": {
+        "exp": 0,
+        "lvl": 1
+    },
+    "Level5": {
+        "exp": 0,
+        "lvl": 1
+    }
 }
 
+}
 }
