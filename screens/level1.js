@@ -65,8 +65,9 @@ end() {
 
     user.experience.Level1.exp += exp;
     while(user.experience.Level1.exp > user.experience.Level1.lvl*1000) {
-        user.experience.Level1.exp - user.experience.Level1.lvl*1000;
+        user.experience.Level1.exp -= user.experience.Level1.lvl*1000;
         user.experience.Level1.lvl++;
+        user.skillpoints++;
     }
 
     var str_exp = "Experience: " + exp;
@@ -91,7 +92,6 @@ draw() {
 
     if (this.mode == "prep") this.prep.draw();
     else if (this.mode == "run") {
-
 
         if (this.score > this.scoreMax) {
             this.score = 0;
