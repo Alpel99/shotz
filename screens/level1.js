@@ -85,8 +85,7 @@ draw() {
 
     if (this.mode == "prep") this.prep.draw();
     else if (this.mode == "run") {
-        // Overlay
-        this.levelOverlay.draw();
+
 
         if (this.score > this.scoreMax) {
             this.score = 0;
@@ -110,6 +109,9 @@ draw() {
             this.enemies.push(new Enemy(this.color1))
         }
         this.enemies.forEach(e => e.update());
+
+        // Overlay
+        this.levelOverlay.draw();
     }
     else if (this.mode == "post") this.post.draw();  // change post to intern in game -> dann this.post.draw();
     else if (this.mode == "pause") {

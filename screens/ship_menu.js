@@ -6,7 +6,13 @@ constructor() {
     this.rdiff = random(-0.5,0.5);
     this.gdiff = random(-0.5,0.5);
     this.bdiff = random(-0.5,0.5);
-    this.ship1 = new Ship1(width/3, height/4, color(255, 255, 0));
+
+    this.ships = [];
+    this.ships.push(new Ship1(width/6, height/4, color(255, 255, 0)));
+    this.ships.push(new Ship1(2 * width/6, height/4, color(255, 0, 255)));
+    this.ships.push(new Ship1(3 * width/6, height/4, color(255, 0, 128)));
+    this.ships.push(new Ship1(4 * width/6, height/4, color(255, 0, 0)));
+    this.ships.push(new Ship1(5 * width/6, height/4, color(255, 128, 255)));
 }
 
 draw() {
@@ -31,7 +37,10 @@ draw() {
     }
     background(this.r,this.g,this.b);
 
-    this.ship1.draw();
+    for(let i = 0; i < this.ships.length; i ++) {
+        this.ships[i].draw();
+    }
+
 }
 
 back() {
@@ -42,6 +51,21 @@ controls(mode) {
     if (mode === 'keyPress') {
     } else if (mode === 'mousePress') {
     } else if (mode === 'mouseClick') {
+        for(let i = 0; i < this.ships.length; i++) {
+            if(this.mouseHover(this.ships[i].x, this.ships[i].y, 150) == true) {
+                game.screen = new Skill_menu(this.ships[i]);
+                break;
+            }
+        }
     }
+}
+
+mouseHover(x, y, size) {
+    //Center from rectagnle that mouse hovers
+    var hover = false;
+    if(mouseX > x-size/2 && mouseX < x+size/2 && mouseY > y-size/2 && mouseY < y+size/2) {
+        hover = true;
+    }
+    return hover;
 }
 }

@@ -25,6 +25,22 @@ this.slots[5] = new Slot(6, "E", "ISH", 1, 30);
 this.slots[6] = new Slot(7, "R", "MINE", 0.5, 15);
 this.slots[7] = new Slot(8, "T", "SMB", 1, 30);
 this.slots[8] = new Slot(9, "F", "SPECIAL", 1, 60);
+this.skillup = {
+    "Ship1": {
+        "HP": 1 ,
+        "DMG": 2,
+        "SPD": 1,
+        "RNG": 1,
+        "SPC": 1
+    },
+    "Ship2": {
+        "HP": 1 ,
+        "DMG": 2,
+        "SPD": 1,
+        "RNG": 1,
+        "SPC": 0
+    }
+}
 }
 
 }
