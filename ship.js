@@ -7,31 +7,39 @@ constructor() {
     this.x = width/2;
     this.y = height/2;
 
-    //get the vectors form the ship
+    //get the vectors from the ship
     this.prevangle = 0;
     this.angle = 0;
 
     this.crashDamage = 150;
+    // Diese Player-Variablen in den User?!?!
+    this.shotDelay = 100; // in milliseconds
     this.bulletspeed = 15;
     this.PlayerHP = 3;
     this.PlayerDMG = 10;
     this.PlayerSPD = 5;
     this.PlayerRNG = 500;
+
     this.img = createGraphics(150,150);
 
+    this.dir = createVector(10, 0);
+    this.pos = createVector(this.x, this.y);
+    this.timestamp = millis();  // for evaluating shot delay
     this.bullets = [];
-    for(let i = 0; i < 1; i++) {
-        this.bullets[i] = new Bullet(this, 'white'); // needs this.PlayerDMG
-    }
 }
 
 update() {
-    //update the vectors from the ship
+    // update the vectors from the ship
     this.angle = atan2(mouseY - this.y, mouseX - this.x) + PI*0.5;
     this.vectors.forEach(element => element.rotate(this.angle - this.prevangle));
     this.prevangle = this.angle;
     this.move();
+
+    // bullets
     this.bullets.forEach(b => b.update());
+    this.pos.set(this.x, this.y);
+    let toMouse = createVector(mouseX-this.x, mouseY-this.y);
+    this.dir.rotate(toMouse.heading()-this.dir.heading());
     }
 
 move() {
@@ -69,19 +77,22 @@ move() {
     }
 }
 
+shoot(delay) {
+    if (millis() - this.timestamp > delay) {
+        console.log(this.bullets);
+        this.timestamp = millis();
+        // this.bullets.push(new Bullet(this, 'blue', this.dir, (this.pos.add(this.vectors[0]))));
+        this.bullets.push(new Laser(this, 'yellow', this.dir, (this.pos.add(this.vectors[0]))));
+    }
+}
+
 controls(mode) {
     if (mode === 'keyPress') {
     } else if (mode === 'mousePress') {
     } else if (mode === 'mouseClick') {
     } else if (mode === 'keyDown') {
-
         if (keyIsDown(32)) {
-            for(let i = 0; i < this.bullets.length; i++) {
-                if(this.bullets[i].visible == false) {
-                       this.bullets[i].start();
-                   return;
-                }
-            }
+            this.shoot(this.shotDelay);
         }
 
         if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
