@@ -13,8 +13,8 @@ constructor() {
 
     this.crashDamage = 150;
     // Diese Player-Variablen in den User?!?!
-    this.shotDelay = 100; // in milliseconds
-    this.bulletspeed = 15;
+    this.shotDelay = 200;   // in milliseconds
+    this.bulletspeed = 0.8; // mulitplies to native bullet speed
     this.PlayerHP = 3;
     this.PlayerDMG = 10;
     this.PlayerSPD = 5;
@@ -24,7 +24,7 @@ constructor() {
 
     this.dir = createVector(10, 0);
     this.pos = createVector(this.x, this.y);
-    this.timestamp = millis();  // for evaluating shot delay
+    this.timestamps = [millis(), millis(), millis()];  // for evaluating shot delay
     this.bullets = [];
 }
 
@@ -77,12 +77,11 @@ move() {
     }
 }
 
-shoot(delay) {
-    if (millis() - this.timestamp > delay) {
-        console.log(this.bullets);
-        this.timestamp = millis();
-        // this.bullets.push(new Bullet(this, 'blue', this.dir, (this.pos.add(this.vectors[0]))));
-        this.bullets.push(new Laser(this, 'yellow', this.dir, (this.pos.add(this.vectors[0]))));
+shoot(bullet_obj, delay, timestamp_index) {
+    // timestamp_index controls which timestamp in this.timestamps-array is used
+    if (millis() - this.timestamps[timestamp_index] > delay) {
+        this.bullets.push(bullet_obj);
+        this.timestamps[timestamp_index] = millis();
     }
 }
 
@@ -92,7 +91,12 @@ controls(mode) {
     } else if (mode === 'mouseClick') {
     } else if (mode === 'keyDown') {
         if (keyIsDown(32)) {
-            this.shoot(this.shotDelay);
+            this.shoot(new Laser(this, 'yellow', this.dir, (p5.Vector.add(this.pos, this.vectors[0]))),
+                       this.shotDelay, 0);
+            this.shoot(new Bullet(this, 'yellow', this.vectors[1], (p5.Vector.add(this.pos, this.vectors[1]))),
+                       this.shotDelay+300, 1);
+            this.shoot(new Bullet(this, 'yellow', this.vectors[10], (p5.Vector.add(this.pos, this.vectors[10]))),
+                       this.shotDelay+300, 2);
         }
 
         if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
@@ -121,13 +125,6 @@ constructor(x, y, c) {
 
     this.color = c;
     //this.color = color(255,0,0);
-
-    //Player - from level
-    this.bulletspeed = 15;
-    this.PlayerHP = 3;
-    this.PlayerDMG = 10;
-    this.PlayerSPD = 5;
-    this.PlayerRNG = 500;
 
     this.createVectors();
 }
