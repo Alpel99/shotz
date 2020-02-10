@@ -1,4 +1,4 @@
-let game, user, width, height, cvn;
+let game, user, width, height, cvn, fr, dt;
 
 function preload() {
     width = windowWidth - 20;
@@ -10,11 +10,18 @@ function preload() {
 }
 
 function setup() {
-    frameRate(60);
+    fr = 60;
+    frameRate(fr);
     cvn = createCanvas(width, height);
 }
 
 function draw() {
+    dt = deltaTime / (1000/fr);
+    /*
+    * >1 if framerate slower than fr (60 per sec)
+    * <1 if framerate faster than fr
+    * =1 if framerate = fr
+    */
     game.draw();
     if (keyIsDown) game.controls('keyDown');
 }

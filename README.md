@@ -34,6 +34,19 @@ https://trello.com/b/2Vm2EXmP/shotz
 * Screen-Dateien in den entsprechenden Ordner gelegt
 * Bullet-Array vom Level ins Ship verlagert - Schüsse werden jetzt vom Ship ausgelöst
 
+## Update Jan 10.02.2020
+Bullet überarbeitet:
+  * Funktion shoot() in ship.js eingeführt - jetzt lässt sich das shot delay millisekundenweise
+    steuern (z.b. shoot(500); bedeutet 2 Schuss pro Sekunde)
+  * Bullets haben jetzt vier Parameter:
+     * Das Schiff, das den Schuss abgegeben hat (als Referenz)
+     * Die Farbe der Bullet
+     * Die Schussrichtung
+     * Den Schuss-Startpunkt (falls ships später mehrere Kanonen haben)
+  * Bulletanimation ist jetzt (mittels p5.deltaTime) unabhängig von Framerate (-> auch in ship- und enemy-Animation einfügen?!)
+    Die Variable dt wird jetzt in main.js berechnet, die als Faktor zur Framerate-Kontrolle verwendet werden kann
+  * Laser (Bullet-Type) hinzugefügt
+
 ## TODO:
 * Scaling by window.resize
 * EnemyType "SpikeOrbitter" abgeschlossen (ohne extends Enemy)
