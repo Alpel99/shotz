@@ -47,6 +47,10 @@ Bullet überarbeitet:
     Die Variable dt wird jetzt in main.js berechnet, die als Faktor zur Framerate-Kontrolle verwendet werden kann
   * Laser (Bullet-Type) hinzugefügt
 
+  * Laser angepasst: dmg--, bulletspeed+++
+  * shoots()-Funktion jetzt generischer für verschiedene Bullets und delays
+  * Ship beispielhaft mit 3 verschiedenen Schüssen ausgestattet
+
 ## TODO:
 * Scaling by window.resize
 * EnemyType "SpikeOrbitter" abgeschlossen (ohne extends Enemy)

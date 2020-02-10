@@ -6,6 +6,7 @@ constructor(shooter, color, dir, start) {
     this.vel = createVector(dir.x, dir.y);           // shoot direction vector
     this.start = createVector(start.x, start.y);     // bullet start position
 
+    this.speed = 15;
     this.damage = this.shooter.PlayerDMG;
     this.ammo = game.screen.ammo;
     this.size = this.shooter.PlayerDMG/2;
@@ -20,7 +21,7 @@ show() {
 }
 
 update() {
-    this.vel.mag(this.shooter.bulletspeed);
+    this.vel.setMag(this.speed * this.shooter.bulletspeed);
     this.pos.add(p5.Vector.mult(this.vel, dt)); // anstatt this.pos.add(this.vel) - für framerate control
                                                 // die statische Methode p5.Vector.mult() erzeugt neuen Vektor und korrumpiert nicht die Magnitude von this.vel
 
@@ -43,9 +44,11 @@ update() {
 }
 
 class Laser extends Bullet {
+    // etwas schwächer als Bullets (0.8*dmg), aber viel schneller
     constructor(shooter, color, dir, start) {
         super(shooter, color, dir, start);
-        this.w = 15;
+        this.damage = 0.8 * this.shooter.PlayerDMG
+        this.speed = 55;
     }
 
     show() {
