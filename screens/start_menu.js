@@ -2,7 +2,7 @@ class Start_menu {
 constructor() {
     this.color0 = color(0);
     this.color1 = color(255, 0, 0);
-    this.color2 = color(50, 0, 0);
+    this.color2 = color(100, 0, 0);
     this.level =     new StartMenuItem("Level", width/5, height/3, this.color1);
     this.shop =      new StartMenuItem("Shop", width/5 - 50, height/3 + 100, this.color2);
     this.pvp =       new StartMenuItem("PVP", width/5 - 100, height/3 + 200, this.color2);

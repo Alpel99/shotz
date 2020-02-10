@@ -25,6 +25,53 @@ this.slots[5] = new Slot(6, "E", "ISH", 1, 30);
 this.slots[6] = new Slot(7, "R", "MINE", 0.5, 15);
 this.slots[7] = new Slot(8, "T", "SMB", 1, 30);
 this.slots[8] = new Slot(9, "F", "SPECIAL", 1, 60);
+this.skillpoints = 15;
+this.skillup = {
+    "Ship1": {
+        "HP": 0,
+        "DMG": 0,
+        "SPD": 0,
+        "RNG": 0,
+        "BSPD": 0,
+        "FR": 0,
+        "SPC": 0,
+        "LT": 0,
+        "EXP": 0
+    },
+    "Ship2": {
+        "HP": 0,
+        "DMG": 0,
+        "SPD": 0,
+        "RNG": 0,
+        "BSPD": 0,
+        "FR": 0,
+        "SPC": 0,
+        "LT": 0,
+        "EXP": 0
+    }
+}
+this.experience = {
+    "Level1": {
+        "exp": 0,
+        "lvl": 1
+    },
+    "Level2": {
+        "exp": 0,
+        "lvl": 1
+    },
+    "Level3": {
+        "exp": 0,
+        "lvl": 1
+    },
+    "Level4": {
+        "exp": 0,
+        "lvl": 1
+    },
+    "Level5": {
+        "exp": 0,
+        "lvl": 1
+    }
 }
 
+}
 }
