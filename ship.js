@@ -103,6 +103,7 @@ controls(mode) {
 class Ship1 extends Ship {
 constructor(x, y, c) {
     super();
+    this.name = "Sharion"
     this.x = x;
     this.y = y;
     //get the vectors from the ship
@@ -112,13 +113,18 @@ constructor(x, y, c) {
     //this.color = color(255,0,0);
 
     //Player - from level
-    this.bulletspeed = 15;
-    this.PlayerHP = 3;
-    this.PlayerDMG = 10;
-    this.PlayerSPD = 5;
-    this.PlayerRNG = 500;
+    this.firerate = 100 - user.skillup.Ship1.FR*4;
+    this.bulletspeed = 10 + user.skillup.Ship1.BSPD*3;
+    this.PlayerHP = 3 + user.skillup.Ship1.HP;
+    this.PlayerDMG = 10 + user.skillup.Ship1.DMG;
+    this.PlayerSPD = 5 + user.skillup.Ship1.SPD;
+    this.PlayerRNG = 500 + user.skillup.Ship1.RNG;
 
     this.createVectors();
+}
+
+activateSpecial() {
+//dmg für kurze Zeit(5Seks) mal 2 + 0.1*user.skillup.Ship1.SPC
 }
 
 createVectors() {
