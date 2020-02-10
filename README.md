@@ -43,7 +43,8 @@ Bullet überarbeitet:
      * Die Farbe der Bullet
      * Die Schussrichtung
      * Den Schuss-Startpunkt (falls ships später mehrere Kanonen haben)
-  * Bulletanimation ist jezuz (mittels p5.deltaTime) unabhängig von Framerate (-> auch in ship- und enemy-Animation einfügen?!)
+  * Bulletanimation ist jetzt (mittels p5.deltaTime) unabhängig von Framerate (-> auch in ship- und enemy-Animation einfügen?!)
+    Die Variable dt wird jetzt in main.js berechnet, die als Faktor zur Framerate-Kontrolle verwendet werden kann
   * Laser (Bullet-Type) hinzugefügt
 
 ## TODO:
