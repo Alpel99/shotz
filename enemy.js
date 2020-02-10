@@ -96,7 +96,9 @@ isHit(obj) {
     let hit = false;
 
     if (obj instanceof Bullet) {
-        if (dist(obj.x, obj.y, this.x, this.y) < this.size/2 + obj.size/2) hit = true;
+        if (dist(obj.pos.x, obj.pos.y, this.x, this.y) < this.size/2 + obj.size/2) {
+            hit = true;
+        }
     } else if (obj instanceof p5.Vector) {
         if (dist(obj.x, obj.y, this.x, this.y) < this.size/2) hit = true;
     }
