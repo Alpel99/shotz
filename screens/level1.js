@@ -82,6 +82,7 @@ draw() {
 
         if (this.score > this.scoreMax) {
             this.score = 0;
+            this.wave++;
             this.speed += this.speedincrease;
         }
 

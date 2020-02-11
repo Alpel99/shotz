@@ -11,6 +11,8 @@ constructor(c0, c1, c2, lvl, l1, l2, l3, l4) {
     this.loot4 = l4;
     this.text = this.lvl.name;
     this.name = "post";
+
+    this.menuOverlay = new MenuOverlay();
 }
 
 draw() {
@@ -43,6 +45,8 @@ draw() {
     text(this.loot3, width/2, height/2 + 250);
     text(this.loot4, width/2, height/2 + 300);
     pop();
+
+    this.menuOverlay.draw();
 }
 
 back() {

@@ -27,9 +27,10 @@ draw() {
     this.inventory.draw();
     this.rankings.draw();
     this.premium.draw();
-    this.menuOverlay.draw();
     this.skillups.draw();
     this.user.draw();
+
+    this.menuOverlay.draw();
 }
 
 back() {

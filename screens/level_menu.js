@@ -11,6 +11,7 @@ constructor() {
     ];
     this.page = 1;
     this.mod = 5;
+    this.menuOverlay = new MenuOverlay();
 }
 
 draw() {
@@ -24,6 +25,8 @@ draw() {
             this.levels[i].draw(this.levels[i].checkHover(), height/6 + 150*(i%this.mod));
         }
     }
+
+    this.menuOverlay.draw();
 }
 
 back() {

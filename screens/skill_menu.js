@@ -1,5 +1,6 @@
 class Skill_menu {
 constructor(ship) {
+    this.color1 = color(0);
     this.ship = ship;
     this.ship.x = width/6;
     this.ship.y = height/4;
@@ -29,6 +30,8 @@ constructor(ship) {
     new SkillItem(this.exp, "EXP")
     ];
     this.skillItems[0].active = true;
+
+    this.menuOverlay = new MenuOverlay();
 }
 
 draw() {
@@ -80,6 +83,8 @@ draw() {
     textAlign(CENTER, TOP);
     text(this.ship.name, width/6, height/4 + 100);
     pop();
+
+    this.menuOverlay.draw();
 }
 
 back() {

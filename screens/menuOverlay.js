@@ -1,23 +1,26 @@
 class MenuOverlay {
 constructor() {
     this.money = user.money;
+    this.coin = createGraphics(50,50);
+    this.drawCoin();
 }
 
 draw() {
     //is used in all Menus
     push();
-    fill(128);
+    fill(game.screen.color1);
     textSize(40);
     textStyle(NORMAL);
     textAlign(LEFT, TOP);
-    strokeWeight(1);
-    stroke(255);
     text(this.money, width - textWidth(this.money) - 95, 30);
+    textSize(30);
+    text("User: " + user.name, 20, 20);
+    text("ID: " + user.id , 20, 60);
     pop();
     //coin image
     push();
     imageMode(CORNER);
-    //image(coin, width - 100, 20);
+    image(this.coin, width - 100, 20);
     pop();
 }
 
@@ -26,5 +29,20 @@ controls(mode) {
     } else if (mode === 'mousePress') {
     } else if (mode === 'mouseClick') {
     }
+}
+
+drawCoin() {
+    this.coin.scale(1.4);
+    this.coin.background(255,0);
+    this.coin.fill(200,150,70);
+    this.coin.ellipse(20,20,20);
+    this.coin.stroke(160);
+    this.coin.fill(200,200,40);
+    this.coin.ellipse(20,20,15);
+    this.coin.fill(200,150,70);
+    this.coin.textAlign(CENTER, CENTER);
+    this.coin.textSize(10);
+    this.coin.stroke(160);
+    this.coin.text("Z", 20, 21);
 }
 }

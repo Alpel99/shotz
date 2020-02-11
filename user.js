@@ -3,6 +3,8 @@ class User {
 //das lohnt sich nicht -> userdata als object vom server -> exp1 = userdata.exp1;
 constructor() {
 //get Serverdata
+this.name = "testuser123";
+this.id = Math.random().toString(10).substr(2, 5);
 this.money = 100;
 this.exp1 = 800;
 this.exp2 = 0;

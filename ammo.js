@@ -55,7 +55,6 @@ switch (this.use) {
         img_item.pop();
         break;
     case "MINE":
-
         img_item.push();
         img_item.fill(200,0,0);
         img_item.noStroke();

@@ -209,16 +209,16 @@ draw() {
 activate() {
     switch (this.use) {
       case "ISH":
-
+        //ship für (2) Sekunden unverwundbar, coole anmiation mit kreis rings rum -> wie stern supermario
         break;
       case "MINE":
-
+        //mine gelegt, wenn wer rein fliegt: damage
         break;
-      case "SMB":
-
+      case "EMP":
+        //schubst gegner weg/hebt chase auf etc
         break;
       case "SPECIAL":
-
+        //game.screen.ship.special();
         break;
       default:
         break;

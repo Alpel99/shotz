@@ -1,5 +1,6 @@
 class Ship_menu {
 constructor() {
+    this.color1 = color(255);
     this.r = random(0,255);
     this.g = random(0,255);
     this.b = random(0,255);
@@ -14,6 +15,8 @@ constructor() {
     new Ship1(4 * width/6, height/4, color(255, 0, 0)),
     new Ship1(5 * width/6, height/4, color(255, 128, 255))
     ];
+
+    this.menuOverlay = new MenuOverlay();
 }
 
 draw() {
@@ -41,6 +44,8 @@ draw() {
     for(let i = 0; i < this.ships.length; i ++) {
         this.ships[i].draw();
     }
+
+    this.menuOverlay.draw();
 
 }
 
