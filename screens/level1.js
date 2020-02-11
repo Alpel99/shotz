@@ -38,23 +38,6 @@ constructor() {
     // enemies
     this.enemies = [];
     this.maxenemies = 5;
-
-    // Skilltree (ins ship)
-    this.skillPointsmax = 16;
-    this.skillPointsHP = 0;
-    this.skillPointsDMG = 0;
-    this.skillPointsRange = 0;
-    this.skillPointsSPD = 0;
-
-    this.skillPointsHPMax = 4;
-    this.skillPointsDMGMax = 4;
-    this.skillPointsRangeMax = 4;
-    this.skillPointsSPDMax = 4;
-
-    this.skillPointsHPInc = 1;
-    this.skillPointsDMGInc = 2;
-    this.skillPointsRangeInc = 200;
-    this.skillPointsSPDInc = 1.5;
 }
 
 end() {

@@ -16,6 +16,7 @@ function setup() {
 }
 
 function draw() {
+    cvn.clear();
     dt = deltaTime / (1000/fr);
     /*
     * >1 if framerate slower than fr (60 per sec)
@@ -24,6 +25,7 @@ function draw() {
     */
     game.draw();
     if (keyIsDown) game.controls('keyDown');
+
 }
 
 // Event Listeners

@@ -18,18 +18,14 @@ constructor() {
 draw() {
     background(this.color0);
     this.banner.draw();
-    this.level.draw(this.level.checkHover());
-    this.shop.draw(this.shop.checkHover());
-    this.pvp.draw(this.pvp.checkHover());
-    this.ships.draw(this.ships.checkHover());
-    this.inventory.draw(this.inventory.checkHover());
-    this.rankings.draw(this.rankings.checkHover());
-    this.premium.draw(this.premium.checkHover());
+    this.level.draw();
+    this.shop.draw();
+    this.pvp.draw();
+    this.ships.draw();
+    this.inventory.draw();
+    this.rankings.draw();
+    this.premium.draw();
     this.menuOverlay.draw();
-}
-
-increase() {
-    game.screen = new Level_menu();
 }
 
 back() {
@@ -39,7 +35,6 @@ back() {
 controls(mode) {
     if (mode === 'keyPress') {
     } else if (mode === 'mousePress') {
-    } else if (mode === 'mouseClick') {
         if (this.level.checkHover() === true) {
             game.screen = new Level_menu();
             game.setup = false;
@@ -56,6 +51,7 @@ controls(mode) {
         } else if (this.premium.checkHover() === true) {
             console.log("premium");
         }
+    } else if (mode === 'mouseClick') {
     }
 }
 }
@@ -69,12 +65,13 @@ constructor(t, a, b, c) {
     this.color = c;
 }
 
-draw(hover) {
+draw() {
     push();
     fill(this.color);
     textAlign(LEFT, TOP)
     textSize(50);
     text(this.text, this.x, this.y);
+    var hover = this.checkHover();
     if (hover === false) {
         triangle(this.x - 10, this.y, this.x - 10, this.y + 50, this.x - 40, this.y + 50);
         triangle(this.x + 10 + textWidth(this.text), this.y, this.x + 10 + textWidth(this.text), this.y + 50, this.x + 40 + textWidth(this.text), this.y);
@@ -87,13 +84,15 @@ draw(hover) {
 
 checkHover() {
     push();
+    var hover;
     textSize(50);
     if(mouseX > this.x - 10 && mouseX < this.x + 10 + textWidth(this.text) && mouseY > this.y && mouseY < this.y + 50) {
-        return true;
+        hover = true;
     } else {
-        return false;
+        hover =  false;
     }
     pop();
+    return hover;
 }
 }
 
@@ -150,12 +149,12 @@ draw() {
 	text('o', 650 + this.counter/50 + 40, 130 + this.counter/50);
 
 	push();
-	rotate(0.05)
+	rotate(0.05);
 	textSize(tsize);
 	text('t', 990 + this.counter/25 - 180, 90 + this.counter/40);
 	pop();
 
-	if(this.counter > 51   ) {
+	if(this.counter > 51) {
 		push();
 		rotate(0.1)
 		textSize(zsize);
