@@ -15,7 +15,7 @@ constructor(ship) {
     this.firerate = createGraphics(100, 100);
     this.skillButton = createGraphics(200, 75);
     this.skillButtonRed = createGraphics(200, 75);
-    this.drawSkillups()
+    this.drawSkillups();
 
     this.skillItems = [
     new SkillItem(this.hp, "HP"),
@@ -293,9 +293,5 @@ showText() {
             break;
         }
     }
-}
-
-skillup() {
-
 }
 }

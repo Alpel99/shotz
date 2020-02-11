@@ -17,6 +17,7 @@ this.ammo[3] = new Ammo(4, 1000, color(0));
 this.ammo[4] = new Ammo(2.5, 1000, color(255,255,0));
 this.slots = [];
 this.slots[0] = new Slot(1, 1, "ammo1", 0, 0);
+this.slots[0].active = true;
 this.slots[1] = new Slot(2, 2, "ammo2", 0, 0);
 this.slots[2] = new Slot(3, 3, "ammo3", 0, 0);
 this.slots[3] = new Slot(4, 4, "ammo4", 0, 0);

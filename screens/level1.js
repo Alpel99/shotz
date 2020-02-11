@@ -26,9 +26,13 @@ constructor() {
     this.wave = 0;
     this.speedincrease = 10;
 
-    // ammo
-    this.ammo = user.ammo[0];
-    user.slots[0].active = true;
+    // ammo get user.slots[1-5].active
+    //this.ammo = user.ammo[0];
+    for(let i = 0; i < 5; i++) {
+        if(user.slots[i].active == true) {
+            this.ammo = user.ammo[i];
+        }
+    }
 
     // ship
     this.ship = new Ship1(width/2, height/2, color("blue")); //needs this.ammo

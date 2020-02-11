@@ -20,7 +20,7 @@ draw() {
     textStyle(NORMAL);
     textSize(25);
     fill(this.color2);
-    text("continue by clicking or pressing enter", width/2, height/2 + 50);
+    text("continue by clicking or pressing q\nleave by pressing l", width/2, height/2 + 50);
     pop();
     //drawAmmo
 }
@@ -31,6 +31,9 @@ back() {
 
 controls(mode) {
     if (mode === 'keyPress') {
+        if(keyCode == 76) {
+            game.screen = new Level_menu();
+        }
     } else if (mode === 'mousePress') {
     } else if (mode === 'mouseClick') {
         this.lvl.mode = 'run';

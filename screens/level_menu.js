@@ -80,17 +80,19 @@ draw(hover, y) {
 }
 
 checkHover() {
+    var hover = false;
     push();
     textSize(50);
     if (mouseX > this.x &&
         mouseX < this.x + 10 + textWidth(this.text) &&
         mouseY > this.y &&
         mouseY < this.y + 50) {
-        return true;
+        hover =  true;
     } else {
-        return false;
+        hover =  false;
     }
     pop();
+    return hover;
 }
 
 drawExp() {
