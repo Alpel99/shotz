@@ -13,7 +13,7 @@ constructor() {
 
     this.crashDamage = 150;
     // Diese Player-Variablen in den User?!?!
-    this.shotDelay = 400 - user.skillup.Ship1.FR*30;
+    this.shotDelay = 50 - user.skillup.Ship1.FR*5;
     this.bulletspeed = 0.8 + user.skillup.Ship1.BSPD*0.1;
     this.PlayerHP = 3 + user.skillup.Ship1.HP;
     this.PlayerDMG = 10 + user.skillup.Ship1.DMG*2;
@@ -80,9 +80,10 @@ move() {
 
 shoot(bullet_obj, delay, timestamp_index) {
     // timestamp_index controls which timestamp in this.timestamps-array is used
-    if (millis() - this.timestamps[timestamp_index] > delay) {
+    if (millis() - this.timestamps[timestamp_index] > delay && game.screen.ammo.amount > 0) {
         this.bullets.push(bullet_obj);
         this.timestamps[timestamp_index] = millis();
+        game.screen.ammo.amount--;
     }
 }
 

@@ -124,26 +124,33 @@ draw() {
 
     push();
     imageMode(CORNER);
+    textSize(10);
+    textAlign(RIGHT, BOTTOM);
     switch (this.use) {
         case "ammo1":
             user.ammo[0].draw();
             image(img_ammo, this.x, this.y);
+            text(user.ammo[0].amount, this.x + 48, this.y - 2)
             break;
         case "ammo2":
             user.ammo[1].draw();
             image(img_ammo, this.x, this.y);
+            text(user.ammo[1].amount, this.x + 48, this.y - 2)
             break;
         case "ammo3":
             user.ammo[2].draw();
             image(img_ammo, this.x, this.y);
+            text(user.ammo[2].amount, this.x + 48, this.y - 2)
             break;
         case "ammo4":
             user.ammo[3].draw();
             image(img_ammo, this.x, this.y);
+            text(user.ammo[3].amount, this.x + 48, this.y - 2)
             break;
         case "ammoX":
             user.ammo[4].draw();
             image(img_ammo, this.x, this.y);
+            text(user.ammo[4].amount, this.x + 48, this.y - 2)
             break;
         case "ISH":
             break;
