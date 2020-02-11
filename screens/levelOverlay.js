@@ -129,36 +129,51 @@ draw() {
     switch (this.use) {
         case "ammo1":
             user.ammo[0].draw();
-            image(img_ammo, this.x, this.y);
+            image(img_item, this.x, this.y);
             text(user.ammo[0].amount, this.x + 48, this.y - 2)
             break;
         case "ammo2":
             user.ammo[1].draw();
-            image(img_ammo, this.x, this.y);
+            image(img_item, this.x, this.y);
             text(user.ammo[1].amount, this.x + 48, this.y - 2)
             break;
         case "ammo3":
             user.ammo[2].draw();
-            image(img_ammo, this.x, this.y);
+            image(img_item, this.x, this.y);
             text(user.ammo[2].amount, this.x + 48, this.y - 2)
             break;
         case "ammo4":
             user.ammo[3].draw();
-            image(img_ammo, this.x, this.y);
+            image(img_item, this.x, this.y);
             text(user.ammo[3].amount, this.x + 48, this.y - 2)
             break;
         case "ammoX":
             user.ammo[4].draw();
-            image(img_ammo, this.x, this.y);
+            image(img_item, this.x, this.y);
             text(user.ammo[4].amount, this.x + 48, this.y - 2)
             break;
         case "ISH":
+            user.ISH.draw();
+            image(img_item, this.x, this.y);
+            text(user.ISH.amount, this.x + 48, this.y - 2)
             break;
         case "MINE":
+            user.MINE.draw();
+            image(img_item, this.x, this.y);
+            text(user.MINE.amount, this.x + 48, this.y - 2)
             break;
-        case "SMB":
+        case "EMP":
+            user.EMP.draw();
+            image(img_item, this.x, this.y);
+            text(user.EMP.amount, this.x + 48, this.y - 2)
             break;
         case "SPECIAL":
+            push();
+            fill(0, 255, 255)
+            textSize(40);
+            textAlign(CENTER, CENTER);
+            text("S", this.x + 25, this.y + 30);
+            pop();
             break;
         default:
             break;
