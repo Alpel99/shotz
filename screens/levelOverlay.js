@@ -32,7 +32,12 @@ draw() {
 
 controls(mode) {
     if (mode === 'keyPress') {
-        if (keyCode === 49) { // 1
+    for(let i = 0; i < user.slots.length; i++) {
+        if(keyCode == user.slots[i].keyCode) {
+            user.slots[i].activate();
+        }
+    }/*
+        if (keyCode === Digit1) { // 1
             for(let i = 0; i < 6; i++) {
                 user.slots[i].active = false;
                 if(user.slots[i].use === "ammo1") {
@@ -96,7 +101,7 @@ controls(mode) {
             if(user.slots[8].counter == 0 && user.slots[8].activeCounter == -1) {
                 user.slots[8].activate();
             }
-        }
+        }*/
     } else if (mode === 'mousePress') {
     } else if (mode === 'mouseClick') {
     }
@@ -104,7 +109,7 @@ controls(mode) {
 }
 
 class Slot {
-constructor(index, id, use, at, cdt) {
+constructor(index, id, keyCode, use, at, cdt) {
     //index(numbers), id(key), use(usage), activetime(seconds), cooldown(seconds)
     this.index = index;
     this.id = id;
@@ -114,6 +119,7 @@ constructor(index, id, use, at, cdt) {
     this.cooldownTime = cdt*60;
     this.counter = 0;
     this.activeCounter = -1;
+    this.keyCode = keyCode;
 }
 
 draw() {
@@ -183,7 +189,6 @@ draw() {
     if(this.active == true || this.activeCounter > 0) {
         //active
         push();
-        //stroke(255 - game.screen.color2.maxes.rgb[0], 255 - game.screen.color2.maxes.rgb[1], 255 - game.screen.color2.maxes.rgb[2]);
         stroke(game.screen.color1);
         strokeWeight(3);
         noFill();
@@ -208,20 +213,53 @@ draw() {
 
 activate() {
     switch (this.use) {
-      case "ISH":
-        //ship für (2) Sekunden unverwundbar, coole anmiation mit kreis rings rum -> wie stern supermario
-        break;
-      case "MINE":
-        //mine gelegt, wenn wer rein fliegt: damage
-        break;
-      case "EMP":
-        //schubst gegner weg/hebt chase auf etc
-        break;
-      case "SPECIAL":
-        //game.screen.ship.special();
-        break;
-      default:
-        break;
+        case "ammo1":
+            game.screen.ammo = user.ammo[0]
+            for(let i = 0; i < user.slots.length; i++) {
+                user.slots[i].active = false;
+            }
+            this.active = true;
+            break;
+        case "ammo2":
+            game.screen.ammo = user.ammo[1];
+            for(let i = 0; i < user.slots.length; i++) {
+                user.slots[i].active = false;
+            }
+            this.active = true;
+            break;
+        case "ammo3":
+            game.screen.ammo = user.ammo[2];
+            for(let i = 0; i < user.slots.length; i++) {
+                user.slots[i].active = false;
+            }
+            this.active = true;
+            break;
+        case "ammo4":
+            game.screen.ammo = user.ammo[3];
+            for(let i = 0; i < user.slots.length; i++) {
+                user.slots[i].active = false;
+            }
+            this.active = true;
+            break;
+        case "ammoX":
+            game.screen.ammo = user.ammo[4];
+            for(let i = 0; i < user.slots.length; i++) {
+                user.slots[i].active = false;
+            }
+            this.active = true;
+            break;
+        case "ISH":
+            //ship für (2) Sekunden unverwundbar, coole anmiation mit kreis rings rum -> wie stern supermario (killt natürlich bosse etc nicht)
+            break;
+        case "MINE":
+            //mine gelegt, wenn wer rein fliegt: damage
+            break;
+        case "EMP":
+            //schubst gegner weg/hebt chase auf etc
+            break;
+        case "SPECIAL":
+            //game.screen.ship.special();
+             break;
     }
     this.activeCounter = this.activeTime;
 }
