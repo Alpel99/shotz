@@ -106,7 +106,6 @@ switch (this.use.replace(/[0-9]/g, '')) {
 
     case "DASH":
         img_item.push();
-        img_item.filter(BLUR, 0.5);
         img_item.stroke(255);
         img_item.strokeWeight(5);
         img_item.line(13,8,13,42);

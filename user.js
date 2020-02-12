@@ -6,12 +6,6 @@ constructor() {
 this.name = "testuser123";
 this.id = Math.random().toString(10).substr(2, 5);
 this.money = 100;
-this.exp1 = 800;
-this.exp2 = 0;
-this.exp3 = 0;
-this.lvl1 = 0;
-this.lvl2 = 0;
-this.lvl3 = 0;
 
 img_item = createGraphics(50, 50);
 //index, name, amount, damage, color, keyCode, activeTime, cooldown
@@ -38,6 +32,7 @@ this.skillup = {
         "BSPD": 0,
         "FR": 0,
         "SPC": 0,
+        "DASH": 0,
         "LT": 0,
         "EXP": 0
     },
@@ -49,6 +44,7 @@ this.skillup = {
         "BSPD": 0,
         "FR": 0,
         "SPC": 0,
+        "DASH": 0,
         "LT": 0,
         "EXP": 0
     }

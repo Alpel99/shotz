@@ -10,6 +10,7 @@ constructor(ship) {
     this.range = createGraphics(100, 100);
     this.damage = createGraphics(100, 100);
     this.special = createGraphics(100, 100);
+    this.dash = createGraphics(100, 100);
     this.loot = createGraphics(100, 100);
     this.exp = createGraphics(100, 100);
     this.bulletspeed = createGraphics(100, 100);
@@ -26,6 +27,7 @@ constructor(ship) {
     new SkillItem(this.bulletspeed, "BSPD"),
     new SkillItem(this.firerate, "FR"),
     new SkillItem(this.special, "SPC"),
+    new SkillItem(this.dash, "DASH"),
     new SkillItem(this.loot, "LT"),
     new SkillItem(this.exp, "EXP")
     ];
@@ -42,9 +44,10 @@ draw() {
         image(this.skillItems[i].image, (width/(this.skillItems.length+1))*(i+1), height*0.7);
         push();
         fill(0);
-        textSize(20);
+        textStyle(BOLD);
+        textSize(25);
         textAlign(CENTER, BOTTOM);
-        text(user.skillup[this.ship.constructor.name][this.skillItems[i].use] + "/5", (width/(this.skillItems.length+1))*(i+1), height*0.7 - 55)
+        text(user.skillup[this.ship.constructor.name][this.skillItems[i].use], (width/(this.skillItems.length+1))*(i+1), height*0.7 - 55)
         pop();
         if(this.skillItems[i].active == true) {
             push();
@@ -97,7 +100,7 @@ controls(mode) {
         if(mouseX > width*0.7 - 100 && mouseX < width*0.7 + 100 && mouseY > height/2 - 88 && mouseY < height/2 - 12) {
             if(user.skillpoints > 0) {
                 for(let i = 0; i < this.skillItems.length; i++) {
-                    if(this.skillItems[i].active == true && user.skillup[this.ship.constructor.name][this.skillItems[i].use] < 5) {
+                    if(this.skillItems[i].active == true) {
                         user.skillup[this.ship.constructor.name][this.skillItems[i].use]++;
                         user.skillpoints--;
                     }
@@ -187,6 +190,25 @@ drawSkillups() {
     this.special.text("S", 50, 60);
 
 
+    this.dash.push();
+    this.dash.background(0);
+    this.dash.scale(2);
+    this.dash.translate(0, 0);
+    this.dash.stroke(255);
+    this.dash.strokeWeight(5);
+    this.dash.line(13,8,13,42);
+    this.dash.line(19,15,19,35);
+    this.dash.strokeWeight(4);
+    this.dash.line(24,18,24,32);
+    this.dash.line(29,22,29,28);
+    this.dash.strokeWeight(3);
+    this.dash.line(33,24,33,26);
+    this.dash.noStroke();
+    this.dash.fill(255,0,0);
+    this.dash.triangle(36,18,36,32,43,25);
+    this.dash.pop();
+
+
     this.loot.background(0);
     this.loot.push();
     this.loot.stroke(125, 71, 9);
@@ -237,6 +259,7 @@ drawSkillups() {
     this.exp.fill(255);
     this.exp.ellipse(50,40,35);
 
+
     this.skillButton.background(0);
     this.skillButton.fill(128);
     this.skillButton.rect(10, 10, this.skillButton.width - 20, this.skillButton.height - 20);
@@ -244,6 +267,7 @@ drawSkillups() {
     this.skillButton.textSize(40);
     this.skillButton.textAlign(CENTER, CENTER);
     this.skillButton.text("Skill up", this.skillButton.width/2, this.skillButton.height/2);
+
 
     this.skillButtonRed.background(255);
     this.skillButtonRed.fill(255,0,0);
@@ -284,11 +308,14 @@ showText() {
         case "BSPD":
             text("The speed of the bullets of the ship will be increased.", width*0.7, height/4);
             break;
+        case "DASH":
+            text("The dash of the ship will be increased.\nFor more Information please look on the stats site.", width*0.7, height/4);
+            break;
         case "FR":
             text("The amount of bullets per seconds of the ship will be increased.", width*0.7, height/4);
             break;
         case "SPC":
-            text("The special ability of the ship will be upgraded/made accessable.\n The special ability can be activated with the F key and gives a\ntemporary damage increase.", width*0.7, height/4);
+            text("The special ability of the ship will be upgraded/made accessable.\nFor more Information please look on the stats site.", width*0.7, height/4);
             break;
         case "LT":
             text("The Loot from the ship will be increased in every Level.", width*0.7, height/4);

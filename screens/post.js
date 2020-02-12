@@ -30,7 +30,7 @@ draw() {
 
     textSize(25);
     fill(this.color2);
-    text("restart start by clicking or pressing enter \nexit with q", width/2, height/2);
+    text("restart start by clicking or pressing enter \nexit with ESC/L", width/2, height/2);
     pop();
 
     push();
@@ -56,6 +56,9 @@ back() {
 
 controls(mode) {
     if (mode === 'keyPress') {
+        if(keyCode == 76) {
+            game.screen = new Level_menu();
+        }
     } else if (mode === 'mousePress') {
     } else if (mode === 'mouseClick') {
         game.screen = new Level1();

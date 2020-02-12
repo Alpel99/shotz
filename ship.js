@@ -14,12 +14,12 @@ constructor() {
     this.baseHP = 3;
     this.crashDamage = 150;
     // Diese Player-Variablen in den User?!?! - nein, schiffsspezifisch
-    this.shotDelay = 50 - user.skillup.Ship1.FR*5;
-    this.bulletspeed = 0.8 + user.skillup.Ship1.BSPD*0.1;
-    this.PlayerHP = this.baseHP + user.skillup.Ship1.HP;
-    this.PlayerDMG = 10 + user.skillup.Ship1.DMG*2;
-    this.PlayerSPD = 5 + user.skillup.Ship1.SPD;
-    this.PlayerRNG = 500 + user.skillup.Ship1.RNG*100;
+    this.shotDelay = 50 - this.getSkillIncrease(user.skillup.Ship1.FR)*5;
+    this.bulletspeed = 0.8 + this.getSkillIncrease(user.skillup.Ship1.BSPD)*0.1;
+    this.PlayerHP = this.baseHP + this.getSkillIncrease(user.skillup.Ship1.HP);
+    this.PlayerDMG = 10 + this.getSkillIncrease(user.skillup.Ship1.DMG*2);
+    this.PlayerSPD = 5 + this.getSkillIncrease(user.skillup.Ship1.SPD)/2;
+    this.PlayerRNG = 500 + this.getSkillIncrease(user.skillup.Ship1.RNG)*100;
 
     this.img = createGraphics(150,150);
 
@@ -115,6 +115,11 @@ controls(mode) {
             this.y += this.PlayerSPD;
         }
     }
+}
+
+getSkillIncrease(x) {
+var a = Math.round(3*Math.log(x+1.5)-1);
+return a;
 }
 }
 
