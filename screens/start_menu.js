@@ -12,6 +12,7 @@ constructor() {
     this.rankings =  new StartMenuItem("Rankings", width/5 + 700, height/3, this.color2);
     this.user =  new StartMenuItem("User", width/5 + 650, height/3 + 100, this.color2);
     this.premium =   new StartMenuItem("Premium", width/5 + 600, height/3 + 200, this.color2);
+    this.keys = new StartMenuItem("Controls", width/5 + 150, height/3 + 300, this.color1);
     this.banner =    new StartBanner();
     this.name = "start_menu";
     this.menuOverlay = new MenuOverlay();
@@ -29,6 +30,7 @@ draw() {
     this.premium.draw();
     this.skillups.draw();
     this.user.draw();
+    this.keys.draw();
 
     this.menuOverlay.draw();
 }
@@ -59,6 +61,8 @@ controls(mode) {
             game.screen = new Ship_menu();
         } else if (this.user.checkHover() === true) {
             console.log("user");
+        } else if (this.keys.checkHover() === true) {
+            game.screen = new Keys_menu();
         }
     } else if (mode === 'mouseClick') {
     }

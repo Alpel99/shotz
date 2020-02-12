@@ -31,7 +31,7 @@ draw() {
     // Quickslot Bar
     push();
     for(let i = 0; i < user.items.length; i++) {
-        user.items[i].draw();
+        user.items[i].drawLevel();
     }
     pop();
 }

@@ -16,14 +16,6 @@ constructor(index, use, a, d, c, k, at, cdt) {
 }
 
 draw() {
-if(game.screen.name.replace(/[0-9]/g, '') == "Level") {
-    this.x = this.index*60 + width/2 - 320; //corner
-    this.y = height - 100; //corner
-}
-push();
-fill(game.screen.color2);
-rect(this.x, this.y, 50, 50, 2);
-pop();
 img_item.clear();
 switch (this.use.replace(/[0-9]/g, '')) {
     case "ISH":
@@ -121,13 +113,23 @@ switch (this.use.replace(/[0-9]/g, '')) {
         img_item.pop();
         break;
     }
+}
 
+drawLevel() {
+this.x = this.index*60 + width/2 - 320; //corner
+this.y = height - 100; //corner
+this.draw();
+push();
+fill(game.screen.color2);
+rect(this.x, this.y, 50, 50, 2);
+pop();
     //Image
     push();
     imageMode(CORNER);
     textSize(10);
     textAlign(RIGHT, BOTTOM);
     image(img_item, this.x, this.y);
+    fill(game.screen.color2);
     if(this.amount > -1) {
         text(this.amount, this.x + 48, this.y - 2)
     }
@@ -178,6 +180,7 @@ update() {
 }
 
 activate() {
+this.activeCounter = this.activeTime;
     switch (this.use) {
         case "ammo1":
             var ammo = user.items.find(element => element.use == "ammo1");
@@ -200,22 +203,31 @@ activate() {
             this.resetAmmo(ammo);
             break;
         case "ISH":
+            if(this.amount > 0) {
+                this.amount--;
+            }
             //ship für (2) Sekunden unverwundbar, coole anmiation mit kreis rings rum -> wie stern supermario (killt natürlich bosse etc nicht)
             break;
         case "MINE":
+            if(this.amount > 0) {
+                this.amount--;
+            }
             //mine gelegt, wenn wer rein fliegt: damage
             break;
         case "EMP":
+            if(this.amount > 0) {
+                this.amount--;
+            }
             //schubst gegner weg/hebt chase auf etc
             break;
-        case "SPECIAL":
-            //game.screen.ship.special();
-             break;
+        case "SPC":
+            game.screen.ship.special();
+            this.activeCounter = game.screen.ship.specialTime*60;
+            break;
         case "DASH":
             game.screen.ship.dash();
             break;
     }
-    this.activeCounter = this.activeTime;
 }
 
 resetAmmo(ammo) {
