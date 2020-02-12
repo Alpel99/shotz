@@ -24,7 +24,8 @@ constructor() {
     this.score = 0;
     this.scoreMax = 50;
     this.wave = 0;
-    this.speedincrease = 10;
+    this.speedincrease = 1;
+    this.speed = 1;
 
     // ammo get user.slots[1-5].active
     //this.ammo = user.ammo[0];
