@@ -108,7 +108,7 @@ switch (this.use.replace(/[0-9]/g, '')) {
         img_item.push();
         img_item.stroke(255);
         img_item.strokeWeight(5);
-        img_item.line(13,8,13,42);
+        img_item.line(13,10,13,40);
         img_item.line(19,15,19,35);
         img_item.strokeWeight(4);
         img_item.line(24,18,24,32);
@@ -211,6 +211,9 @@ activate() {
         case "SPECIAL":
             //game.screen.ship.special();
              break;
+        case "DASH":
+            game.screen.ship.dash();
+            break;
     }
     this.activeCounter = this.activeTime;
 }

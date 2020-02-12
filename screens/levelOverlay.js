@@ -7,7 +7,7 @@ draw() {
     push();
     rectMode(CENTER);
     fill(0);
-    var maxHP = game.screen.ship.baseHP + game.screen.ship.getSkillIncrease(user.skillup.Ship1.HP);
+    var maxHP = game.screen.ship.baseHP + Math.round(game.screen.ship.getSkillIncrease(user.skillup.Ship1.HP));
     rect(width/2, 40, 300, 20, 5);
     rectMode(CORNER);
     fill(230,40,40);

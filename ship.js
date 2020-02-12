@@ -11,16 +11,6 @@ constructor() {
     this.prevangle = 0;
     this.angle = 0;
 
-    this.baseHP = 3;
-    this.crashDamage = 150;
-    // Diese Player-Variablen in den User?!?! - nein, schiffsspezifisch
-    this.shotDelay = 50 - this.getSkillIncrease(user.skillup.Ship1.FR)*5;
-    this.bulletspeed = 0.8 + this.getSkillIncrease(user.skillup.Ship1.BSPD)*0.1;
-    this.PlayerHP = this.baseHP + this.getSkillIncrease(user.skillup.Ship1.HP);
-    this.PlayerDMG = 10 + this.getSkillIncrease(user.skillup.Ship1.DMG*2);
-    this.PlayerSPD = 5 + this.getSkillIncrease(user.skillup.Ship1.SPD)/2;
-    this.PlayerRNG = 500 + this.getSkillIncrease(user.skillup.Ship1.RNG)*100;
-
     this.img = createGraphics(150,150);
 
     // bullets
@@ -40,7 +30,7 @@ update() {
     // bullets
     this.bullets.forEach(b => b.update());
     this.pos.set(this.x, this.y);
-    let toMouse = createVector(mouseX-this.x, mouseY-this.y);
+    var toMouse = createVector(mouseX-this.x, mouseY-this.y);
     this.dir.rotate(toMouse.heading()-this.dir.heading());
     }
 
@@ -118,7 +108,7 @@ controls(mode) {
 }
 
 getSkillIncrease(x) {
-var a = Math.round(3*Math.log(x+1.5)-1);
+var a = 3*Math.log(x+1.5)-1;
 return a;
 }
 }
@@ -131,6 +121,17 @@ constructor(x, y, c) {
     this.y = y;
     //get the vectors from the ship
     this.vectors = [];
+
+    //GAMEPLAY VARIABLES
+    this.baseHP = 3;
+    this.crashDamage = 150;
+    this.shotDelay = 50 - this.getSkillIncrease(user.skillup.Ship1.FR)*5;
+    this.bulletspeed = 0.8 + this.getSkillIncrease(user.skillup.Ship1.BSPD)*0.1;
+    this.PlayerHP = Math.round(this.baseHP + this.getSkillIncrease(user.skillup.Ship1.HP));
+    this.PlayerDMG = 10 + this.getSkillIncrease(user.skillup.Ship1.DMG*2);
+    this.PlayerSPD = 5 + this.getSkillIncrease(user.skillup.Ship1.SPD)/2;
+    this.PlayerRNG = 500 + this.getSkillIncrease(user.skillup.Ship1.RNG)*100;
+    this.PlayerDASH = 5 + this.getSkillIncrease(user.skillup.Ship1.DASH);
 
     this.color = c;
     //this.color = color(255,0,0);
@@ -195,5 +196,10 @@ draw() {
     imageMode(CENTER);
     image(this.img, this.x, this.y);
     pop();
+}
+
+dash() {
+    this.x += this.dir.x*this.PlayerDASH;
+    this.y += this.dir.y*this.PlayerDASH;
 }
 }

@@ -64,6 +64,10 @@ end() {
         user.skillpoints++;
     }
 
+    user.money += coinz;
+    var userammo2 = user.items.find(element => element.use == "ammo2");
+    userammo2 += ammo2;
+
     var str_exp = "Experience: " + exp;
     var str_coinz = "Coinz: " + coinz;
     var str_ammo = "x2 Ammo: " + ammo2;
