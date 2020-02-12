@@ -11,6 +11,8 @@ constructor(c0, c1, c2, lvl, l1, l2, l3, l4) {
     this.loot4 = l4;
     this.text = this.lvl.name;
     this.name = "post";
+
+    this.menuOverlay = new MenuOverlay();
 }
 
 draw() {
@@ -28,7 +30,7 @@ draw() {
 
     textSize(25);
     fill(this.color2);
-    text("restart start by clicking or pressing enter \nexit with q", width/2, height/2);
+    text("restart start by clicking or pressing enter \nexit with ESC/L", width/2, height/2);
     pop();
 
     push();
@@ -43,6 +45,8 @@ draw() {
     text(this.loot3, width/2, height/2 + 250);
     text(this.loot4, width/2, height/2 + 300);
     pop();
+
+    this.menuOverlay.draw();
 }
 
 back() {
@@ -52,6 +56,9 @@ back() {
 
 controls(mode) {
     if (mode === 'keyPress') {
+        if(keyCode == 76) {
+            game.screen = new Level_menu();
+        }
     } else if (mode === 'mousePress') {
     } else if (mode === 'mouseClick') {
         game.screen = new Level1();

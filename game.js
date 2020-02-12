@@ -20,7 +20,7 @@ draw() {
 controls(mode) {
     if (mode === 'keyPress') {
         if (keyCode === ESCAPE ||
-            keyCode === 81 ||
+            //keyCode === 81 || //Q
             keyCode === BACKSPACE) {
             if (this.screen.back()) this.screen.back();
         }

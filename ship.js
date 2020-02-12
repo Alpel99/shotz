@@ -11,16 +11,9 @@ constructor() {
     this.prevangle = 0;
     this.angle = 0;
 
-    this.crashDamage = 150;
-    // Diese Player-Variablen in den User?!?!
-    this.shotDelay = 400 - user.skillup.Ship1.FR*30;
-    this.bulletspeed = 0.8 + user.skillup.Ship1.BSPD*0.1;
-    this.PlayerHP = 3 + user.skillup.Ship1.HP;
-    this.PlayerDMG = 10 + user.skillup.Ship1.DMG*2;
-    this.PlayerSPD = 5 + user.skillup.Ship1.SPD;
-    this.PlayerRNG = 500 + user.skillup.Ship1.RNG*100;
-
     this.img = createGraphics(150,150);
+
+    this.specialCounter = 0;
 
     // bullets
     this.dir = createVector(10, 0);             // ship facing direction
@@ -39,7 +32,7 @@ update() {
     // bullets
     this.bullets.forEach(b => b.update());
     this.pos.set(this.x, this.y);
-    let toMouse = createVector(mouseX-this.x, mouseY-this.y);
+    var toMouse = createVector(mouseX-this.x, mouseY-this.y);
     this.dir.rotate(toMouse.heading()-this.dir.heading());
     }
 
@@ -80,9 +73,10 @@ move() {
 
 shoot(bullet_obj, delay, timestamp_index) {
     // timestamp_index controls which timestamp in this.timestamps-array is used
-    if (millis() - this.timestamps[timestamp_index] > delay) {
+    if (millis() - this.timestamps[timestamp_index] > delay && game.screen.ammo.amount > 0) {
         this.bullets.push(bullet_obj);
         this.timestamps[timestamp_index] = millis();
+        game.screen.ammo.amount--;
     }
 }
 
@@ -114,6 +108,11 @@ controls(mode) {
         }
     }
 }
+
+getSkillIncrease(x) {
+var a = 3*Math.log(x+1.5)-1;
+return a;
+}
 }
 
 class Ship1 extends Ship {
@@ -124,6 +123,18 @@ constructor(x, y, c) {
     this.y = y;
     //get the vectors from the ship
     this.vectors = [];
+
+    //GAMEPLAY VARIABLES
+    this.baseHP = 3;
+    this.crashDamage = 150;
+    this.shotDelay = 50 - this.getSkillIncrease(user.skillup.Ship1.FR)*5;
+    this.bulletspeed = 0.8 + this.getSkillIncrease(user.skillup.Ship1.BSPD)*0.1;
+    this.PlayerHP = Math.round(this.baseHP + this.getSkillIncrease(user.skillup.Ship1.HP));
+    this.PlayerDMG = 10 + this.getSkillIncrease(user.skillup.Ship1.DMG)*2;
+    this.PlayerSPD = 5 + this.getSkillIncrease(user.skillup.Ship1.SPD)/2;
+    this.PlayerRNG = 500 + this.getSkillIncrease(user.skillup.Ship1.RNG)*100;
+    this.PlayerDASH = 10 + this.getSkillIncrease(user.skillup.Ship1.DASH)*2;
+    this.specialTime = 5;
 
     this.color = c;
     //this.color = color(255,0,0);
@@ -188,5 +199,21 @@ draw() {
     imageMode(CENTER);
     image(this.img, this.x, this.y);
     pop();
+
+    if(this.specialCounter > 0) {
+        this.specialCounter--;
+    } else {
+        this.PlayerDMG = 10 + this.getSkillIncrease(user.skillup.Ship1.DMG)*2;
+    }
+}
+
+dash() {
+    this.x += this.dir.x*this.PlayerDASH;
+    this.y += this.dir.y*this.PlayerDASH;
+}
+
+special() {
+    this.specialCounter = 60*this.specialTime;
+    this.PlayerDMG += 5 + this.getSkillIncrease(user.skillup.Ship1.SPC);
 }
 }

@@ -1,11 +1,11 @@
 class Level1 {
 constructor() {
-    this.color0 = color(90);
-    this.color1 = color(40,200,40);
-    this.color2 = color(0);
-    this.color3 = color(255,128); //color3 = gegenteil zu color 2
+    this.color0 = color(90); //Background
+    this.color1 = color(40,200,40); //enemies, active Items, Keys
+    this.color2 = color(0); //Background Items, amount text
+    this.color3 = color(200); //cooldown arc color
 
-    this.name = "Level 1";
+    this.name = "Level1";
 
     // mode
     this.mode = "prep";
@@ -24,37 +24,40 @@ constructor() {
     this.score = 0;
     this.scoreMax = 50;
     this.wave = 0;
-    this.speedincrease = 10;
+    this.speedincrease = 1;
+    this.speed = 1;
 
-    // ammo
-    this.ammo = user.ammo[0];
-    user.slots[0].active = true;
+    // ammo get user.slots[1-5].active
+    //this.ammo = user.ammo[0];
+    for(let i = 0; i < 5; i++) {
+        if(user.items[i].active == true && user.items[i].use.replace(/[0-9]/g, '') == "ammo") {
+            this.ammo = user.items[i];
+        }
+    }
+    if(!this.ammo) {
+        this.ammo = user.items[0];
+        this.ammo.active = true;
+    }
+
+    var userammo1 = user.items.find(element => element.use == "ammo1");
+    if(userammo1.amount < 10000) {
+        userammo1.amount = 10000;
+    }
+
+    //items/etc
+    for(let i = 0; i < user.items.length; i++) {
+        user.items[i].activeCounter = -1;
+        user.items[i].counter = 0;
+    }
 
     // ship
-    this.ship = new Ship1(width/2, height/2, color("blue")); //needs this.ammo
+    this.ship = new Ship1(width/2, height/2, color(255,255,0)); //needs this.ammo
 
     // variable vor ammo selection! like user.selectedammo = 0;
 
     // enemies
     this.enemies = [];
     this.maxenemies = 5;
-
-    // Skilltree (ins ship)
-    this.skillPointsmax = 16;
-    this.skillPointsHP = 0;
-    this.skillPointsDMG = 0;
-    this.skillPointsRange = 0;
-    this.skillPointsSPD = 0;
-
-    this.skillPointsHPMax = 4;
-    this.skillPointsDMGMax = 4;
-    this.skillPointsRangeMax = 4;
-    this.skillPointsSPDMax = 4;
-
-    this.skillPointsHPInc = 1;
-    this.skillPointsDMGInc = 2;
-    this.skillPointsRangeInc = 200;
-    this.skillPointsSPDInc = 1.5;
 }
 
 end() {
@@ -69,6 +72,10 @@ end() {
         user.experience.Level1.lvl++;
         user.skillpoints++;
     }
+
+    user.money += coinz;
+    var userammo2 = user.items.find(element => element.use == "ammo2");
+    userammo2 += ammo2;
 
     var str_exp = "Experience: " + exp;
     var str_coinz = "Coinz: " + coinz;
@@ -95,10 +102,11 @@ draw() {
 
         if (this.score > this.scoreMax) {
             this.score = 0;
+            this.wave++;
             this.speed += this.speedincrease;
         }
 
-        user.slots.forEach(s => s.update());
+        user.items.forEach(i => i.update());
 
         // Ship
         this.ship.update();

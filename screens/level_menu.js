@@ -11,6 +11,7 @@ constructor() {
     ];
     this.page = 1;
     this.mod = 5;
+    this.menuOverlay = new MenuOverlay();
 }
 
 draw() {
@@ -24,6 +25,8 @@ draw() {
             this.levels[i].draw(this.levels[i].checkHover(), height/6 + 150*(i%this.mod));
         }
     }
+
+    this.menuOverlay.draw();
 }
 
 back() {
@@ -80,17 +83,19 @@ draw(hover, y) {
 }
 
 checkHover() {
+    var hover = false;
     push();
     textSize(50);
     if (mouseX > this.x &&
         mouseX < this.x + 10 + textWidth(this.text) &&
         mouseY > this.y &&
         mouseY < this.y + 50) {
-        return true;
+        hover =  true;
     } else {
-        return false;
+        hover =  false;
     }
     pop();
+    return hover;
 }
 
 drawExp() {

@@ -4,7 +4,7 @@ constructor(color) {
     this.maxsize = 250;
     this.size = floor(random(this.maxsize)) + this.minsize;  // = Größe = HP
 
-    this.speed = 1/(this.size*2)*200;
+    this.speed = (1/(this.size*2)*200) * game.screen.speed;
     this.color = color;                                 // = @param: Farbe von Lvl vorgegeben
 
     this.vel = createVector(random(-10,10), random(-10, 10)).normalize();

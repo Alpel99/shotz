@@ -6,10 +6,13 @@ constructor() {
     this.level =     new StartMenuItem("Level", width/5, height/3, this.color1);
     this.shop =      new StartMenuItem("Shop", width/5 - 50, height/3 + 100, this.color2);
     this.pvp =       new StartMenuItem("PVP", width/5 - 100, height/3 + 200, this.color2);
-    this.ships =     new StartMenuItem("Ships", width/5 + 300, height/3, this.color1);
-    this.inventory = new StartMenuItem("Inventory", width/5 + 250, height/3 + 100, this.color2);
-    this.rankings =  new StartMenuItem("Rankings", width/5 + 200, height/3 + 200, this.color2);
-    this.premium =   new StartMenuItem("Premium", width/5 + 650, height/3 + 100, this.color2);
+    this.skillups =     new StartMenuItem("Skillups", width/5 + 300, height/3, this.color1);
+    this.ships =     new StartMenuItem("Ships", width/5 + 250, height/3 + 100, this.color2  );
+    this.inventory = new StartMenuItem("Inventory", width/5 + 200, height/3 + 200, this.color2);
+    this.rankings =  new StartMenuItem("Rankings", width/5 + 700, height/3, this.color2);
+    this.user =  new StartMenuItem("User", width/5 + 650, height/3 + 100, this.color2);
+    this.premium =   new StartMenuItem("Premium", width/5 + 600, height/3 + 200, this.color2);
+    this.keys = new StartMenuItem("Controls", width/5 + 150, height/3 + 300, this.color1);
     this.banner =    new StartBanner();
     this.name = "start_menu";
     this.menuOverlay = new MenuOverlay();
@@ -18,18 +21,18 @@ constructor() {
 draw() {
     background(this.color0);
     this.banner.draw();
-    this.level.draw(this.level.checkHover());
-    this.shop.draw(this.shop.checkHover());
-    this.pvp.draw(this.pvp.checkHover());
-    this.ships.draw(this.ships.checkHover());
-    this.inventory.draw(this.inventory.checkHover());
-    this.rankings.draw(this.rankings.checkHover());
-    this.premium.draw(this.premium.checkHover());
-    this.menuOverlay.draw();
-}
+    this.level.draw();
+    this.shop.draw();
+    this.pvp.draw();
+    this.ships.draw();
+    this.inventory.draw();
+    this.rankings.draw();
+    this.premium.draw();
+    this.skillups.draw();
+    this.user.draw();
+    this.keys.draw();
 
-increase() {
-    game.screen = new Level_menu();
+    this.menuOverlay.draw();
 }
 
 back() {
@@ -39,7 +42,6 @@ back() {
 controls(mode) {
     if (mode === 'keyPress') {
     } else if (mode === 'mousePress') {
-    } else if (mode === 'mouseClick') {
         if (this.level.checkHover() === true) {
             game.screen = new Level_menu();
             game.setup = false;
@@ -50,12 +52,19 @@ controls(mode) {
         } else if (this.inventory.checkHover() === true) {
            console.log("inventory");
         } else if (this.ships.checkHover() === true) {
-            game.screen = new Ship_menu();
+            console.log("ships");
         } else if (this.rankings.checkHover() === true) {
             console.log("rankings");
         } else if (this.premium.checkHover() === true) {
             console.log("premium");
+        } else if (this.skillups.checkHover() === true) {
+            game.screen = new Ship_menu();
+        } else if (this.user.checkHover() === true) {
+            console.log("user");
+        } else if (this.keys.checkHover() === true) {
+            game.screen = new Keys_menu();
         }
+    } else if (mode === 'mouseClick') {
     }
 }
 }
@@ -69,12 +78,13 @@ constructor(t, a, b, c) {
     this.color = c;
 }
 
-draw(hover) {
+draw() {
     push();
     fill(this.color);
     textAlign(LEFT, TOP)
     textSize(50);
     text(this.text, this.x, this.y);
+    var hover = this.checkHover();
     if (hover === false) {
         triangle(this.x - 10, this.y, this.x - 10, this.y + 50, this.x - 40, this.y + 50);
         triangle(this.x + 10 + textWidth(this.text), this.y, this.x + 10 + textWidth(this.text), this.y + 50, this.x + 40 + textWidth(this.text), this.y);
@@ -87,13 +97,15 @@ draw(hover) {
 
 checkHover() {
     push();
+    var hover;
     textSize(50);
     if(mouseX > this.x - 10 && mouseX < this.x + 10 + textWidth(this.text) && mouseY > this.y && mouseY < this.y + 50) {
-        return true;
+        hover = true;
     } else {
-        return false;
+        hover =  false;
     }
     pop();
+    return hover;
 }
 }
 
@@ -150,12 +162,12 @@ draw() {
 	text('o', 650 + this.counter/50 + 40, 130 + this.counter/50);
 
 	push();
-	rotate(0.05)
+	rotate(0.05);
 	textSize(tsize);
 	text('t', 990 + this.counter/25 - 180, 90 + this.counter/40);
 	pop();
 
-	if(this.counter > 51   ) {
+	if(this.counter > 51) {
 		push();
 		rotate(0.1)
 		textSize(zsize);

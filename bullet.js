@@ -47,14 +47,14 @@ class Laser extends Bullet {
     // etwas schwächer als Bullets (0.8*dmg), aber viel schneller
     constructor(shooter, color, dir, start) {
         super(shooter, color, dir, start);
-        this.damage = 0.8 * this.shooter.PlayerDMG
+        this.damage = 0.8 * (this.shooter.PlayerDMG*game.screen.ammo.damage);
         this.speed = 55;
     }
 
     show() {
         push();
             stroke(game.screen.ammo.color || this.color);
-            if (this.damage/5 > 1) strokeWeight(this.damage/5);
+            if (this.damage/5 > 1) strokeWeight(this.shooter.PlayerDMG/5);
             else strokeWeight(1);
 
             line(this.pos.x, this.pos.y, (this.pos.x+this.vel.x), (this.pos.y+this.vel.y));
