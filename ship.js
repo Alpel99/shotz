@@ -11,11 +11,12 @@ constructor() {
     this.prevangle = 0;
     this.angle = 0;
 
+    this.baseHP = 3;
     this.crashDamage = 150;
-    // Diese Player-Variablen in den User?!?!
+    // Diese Player-Variablen in den User?!?! - nein, schiffsspezifisch
     this.shotDelay = 50 - user.skillup.Ship1.FR*5;
     this.bulletspeed = 0.8 + user.skillup.Ship1.BSPD*0.1;
-    this.PlayerHP = 3 + user.skillup.Ship1.HP;
+    this.PlayerHP = this.baseHP + user.skillup.Ship1.HP;
     this.PlayerDMG = 10 + user.skillup.Ship1.DMG*2;
     this.PlayerSPD = 5 + user.skillup.Ship1.SPD;
     this.PlayerRNG = 500 + user.skillup.Ship1.RNG*100;

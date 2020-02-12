@@ -5,7 +5,7 @@ constructor() {
     this.color2 = color(0);
     this.color3 = color(128); //color3 = gegenteil zu color 2
 
-    this.name = "Level 1";
+    this.name = "Level1";
 
     // mode
     this.mode = "prep";
@@ -29,13 +29,20 @@ constructor() {
     // ammo get user.slots[1-5].active
     //this.ammo = user.ammo[0];
     for(let i = 0; i < 5; i++) {
-        if(user.slots[i].active == true) {
-            this.ammo = user.ammo[i];
+        if(user.items[i].active == true && user.items[i].use.replace(/[0-9]/g, '') == "ammo") {
+            this.ammo = user.items[i];
         }
+    }
+    if(!this.ammo) {
+        this.ammo = user.items[0];
+        this.ammo.active = true;
+    }
+    if(user.items[0].amount < 10000) {
+        user.items[0].amount = 10000;
     }
 
     // ship
-    this.ship = new Ship1(width/2, height/2, color("blue")); //needs this.ammo
+    this.ship = new Ship1(width/2, height/2, color(255,255,0)); //needs this.ammo
 
     // variable vor ammo selection! like user.selectedammo = 0;
 
@@ -86,7 +93,7 @@ draw() {
             this.speed += this.speedincrease;
         }
 
-        user.slots.forEach(s => s.update());
+        user.items.forEach(i => i.update());
 
         // Ship
         this.ship.update();

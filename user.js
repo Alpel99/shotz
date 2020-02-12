@@ -12,28 +12,22 @@ this.exp3 = 0;
 this.lvl1 = 0;
 this.lvl2 = 0;
 this.lvl3 = 0;
-this.ammo = [];
+
 img_item = createGraphics(50, 50);
-this.ammo[0] = new Ammo(1, 10000, color(255));
-this.ammo[1] = new Ammo(2, 0, color(170, 20 ,20));
-this.ammo[2] = new Ammo(3, 0, color(0,255,0));
-this.ammo[3] = new Ammo(4, 1000, color(0));
-this.ammo[4] = new Ammo(2.5, 1000, color(255,255,0));
-this.ISH = new Item("ISH", 10);
-this.EMP = new Item("EMP", 20);
-this.MINE = new Item("MINE", 100);
-this.slots = [];
-this.slots[0] = new Slot(1, 1, 49, "ammo1", 0, 0);
-this.slots[0].active = true;
-this.slots[1] = new Slot(2, 2, 50, "ammo2", 0, 0);
-this.slots[2] = new Slot(3, 3, 51, "ammo3", 0, 0);
-this.slots[3] = new Slot(4, 4, 52, "ammo4", 0, 0);
-this.slots[4] = new Slot(5, 5, 53, "ammoX", 0, 0);
-this.slots[5] = new Slot(6, "E", 69, "ISH", 1, 120);
-this.slots[6] = new Slot(7, "R", 82, "MINE", 0.2, 60);
-this.slots[7] = new Slot(8, "T", 84, "EMP", 0.2, 120);
-this.slots[8] = new Slot(9, "F", 70, "SPECIAL", 1, 60);
-this.slots[9] = new Slot(10, "Q", 81, "JUMP", 0.1, 20);
+//index, name, amount, damage, color, keyCode, activeTime, cooldown
+this.items = [
+new Item(1, "ammo1", 10000, 1, color(255), 49, 0, 0),
+new Item(2, "ammo2", 0, 2, color(170, 20 ,20), 50, 0, 0),
+new Item(3, "ammo3", 0, 3, color(0,255,0), 51, 0, 0),
+new Item(4, "ammo4", 1000, 4, color(0), 52, 0, 0),
+new Item(5, "ammo5", 1000, 2.5, color(255, 255, 75), 53, -1, 0),
+new Item(6, "ISH", 10, 0, color(0, 255, 255), 69, 1, 120),
+new Item(7, "EMP", 20, 0, color(255, 255, 200), 82, 0.2, 120),
+new Item(8, "MINE", 100, 100, color(200, 0,0 ), 84, 0.2, 60),
+new Item(9, "SPC", -1, 10, color(255, 255, 0), 70, 1, 60),
+new Item(10, "DASH", -1, 10, color(255), 81, 0.2, 30)
+];
+
 this.skillpoints = 15;
 this.skillup = {
     "Ship1": {
