@@ -88,10 +88,10 @@ controls(mode) {
         if (keyIsDown(32)) {
             this.shoot(new Laser(this, 'yellow', this.dir, (p5.Vector.add(this.pos, this.vectors[0]))),
                        this.shotDelay, 0);
-            this.shoot(new Bullet(this, 'yellow', this.vectors[1], (p5.Vector.add(this.pos, this.vectors[1]))),
+            /*this.shoot(new Bullet(this, 'yellow', this.vectors[1], (p5.Vector.add(this.pos, this.vectors[1]))),
                        this.shotDelay+300, 1);
             this.shoot(new Bullet(this, 'yellow', this.vectors[10], (p5.Vector.add(this.pos, this.vectors[10]))),
-                       this.shotDelay+300, 2);
+                       this.shotDelay+300, 2);*/
         }
 
         if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
@@ -110,6 +110,8 @@ controls(mode) {
 }
 
 getSkillIncrease(x) {
+//x = 3*ln(x+1,5)-1
+//Math.log == ln
 var a = 3*Math.log(x+1.5)-1;
 return a;
 }
@@ -126,23 +128,19 @@ constructor(x, y, c) {
 
     //GAMEPLAY VARIABLES
     this.baseHP = 3;
+    this.maxHP = Math.round(this.baseHP + this.getSkillIncrease(user.skillup[this.constructor.name].HP));
     this.crashDamage = 150;
-    this.shotDelay = 50 - this.getSkillIncrease(user.skillup.Ship1.FR)*5;
-    this.bulletspeed = 0.8 + this.getSkillIncrease(user.skillup.Ship1.BSPD)*0.1;
-    this.PlayerHP = Math.round(this.baseHP + this.getSkillIncrease(user.skillup.Ship1.HP));
-    this.PlayerDMG = 10 + this.getSkillIncrease(user.skillup.Ship1.DMG)*2;
-    this.PlayerSPD = 5 + this.getSkillIncrease(user.skillup.Ship1.SPD)/2;
-    this.PlayerRNG = 500 + this.getSkillIncrease(user.skillup.Ship1.RNG)*100;
-    this.PlayerDASH = 10 + this.getSkillIncrease(user.skillup.Ship1.DASH)*2;
+    this.shotDelay = 50 - this.getSkillIncrease(user.skillup[this.constructor.name].FR)*5;
+    this.bulletspeed = 0.8 + this.getSkillIncrease(user.skillup[this.constructor.name].BSPD)*0.1;
+    this.PlayerHP = this.maxHP;
+    this.PlayerDMG = 10 + this.getSkillIncrease(user.skillup[this.constructor.name].DMG)*2;
+    this.PlayerSPD = 5 + this.getSkillIncrease(user.skillup[this.constructor.name].SPD)/2;
+    this.PlayerRNG = 500 + this.getSkillIncrease(user.skillup[this.constructor.name].RNG)*100;
+    this.PlayerDASH = 10 + this.getSkillIncrease(user.skillup[this.constructor.name].DASH)*2;
     this.specialTime = 5;
 
     this.color = c;
-    //this.color = color(255,0,0);
     this.createVectors();
-}
-
-activateSpecial() {
-//dmg für kurze Zeit(5Seks) mal 2 + 0.1*user.skillup.Ship1.SPC
 }
 
 createVectors() {
@@ -213,6 +211,111 @@ dash() {
 }
 
 special() {
+    this.specialCounter = 60*this.specialTime;
+    this.PlayerDMG += 5 + this.getSkillIncrease(user.skillup.Ship1.SPC);
+}
+}
+
+
+//SHIP2
+class Ship2 extends Ship {
+constructor(x, y, c) {
+    super();
+    this.name = "Corinat"
+    this.x = x;
+    this.y = y;
+    //get the vectors from the ship
+    this.vectors = [];
+
+    //GAMEPLAY VARIABLES
+    this.baseHP = 3;
+    this.maxHP = Math.round(this.baseHP + this.getSkillIncrease(user.skillup[this.constructor.name].HP)/2);
+    this.crashDamage = 300;
+    this.shotDelay = 20 - this.getSkillIncrease(user.skillup[this.constructor.name].FR)*5;
+    this.bulletspeed = 0.8 + this.getSkillIncrease(user.skillup[this.constructor.name].BSPD)*0.1;
+    this.PlayerHP = this.maxHP;
+    this.PlayerDMG = 2 + this.getSkillIncrease(user.skillup[this.constructor.name].DMG);
+    this.PlayerSPD = 8 + this.getSkillIncrease(user.skillup[this.constructor.name].SPD)/1.5;
+    this.PlayerRNG = 400 + this.getSkillIncrease(user.skillup[this.constructor.name].RNG)*75;
+    this.PlayerDASH = 20 + this.getSkillIncrease(user.skillup[this.constructor.name].DASH)*5;
+    this.specialTime = 5;
+
+    this.color = c;
+    this.createVectors();
+}
+
+createVectors() {
+    push();
+    translate(75,75);
+
+    //Main
+    this.vectors[0] = createVector(0, -60);
+    this.vectors[1] = createVector(-30, 20);
+    this.vectors[2] = createVector(-this.vectors[1].x, this.vectors[1].y);
+
+    //Flügel
+    this.vectors[3] = createVector(-30, -10);
+    this.vectors[4] = createVector(-this.vectors[3].x, this.vectors[3].y);
+
+    this.vectors[5] = createVector(-35, 20);
+    this.vectors[6] = createVector(-this.vectors[5].x, this.vectors[5].y);
+
+    this.vectors[7] = createVector(-20, 35);
+    this.vectors[8] = createVector(-this.vectors[7].x, this.vectors[7].y);
+
+    //Color
+    this.vectors[9] = createVector(-10, this.vectors[1].y);
+    this.vectors[10] = createVector(-this.vectors[9].x, this.vectors[1].y);
+
+    //Bridge
+    this.vectors[11] = createVector(0, -5);
+    this.vectors[12] = createVector(5, 10);
+    this.vectors[13] = createVector(-this.vectors[12].x, 10);
+    pop();
+}
+
+draw() {
+    push();
+        this.img.push();
+        this.img.clear();
+        this.img.translate(75,75);
+        this.img.stroke(0);
+        this.img.strokeWeight(2);
+        this.img.fill(0);
+
+        //Wings
+        this.img.triangle(this.vectors[3].x,this.vectors[3].y,this.vectors[5].x,this.vectors[5].y,this.vectors[7].x,this.vectors[7].y);
+        this.img.triangle(this.vectors[4].x,this.vectors[4].y,this.vectors[6].x,this.vectors[6].y,this.vectors[8].x,this.vectors[8].y);
+
+        //Main
+        this.img.triangle(this.vectors[0].x,this.vectors[0].y,this.vectors[1].x,this.vectors[1].y,this.vectors[2].x,this.vectors[2].y);
+
+        //Color
+        this.img.fill(this.color);
+        this.img.triangle(this.vectors[0].x,this.vectors[0].y,this.vectors[9].x,this.vectors[9].y,this.vectors[10].x,this.vectors[10].y);
+
+        //Bridge
+        this.img.fill(230);
+        this.img.triangle(this.vectors[11].x,this.vectors[11].y,this.vectors[12].x,this.vectors[12].y,this.vectors[13].x,this.vectors[13].y);
+        this.img.pop();
+    imageMode(CENTER);
+    image(this.img, this.x, this.y);
+    pop();
+
+    if(this.specialCounter > 0) {
+        this.specialCounter--;
+    } else {
+        this.PlayerDMG = 10 + this.getSkillIncrease(user.skillup.Ship1.DMG)*2;
+    }
+}
+
+dash() {
+    this.x += this.dir.x*this.PlayerDASH;
+    this.y += this.dir.y*this.PlayerDASH;
+}
+
+special() {
+    //was neues ausdenken -> feuerrate = unendlich aber range kürzer?
     this.specialCounter = 60*this.specialTime;
     this.PlayerDMG += 5 + this.getSkillIncrease(user.skillup.Ship1.SPC);
 }

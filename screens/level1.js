@@ -51,7 +51,7 @@ constructor() {
     }
 
     // ship
-    this.ship = new Ship1(width/2, height/2, color(255,255,0)); //needs this.ammo
+    this.ship = new Ship2(width/2, height/2, color(255,255,0)); //needs this.ammo
 
     // variable vor ammo selection! like user.selectedammo = 0;
 
