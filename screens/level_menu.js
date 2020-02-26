@@ -12,11 +12,15 @@ constructor() {
     this.page = 1;
     this.mod = 5;
     this.menuOverlay = new MenuOverlay();
+    this.balls = [];
+    for(let i = 0; i < 20; i++) {
+        this.balls[i] = new ball();
+    }
 }
 
 draw() {
     background(this.color0);
-
+    this.balls.forEach(b => b.update());
     if (height > 800) this.mod = 5;
     else this.mod = 3;
 
@@ -116,4 +120,52 @@ drawExp() {
     text(Math.floor(this.exp) + "/" + this.maxexp + " exp", this.x - 160, this.y + 5);
     pop();
 }
+}
+
+function ball() {
+    this.x = random(width);
+    this.z = random(40,100);
+    this.xdiff = random(-5,5);
+    this.y = random(-600,0);
+    this.s = random(10,25);
+    this.speed = map(this.s, 10, 25, 5, 2);
+    this.c = color(random(0,255), random(0,255), random(0,255));
+    this.touched = false;
+
+    this.show = function() {
+        push();
+            noStroke();
+            if(this.touched === false) {
+                fill(255,180);
+            } else {
+                fill(this.c, 180);
+            }
+            ellipse(this.x,this.y,this.s);
+        pop();
+    }
+
+    this.update = function() {
+        this.x = this.x + this.xdiff;
+        this.y = this.y + this.speed;
+        this.z = this.z - 1;
+        if (this.y > height + this.s) {
+            this.y = 0;
+            this.x = random(width);
+            this.touched = false;
+        }
+        if (this.z < 0) {
+            this.xdiff = this.xdiff + random(-2,2);
+            if (this.xdiff > 3) {
+                this.xdiff = 2;
+            }
+            if (this.xdiff < -3) {
+                this.xdiff = -2;
+            }
+            this.z = random(40,100);
+        }
+        if (dist(this.x,this.y,mouseX,mouseY) < this.s/1.5) {
+            this.touched = true;
+        }
+        this.show();
+    }
 }
