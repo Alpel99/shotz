@@ -291,10 +291,12 @@ draw() {
         this.img.triangle(this.vectors[0].x,this.vectors[0].y,this.vectors[1].x,this.vectors[1].y,this.vectors[2].x,this.vectors[2].y);
 
         //Color
+        this.img.noStroke();
         this.img.fill(this.color);
         this.img.triangle(this.vectors[0].x,this.vectors[0].y,this.vectors[9].x,this.vectors[9].y,this.vectors[10].x,this.vectors[10].y);
 
         //Bridge
+        this.img.stroke(0);
         this.img.fill(230);
         this.img.triangle(this.vectors[11].x,this.vectors[11].y,this.vectors[12].x,this.vectors[12].y,this.vectors[13].x,this.vectors[13].y);
         this.img.pop();

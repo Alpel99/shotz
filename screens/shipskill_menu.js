@@ -1,4 +1,4 @@
-class Ship_menu {
+class Shipskill_menu {
 constructor() {
     this.color1 = color(255);
     this.r = random(0,255);
@@ -59,7 +59,7 @@ controls(mode) {
     } else if (mode === 'mouseClick') {
         for(let i = 0; i < this.ships.length; i++) {
             if(this.mouseHover(this.ships[i].x, this.ships[i].y, 150) == true) {
-                game.screen = new Shipdata(this.ships[i]);
+                game.screen = new Skill_menu(this.ships[i]);
                 break;
             }
         }

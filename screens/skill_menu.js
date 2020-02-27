@@ -91,7 +91,7 @@ draw() {
 }
 
 back() {
-    game.screen = new Ship_menu();
+    game.screen = new Shipskill_menu();
 }
 
 controls(mode) {
@@ -258,7 +258,6 @@ drawSkillups() {
     this.exp.ellipse(50,40,50);
     this.exp.fill(255);
     this.exp.ellipse(50,40,35);
-
 
     this.skillButton.background(0);
     this.skillButton.fill(128);
