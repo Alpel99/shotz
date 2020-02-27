@@ -57,25 +57,10 @@ data() {
     i++;
     text("Special Duration: " + Math.round(this.ship.specialTime*10)/10 + "s", width/2, b + i*d);
     i++;
+    //BONUS LOOT
+    //BONUS EXP
+
     pop();
-
-    /*
-    this.baseHP = 3;
-    this.maxHP = Math.round(this.baseHP + this.getSkillIncrease(user.skillup[this.constructor.name].HP)/2);
-    this.crashDamage = 300;
-    this.shotDelay = 20 - this.getSkillIncrease(user.skillup[this.constructor.name].FR)*5;
-    this.bulletspeed = 0.8 + this.getSkillIncrease(user.skillup[this.constructor.name].BSPD)*0.1;
-    this.PlayerHP = this.maxHP;
-    this.PlayerDMG = 2 + this.getSkillIncrease(user.skillup[this.constructor.name].DMG);
-    this.PlayerSPD = 8 + this.getSkillIncrease(user.skillup[this.constructor.name].SPD)/1.5;
-    this.PlayerRNG = 400 + this.getSkillIncrease(user.skillup[this.constructor.name].RNG)*75;
-    this.PlayerDASH = 20 + this.getSkillIncrease(user.skillup[this.constructor.name].DASH)*5;
-    this.specialTime = 5;
-
-    this.color = c;
-
-
-    */
 }
 
 back() {

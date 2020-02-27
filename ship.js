@@ -133,7 +133,8 @@ constructor(x, y, c) {
     this.shotDelay = 50 - this.getSkillIncrease(user.skillup[this.constructor.name].FR)*5;
     this.bulletspeed = 0.8 + this.getSkillIncrease(user.skillup[this.constructor.name].BSPD)*0.1;
     this.PlayerHP = this.maxHP;
-    this.PlayerDMG = 10 + this.getSkillIncrease(user.skillup[this.constructor.name].DMG)*2;
+    this.DMG = 10 + this.getSkillIncrease(user.skillup[this.constructor.name].DMG)*2;
+    this.PlayerDMG = this.DMG;
     this.PlayerSPD = 5 + this.getSkillIncrease(user.skillup[this.constructor.name].SPD)/2;
     this.PlayerRNG = 500 + this.getSkillIncrease(user.skillup[this.constructor.name].RNG)*100;
     this.PlayerDASH = 10 + this.getSkillIncrease(user.skillup[this.constructor.name].DASH)*2;
@@ -201,7 +202,7 @@ draw() {
     if(this.specialCounter > 0) {
         this.specialCounter--;
     } else {
-        this.PlayerDMG = 10 + this.getSkillIncrease(user.skillup.Ship1.DMG)*2;
+        this.PlayerDMG = this.DMG;
     }
 }
 
@@ -234,7 +235,8 @@ constructor(x, y, c) {
     this.shotDelay = 20 - this.getSkillIncrease(user.skillup[this.constructor.name].FR)*5;
     this.bulletspeed = 0.8 + this.getSkillIncrease(user.skillup[this.constructor.name].BSPD)*0.1;
     this.PlayerHP = this.maxHP;
-    this.PlayerDMG = 2 + this.getSkillIncrease(user.skillup[this.constructor.name].DMG);
+    this.DMG = 5 + this.getSkillIncrease(user.skillup[this.constructor.name].DMG);
+    this.PlayerDMG = this.DMG;
     this.PlayerSPD = 8 + this.getSkillIncrease(user.skillup[this.constructor.name].SPD)/1.5;
     this.PlayerRNG = 400 + this.getSkillIncrease(user.skillup[this.constructor.name].RNG)*75;
     this.PlayerDASH = 20 + this.getSkillIncrease(user.skillup[this.constructor.name].DASH)*5;
@@ -307,7 +309,7 @@ draw() {
     if(this.specialCounter > 0) {
         this.specialCounter--;
     } else {
-        this.PlayerDMG = 10 + this.getSkillIncrease(user.skillup.Ship1.DMG)*2;
+        this.PlayerDMG = this.DMG;
     }
 }
 
