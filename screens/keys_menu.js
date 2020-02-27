@@ -30,13 +30,13 @@ draw() {
         textAlign(CENTER, BOTTOM)
         text(String.fromCharCode(user.items[i].keyCode), width/user.items.length*(i+0.5), height/1.5 - 50);
         if(user.items[i].active == true) {
+            this.mode = "key";
             push();
             noStroke();
             fill(64);
             rect(width/2 - 100, height/4, 100, 100);
             image(img_item, width/2 - 100, height/4);
             pop();
-            this.mode = "key";
         }
         textSize(20);
         textAlign(LEFT);
@@ -61,17 +61,27 @@ controls(mode) {
     if (mode === 'keyPress') {
         if(this.mode == "key") {
             var skill = user.items.find(element => element.active == true);
+            for(let i = 0; i < user.items.length; i++) {
+                if(user.items[i].keyCode == keyCode) {
+                    user.items[i].keyCode = "";
+                }
+            }
             skill.keyCode = keyCode;
             skill.active = false;
             this.mode = "skill";
         }
     } else if (mode === 'mousePress') {
+        for(let j = 0; j < user.items.length; j++) {
+            user.items[j].active = false;
+        }
+        this.mode = "skill";
         for(let i = 0; i < user.items.length; i++) {
             if(this.mouseHover((width/user.items.length)*(i+0.5), height/1.5, 75) == true) {
                 for(let j = 0; j < user.items.length; j++) {
                     user.items[j].active = false;
                 }
                 user.items[i].active = true;
+                this.mode = "key";
             }
         }
         if(mouseX > width*0.9 - 100 && mouseX < width*0.9 + 100 && mouseY > height - 188 && mouseY < height - 112) {

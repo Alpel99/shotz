@@ -29,6 +29,13 @@ draw() {
 
     this.data();
     this.menuOverlay.draw();
+
+    push();
+    textSize(20);
+    fill(0);
+    textAlign(CENTER, TOP);
+    text(this.ship.specialText, width/6, height/1.5);
+    pop();
 }
 
 data() {
