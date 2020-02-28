@@ -71,6 +71,24 @@ this.experience = {
         "lvl": 1
     }
 }
-
+this.ships = {
+    "Ship1": {
+        "color": [255,255,255,255],
+        "selected" : true,
+        "owned": true
+    },
+    "Ship2": {
+        "color": [255,255,255,255],
+        "selected" : true,
+        "owned": false
+    },
+    "Ship3": {
+        "color": [255,255,255,255],
+        "selected" : true,
+        "owned": false
+    }
 }
+//this.activeShip = new Ship1(width/2, height/2, color(255));
+} //end Constructor
+
 }
