@@ -118,7 +118,7 @@ return a;
 }
 
 class Ship1 extends Ship {
-constructor(x, y, c) {
+constructor(x, y) {
     super();
     this.name = "Sharion"
     this.x = x;
@@ -140,7 +140,7 @@ constructor(x, y, c) {
     this.PlayerDASH = 10 + this.getSkillIncrease(user.skillup[this.constructor.name].DASH)*2;
     this.specialTime = 5;
 
-    this.color = c;
+    this.color = color(user.ships[this.constructor.name].color[0], user.ships[this.constructor.name].color[1], user.ships[this.constructor.name].color[2], user.ships[this.constructor.name].color[3]);
     this.createVectors();
     this.specialText = "The special fo this ship will increase the single bullet damage";
 }
@@ -221,7 +221,7 @@ special() {
 
 //SHIP2
 class Ship2 extends Ship {
-constructor(x, y, c) {
+constructor(x, y) {
     super();
     this.name = "Corinat"
     this.x = x;
@@ -243,10 +243,10 @@ constructor(x, y, c) {
     this.PlayerDASH = 20 + this.getSkillIncrease(user.skillup[this.constructor.name].DASH)*5;
     this.specialTime = 5;
 
-    this.color = c;
+    this.color = color(user.ships[this.constructor.name].color[0], user.ships[this.constructor.name].color[1], user.ships[this.constructor.name].color[2], user.ships[this.constructor.name].color[3]);
     this.createVectors();
 
-    this.specialText = "The special of this Ship will\nincreasethe firerate = decrease the shotDelay a little bit\nthis increases the damage output significantly\nBanane mit Soße";
+    this.specialText = "The special of this Ship will\nincreasethe firerate = decrease the shotDelay a little bit\nthis increases the damage output significantly\nBanane mit Sosse";
 }
 
 createVectors() {

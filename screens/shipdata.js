@@ -6,6 +6,9 @@ constructor(ship) {
     this.ship.y = height/4;
 
     this.menuOverlay = new MenuOverlay();
+    this.selectButton = createGraphics(200,75);
+    this.selectButtonRed = createGraphics(200,75);
+    this.drawButton()
 }
 
 draw() {
@@ -19,6 +22,7 @@ draw() {
     scale(2);
     this.ship.draw();
     pop();
+
     push();
     fill(0);
     textSize(30);
@@ -27,8 +31,18 @@ draw() {
     text(this.ship.name, width/6, height/4 + 100);
     pop();
 
+    push();
+    imageMode(CENTER);
+    if(mouseX > width/6 - 100 && mouseX < width/6 + 100 && mouseY > height/2 - 38 && mouseY < height/2 + 38) {
+        image(this.selectButtonRed, width/6, height/2);
+    } else {
+        image(this.selectButton, width/6, height/2);
+    }
+    pop();
+
+
     this.data();
-    this.menuOverlay.draw();
+
 
     push();
     textSize(20);
@@ -36,6 +50,8 @@ draw() {
     textAlign(CENTER, TOP);
     text(this.ship.specialText, width/6, height/1.5);
     pop();
+
+    this.menuOverlay.draw();
 }
 
 data() {
@@ -77,7 +93,8 @@ back() {
 controls(mode) {
     if (mode === 'keyPress') {
     } else if (mode === 'mousePress') {
-        if(mouseX > width*0.7 - 100 && mouseX < width*0.7 + 100 && mouseY > height/2 - 88 && mouseY < height/2 - 12) {
+        if(mouseX > width/6 - 100 && mouseX < width/6 + 100 && mouseY > height/2 - 38 && mouseY < height/2 + 38) {
+            user.activeShip = this.ship;
         }
     } else if (mode === 'mouseClick') {
     }
@@ -90,6 +107,25 @@ mouseHover(x, y, size) {
         hover = true;
     }
     return hover;
+}
+
+drawButton() {
+  this.selectButton.background(0);
+  this.selectButton.fill(128);
+  this.selectButton.rect(10, 10, this.selectButton.width - 20, this.selectButton.height - 20);
+  this.selectButton.fill(0);
+  this.selectButton.textSize(40);
+  this.selectButton.textAlign(CENTER, CENTER);
+  this.selectButton.text("SELECT", this.selectButton.width/2, this.selectButton.height/2);
+
+
+  this.selectButtonRed.background(255);
+  this.selectButtonRed.fill(255,0,0);
+  this.selectButtonRed.rect(10, 10, this.selectButtonRed.width - 20, this.selectButtonRed.height - 20);
+  this.selectButtonRed.fill(0);
+  this.selectButtonRed.textSize(40);
+  this.selectButtonRed.textAlign(CENTER, CENTER);
+  this.selectButtonRed.text("SELECT", this.selectButtonRed.width/2, this.selectButtonRed.height/2);
 }
 
 }

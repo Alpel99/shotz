@@ -9,8 +9,8 @@ constructor() {
     this.bdiff = random(-0.5,0.5);
 
     this.ships = [
-    new Ship1(width/6, height/4, color(255, 255, 0)),
-    new Ship2(2 * width/6, height/4, color(255, 0, 255)),
+    new Ship1(width/6, height/4),
+    new Ship2(2 * width/6, height/4),
     //new Ship1(3 * width/6, height/4, color(255, 0, 128)),
     //new Ship1(4 * width/6, height/4, color(255, 0, 0)),
     //new Ship1(5 * width/6, height/4, color(255, 128, 255))

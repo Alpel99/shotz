@@ -7,12 +7,15 @@ function preload() {
 
     user = new User(); // get Serverdata
     game = new Game();
+
 }
 
 function setup() {
     fr = 60;
     frameRate(fr);
     cvn = createCanvas(width, height);
+    //figure out if this works with nodejs backend
+    user.activeShip = new Ship1(width/2, height/2);
 }
 
 function draw() {
