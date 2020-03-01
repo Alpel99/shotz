@@ -1,6 +1,5 @@
 class MenuOverlay {
 constructor() {
-    this.money = user.money;
     this.coin = createGraphics(50,50);
     this.drawCoin();
 }
@@ -12,7 +11,7 @@ draw() {
     textSize(40);
     textStyle(NORMAL);
     textAlign(LEFT, TOP);
-    text(this.money, width - textWidth(this.money) - 95, 30);
+    text(user.money, width - textWidth(user.money) - 95, 30);
     textSize(30);
     text("User: " + user.name, 20, 20);
     text("ID: " + user.id , 20, 60);

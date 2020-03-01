@@ -4,7 +4,7 @@ constructor() {
     this.color1 = color(255, 0, 0);
     this.color2 = color(100, 0, 0);
     this.level =     new StartMenuItem("Level", width/5, height/3, this.color1);
-    this.shop =      new StartMenuItem("Shop", width/5 - 50, height/3 + 100, this.color2);
+    this.shop =      new StartMenuItem("Shop", width/5 - 50, height/3 + 100, this.color1);
     this.pvp =       new StartMenuItem("PVP", width/5 - 100, height/3 + 200, this.color2);
     this.skillups =     new StartMenuItem("Skillups", width/5 + 300, height/3, this.color1);
     this.ships =     new StartMenuItem("Ships", width/5 + 250, height/3 + 100, this.color1);
@@ -46,7 +46,7 @@ controls(mode) {
             game.screen = new Level_menu();
             game.setup = false;
         } else if (this.shop.checkHover() === true) {
-            console.log("shop");
+            game.screen = new Shop_menu();
         } else if (this.pvp.checkHover() === true) {
             console.log("pvp");
         } else if (this.inventory.checkHover() === true) {

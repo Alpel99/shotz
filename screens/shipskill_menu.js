@@ -41,12 +41,9 @@ draw() {
     }
     background(this.r,this.g,this.b);
 
-    for(let i = 0; i < this.ships.length; i ++) {
-        this.ships[i].draw();
-    }
+    this.ships.forEach(s => s.draw());
 
     this.menuOverlay.draw();
-
 }
 
 back() {
