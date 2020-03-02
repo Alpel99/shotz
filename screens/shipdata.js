@@ -31,14 +31,16 @@ draw() {
     text(this.ship.name, width/6, height/4 + 100);
     pop();
 
-    push();
-    imageMode(CENTER);
-    if(mouseX > width/6 - 100 && mouseX < width/6 + 100 && mouseY > height/2 - 38 && mouseY < height/2 + 38) {
-        image(this.selectButtonRed, width/6, height/2);
-    } else {
-        image(this.selectButton, width/6, height/2);
+    if(user.activeShip.constructor.name != this.ship.constructor.name) {
+        push();
+        imageMode(CENTER);
+        if(mouseX > width/6 - 100 && mouseX < width/6 + 100 && mouseY > height/2 - 38 && mouseY < height/2 + 38) {
+            image(this.selectButtonRed, width/6, height/2);
+        } else {
+            image(this.selectButton, width/6, height/2);
+        }
+        pop();
     }
-    pop();
 
 
     this.data();

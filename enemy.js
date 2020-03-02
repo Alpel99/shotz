@@ -40,8 +40,12 @@ setStartSpot() {
 }
 
 show() {
+    push();
+    stroke(game.screen.color2);
+    strokeWeight(1);
     fill(this.color);
     ellipse(this.x, this.y, this.size);
+    push();
 }
 
 update() {

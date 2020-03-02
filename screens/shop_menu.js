@@ -7,7 +7,7 @@ class Shop_menu {
     this.w = width/this.s;
     this.h = height/this.s;
     this.offset = 0;
-    this.offdiff = 0.001;
+    this.offdiff = 0.0003;
 
     this.pickMode = "ship";
     //ship, color
@@ -51,6 +51,7 @@ class Shop_menu {
     textSize(35);
     fill(this.color2);
     text("Repaint: ", 40, height/4 - 20)
+    this.cpx = textWidth("Repaint: ");
     pop();
 
     push();
@@ -68,7 +69,7 @@ class Shop_menu {
     noStroke();
     for(let i = 0; i < this.w; i++) {
       for(let j = 0; j < this.h; j++) {
-        fill(color(noise(i+this.offset*0.4,j+this.offset*2.3)*255));
+        fill(color(noise(i+this.offset*0.4*20,j+this.offset*2.3*20)*255));
         rect(i*this.s,j*this.s,this.s,this.s);
       }
 
@@ -86,7 +87,7 @@ class Shop_menu {
         for(let i = 0; i < this.ships.length; i++) {
             if(this.mouseHover(this.ships[i].x, this.ships[i].y, 150) == true && this.pickMode == "ship") {
                 this.colorPicker = createColorPicker(color(user.ships[this.ships[i].constructor.name].color[0], user.ships[this.ships[i].constructor.name].color[1], user.ships[this.ships[i].constructor.name].color[2], user.ships[this.ships[i].constructor.name].color[3]));
-                this.colorPicker.position(this.ships[i].x - 14, this.ships[i].y + 48);
+                this.colorPicker.position(this.cpx + 50, height/4-20);
                 this.pickMode = "color";
                 this.pickship = this.ships[i];
                 break;
@@ -97,7 +98,8 @@ class Shop_menu {
           user.money -= 50;
           console.log(user.money);
           for(let i = 0; i < 4; i++) {
-            user.ships[this.pickship.constructor.name].color[i] = this.colorPicker.color().maxes.rgb[i];
+            console.log(this.pickship.constructor.name);
+            user.ships[this.pickship.constructor.name].color[i] = this.colorPicker.color().levels[i];
           }
           this.removePickers();
         }
