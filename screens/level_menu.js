@@ -16,6 +16,7 @@ constructor() {
     for(let i = 0; i < 20; i++) {
         this.balls[i] = new ball();
     }
+    this.btn = new Button(width/2,height/2,200, "toast");
 }
 
 draw() {
@@ -31,6 +32,7 @@ draw() {
     }
 
     this.menuOverlay.draw();
+    this.btn.draw();
 }
 
 back() {
