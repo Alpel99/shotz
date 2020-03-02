@@ -6,9 +6,7 @@ constructor(ship) {
     this.ship.y = height/4;
 
     this.menuOverlay = new MenuOverlay();
-    this.selectButton = createGraphics(200,75);
-    this.selectButtonRed = createGraphics(200,75);
-    this.drawButton()
+    this.select = new Button(width/6, height/2, 200, "SELECT");
 }
 
 draw() {
@@ -32,16 +30,8 @@ draw() {
     pop();
 
     if(user.activeShip.constructor.name != this.ship.constructor.name) {
-        push();
-        imageMode(CENTER);
-        if(mouseX > width/6 - 100 && mouseX < width/6 + 100 && mouseY > height/2 - 38 && mouseY < height/2 + 38) {
-            image(this.selectButtonRed, width/6, height/2);
-        } else {
-            image(this.selectButton, width/6, height/2);
-        }
-        pop();
+        this.select.draw();
     }
-
 
     this.data();
 
@@ -84,7 +74,6 @@ data() {
     i++;
     //BONUS LOOT
     //BONUS EXP
-
     pop();
 }
 
@@ -95,7 +84,7 @@ back() {
 controls(mode) {
     if (mode === 'keyPress') {
     } else if (mode === 'mousePress') {
-        if(mouseX > width/6 - 100 && mouseX < width/6 + 100 && mouseY > height/2 - 38 && mouseY < height/2 + 38) {
+        if(this.select.hover() == true) {
             user.activeShip = this.ship;
         }
     } else if (mode === 'mouseClick') {
@@ -110,24 +99,4 @@ mouseHover(x, y, size) {
     }
     return hover;
 }
-
-drawButton() {
-  this.selectButton.background(0);
-  this.selectButton.fill(128);
-  this.selectButton.rect(10, 10, this.selectButton.width - 20, this.selectButton.height - 20);
-  this.selectButton.fill(0);
-  this.selectButton.textSize(40);
-  this.selectButton.textAlign(CENTER, CENTER);
-  this.selectButton.text("SELECT", this.selectButton.width/2, this.selectButton.height/2);
-
-
-  this.selectButtonRed.background(255);
-  this.selectButtonRed.fill(255,0,0);
-  this.selectButtonRed.rect(10, 10, this.selectButtonRed.width - 20, this.selectButtonRed.height - 20);
-  this.selectButtonRed.fill(0);
-  this.selectButtonRed.textSize(40);
-  this.selectButtonRed.textAlign(CENTER, CENTER);
-  this.selectButtonRed.text("SELECT", this.selectButtonRed.width/2, this.selectButtonRed.height/2);
-}
-
 }

@@ -15,9 +15,9 @@ constructor(ship) {
     this.exp = createGraphics(100, 100);
     this.bulletspeed = createGraphics(100, 100);
     this.firerate = createGraphics(100, 100);
-    this.skillButton = createGraphics(200, 75);
-    this.skillButtonRed = createGraphics(200, 75);
     this.drawSkillups();
+
+    this.skillButton = new Button()
 
     this.skillItems = [
     new SkillItem(this.hp, "HP"),
@@ -57,11 +57,7 @@ draw() {
             rectMode(CENTER);
             rect((width/(this.skillItems.length+1))*(i+1), height*0.7, 102, 102);
             pop();
-            if(mouseX > width*0.7 - 100 && mouseX < width*0.7 + 100 && mouseY > height/2 - 88 && mouseY < height/2 - 12) {
-                image(this.skillButtonRed, width*0.7, height/2 - 50);
-            } else {
-                image(this.skillButton, width*0.7, height/2 - 50);
-            }
+            this.skillButton.draw();
             this.skillItems[i].showText();
         }
     }
@@ -97,7 +93,7 @@ back() {
 controls(mode) {
     if (mode === 'keyPress') {
     } else if (mode === 'mousePress') {
-        if(mouseX > width*0.7 - 100 && mouseX < width*0.7 + 100 && mouseY > height/2 - 88 && mouseY < height/2 - 12) {
+        if(this.skillButton.hover() == true) {
             if(user.skillpoints > 0) {
                 for(let i = 0; i < this.skillItems.length; i++) {
                     if(this.skillItems[i].active == true) {
@@ -258,23 +254,6 @@ drawSkillups() {
     this.exp.ellipse(50,40,50);
     this.exp.fill(255);
     this.exp.ellipse(50,40,35);
-
-    this.skillButton.background(0);
-    this.skillButton.fill(128);
-    this.skillButton.rect(10, 10, this.skillButton.width - 20, this.skillButton.height - 20);
-    this.skillButton.fill(0);
-    this.skillButton.textSize(40);
-    this.skillButton.textAlign(CENTER, CENTER);
-    this.skillButton.text("Skill up", this.skillButton.width/2, this.skillButton.height/2);
-
-
-    this.skillButtonRed.background(255);
-    this.skillButtonRed.fill(255,0,0);
-    this.skillButtonRed.rect(10, 10, this.skillButtonRed.width - 20, this.skillButtonRed.height - 20);
-    this.skillButtonRed.fill(0);
-    this.skillButtonRed.textSize(40);
-    this.skillButtonRed.textAlign(CENTER, CENTER);
-    this.skillButtonRed.text("Skill up", this.skillButtonRed.width/2, this.skillButtonRed.height/2);
 }
 
 }

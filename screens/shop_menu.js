@@ -12,10 +12,7 @@ class Shop_menu {
     this.pickMode = "ship";
     //ship, color
 
-    this.applyButton = createGraphics(100, 38);
-    this.applyButtonRed = createGraphics(100, 38);
-    this.drawButton();
-
+    this.apply = new Button(100, height/4, 100, "APPLY");
 
     this.ships = [
     new Ship1(2 * width/10, height/4),
@@ -33,6 +30,8 @@ class Shop_menu {
     this.text();
     this.ships.forEach(s => s.draw());
     this.adjust();
+
+    this.apply.draw();
 
     this.menuOverlay.draw();
   }
@@ -94,9 +93,8 @@ class Shop_menu {
             }
         }
         //APPLY
-        if(mouseX > 50 && mouseX < 150 && mouseY > height/4 - 5 && mouseY < height/4 + 45 && this.pickMode == "color") {
+        if(this.apply.hover() == true) {
           user.money -= 50;
-          console.log(user.money);
           for(let i = 0; i < 4; i++) {
             console.log(this.pickship.constructor.name);
             user.ships[this.pickship.constructor.name].color[i] = this.colorPicker.color().levels[i];
@@ -130,25 +128,6 @@ class Shop_menu {
       inputs[i].parentElement.removeChild(inputs[i]);
     }
     this.pickMode = "ship";
-  }
-
-  drawButton() {
-    this.applyButton.background(0);
-    this.applyButton.fill(128);
-    this.applyButton.rect(5, 5, this.applyButton.width - 10, this.applyButton.height - 10);
-    this.applyButton.fill(0);
-    this.applyButton.textSize(20);
-    this.applyButton.textAlign(CENTER, CENTER);
-    this.applyButton.text("APPLY", this.applyButton.width/2, this.applyButton.height/2);
-
-
-    this.applyButtonRed.background(255);
-    this.applyButtonRed.fill(255,0,0);
-    this.applyButtonRed.rect(5, 5, this.applyButtonRed.width - 10, this.applyButtonRed.height - 10);
-    this.applyButtonRed.fill(0);
-    this.applyButtonRed.textSize(20);
-    this.applyButtonRed.textAlign(CENTER, CENTER);
-    this.applyButtonRed.text("APPLY", this.applyButtonRed.width/2, this.applyButtonRed.height/2);
   }
 
 }

@@ -7,7 +7,6 @@ class Button {
     this.tsize = this.w/5;
     this.h = Math.round(w*3/8);
     this.d = Math.round(this.w/20);
-    console.log(this.d);
   }
 
   draw() {
