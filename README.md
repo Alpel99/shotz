@@ -34,7 +34,7 @@ https://trello.com/b/2Vm2EXmP/shotz
   sondern setzt ship.empActive auf true. Der Rest passiert dann automatisch.
 
 - PowerUp-Prototyp eingefügt:
-    Einziges Augenmerk bisher auf Funktionalität und Skalierbarkeit - nicht beachtet wurden:
+    Einziges Augenmerk bisher auf Funktionalität und Skalierbarkeit - nicht beachtet wurden:  
         * Balancing  
         * Kreativität (sowohl der PUs, als auch der Darstellung der Pickups)  
         * Dropwahrscheinlichkeit PUs zu hoch (besser überprüfbar, während dev -
@@ -42,7 +42,7 @@ https://trello.com/b/2Vm2EXmP/shotz
         * Bisher nur Stat-Ups, keine komplexeren (deshalb bisher überall in
           powerups.js mods:null)  
 
-    Programmablauf PU:
+    Programmablauf PU:  
         0. Alle Powerups werden als Objekt in powerups.js gespeichert (bisher 5)  
         1. On Enemy-kill (per Bullet oder Crash): Check ob random(1) > Enemy.dropChance  
         2. Falls Check erfolgreich: game.choosePowerUp() - nimmt ein zufälliges PU
@@ -54,14 +54,14 @@ https://trello.com/b/2Vm2EXmP/shotz
         5. Wenn Spieler ein pickup einsammelt, wird mod.onPickup() ausgelöst
            (Stat+ oder dauerhaftes Mod an Ship.mods senden)  
 
-    Vorteile:
+    Vorteile:  
         * Weitere PowerUps können in einem einheitlichen Format, an einer zentralen
           Stelle ohne zusätzliche Logik eingefügt werden  
         * Sobald ein neues PU auf diese Weise eingefügt wurde, wird es automatisiert
           mit in den Prozess (Programmablauf) einbezogen  
         * Skalierbar (auch komplexere PUs in diesem Format möglich)  
 
-    Was fehlt:
+    Was fehlt:  
         * Fix Health-bar und MaxHealth des Schiffes
         * Balancing der PUs (dropChance vs. Effektstärke)
         * Überarbeitung des Löschens von PUs beim Einsammeln - bisher verschwinden
