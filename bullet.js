@@ -20,6 +20,13 @@ show() {
     pop();
 }
 
+// onHit() {
+//     // Event driven effect. Is filled by powerUps-object
+//     this.mods_onHit.forEach((m) => {
+//         m(); // m mit () führt die übergebene Funktionsreferenz aus.
+//     });
+// }
+
 update() {
     this.vel.setMag(this.speed * this.shooter.bulletspeed);
     this.pos.add(p5.Vector.mult(this.vel, dt)); // anstatt this.pos.add(this.vel) - für framerate control
