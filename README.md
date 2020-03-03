@@ -35,31 +35,31 @@ https://trello.com/b/2Vm2EXmP/shotz
 
 - PowerUp-Prototyp eingefügt:
     Einziges Augenmerk bisher auf Funktionalität und Skalierbarkeit - nicht beachtet wurden:
-        * Balancing
-        * Kreativität (sowohl der PUs, als auch der Darstellung der Pickups)
+        * Balancing  
+        * Kreativität (sowohl der PUs, als auch der Darstellung der Pickups)  
         * Dropwahrscheinlichkeit PUs zu hoch (besser überprüfbar, während dev -
-          aktuell Enemy.dropChance = 0.9 = 90%)
+          aktuell Enemy.dropChance = 0.9 = 90%)  
         * Bisher nur Stat-Ups, keine komplexeren (deshalb bisher überall in
-          powerups.js mods:null)
+          powerups.js mods:null)  
 
     Programmablauf PU:
-        0. Alle Powerups werden als Objekt in powerups.js gespeichert (bisher 5)
-        1. On Enemy-kill (per Bullet oder Crash): Check ob random(1) > Enemy.dropChance
+        0. Alle Powerups werden als Objekt in powerups.js gespeichert (bisher 5)  
+        1. On Enemy-kill (per Bullet oder Crash): Check ob random(1) > Enemy.dropChance  
         2. Falls Check erfolgreich: game.choosePowerUp() - nimmt ein zufälliges PU
-           aus powerups-Objekt in powerups.js und fügt es ship.mods[] als type:'pickup' hinzu
+           aus powerups-Objekt in powerups.js und fügt es ship.mods[] als type:'pickup' hinzu  
         3. In Ship.update() wird geprüft, ob ein 'pickup'-Objekt in Ship.mods
-           enthalten ist - wenn ja: mod.draw()
+           enthalten ist - wenn ja: mod.draw()  
         4. mod.draw() verweist an game.drawPickup(), das auch die Logik zum
-           Einsammeln und MouseOver enthält (und, perspektivisch, das timeout)
+           Einsammeln und MouseOver enthält (und, perspektivisch, das timeout)  
         5. Wenn Spieler ein pickup einsammelt, wird mod.onPickup() ausgelöst
-           (Stat+ oder dauerhaftes Mod an Ship.mods senden)
+           (Stat+ oder dauerhaftes Mod an Ship.mods senden)  
 
     Vorteile:
         * Weitere PowerUps können in einem einheitlichen Format, an einer zentralen
-          Stelle ohne zusätzliche Logik eingefügt werden
+          Stelle ohne zusätzliche Logik eingefügt werden  
         * Sobald ein neues PU auf diese Weise eingefügt wurde, wird es automatisiert
-          mit in den Prozess (Programmablauf) einbezogen
-        * Skalierbar (auch komplexere PUs in diesem Format möglich)
+          mit in den Prozess (Programmablauf) einbezogen  
+        * Skalierbar (auch komplexere PUs in diesem Format möglich)  
 
     Was fehlt:
         * Fix Health-bar und MaxHealth des Schiffes
