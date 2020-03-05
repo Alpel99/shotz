@@ -31,7 +31,7 @@ const powerups = [
             type: 'pickup',
             description: 'Erhöht den Schaden des Schiffes um 20%.',
             onPickup: (pu) => {
-                game.screen.ship.PlayerDMG *= 1.2;
+                game.screen.ship.DMG *= 1.2;
                 game.screen.ship.mods.splice(game.screen.ship.mods.indexOf(pu.pickup), 1);
             },
             draw: (x, y, pu) => {
