@@ -8,11 +8,13 @@ constructor(color) {
     this.color = color;                                 // = @param: Farbe von Lvl vorgegeben
 
     this.vel = createVector(random(-10,10), random(-10, 10)).normalize();
-    this.x = 0;
-    this.y = 0;
+    this.pos = createVector(0, 0);
+
     this.setStartSpot();                    // = Startlocation
 
     this.score = 5;                         // = Player-points per Kill
+    this.dropChance = 0.9;                  // = Chance, dass powerUp fallen gelassen wird
+    this.knockbackSensitivity = 1           // = Multiplier für Knockback-Vektor
     this.chase = false;
     this.lock = false;
 }
@@ -21,20 +23,20 @@ setStartSpot() {
     let s = floor(random(4));
     // still kills you in corners (would say that's fine)
     if (s == 0) {
-        this.x = this.size/2;
-        this.y = random(this.size/2, height - this.size/2);
+        this.pos.x = this.size/2;
+        this.pos.y = random(this.size/2, height - this.size/2);
     } else if (s == 1) {
-        this.x = width - this.size/2;
-        this.y = random(this.size/2, height - this.size/2);
+        this.pos.x = width - this.size/2;
+        this.pos.y = random(this.size/2, height - this.size/2);
     } else if (s == 2) {
-        this.x = random(this.size/2, width - this.size/2);
-        this.y = this.size/2;
+        this.pos.x = random(this.size/2, width - this.size/2);
+        this.pos.y = this.size/2;
     } else {
-        this.x = random(this.size/2, width - this.size/2);
-        this.y = height - this.size/2;
+        this.pos.x = random(this.size/2, width - this.size/2);
+        this.pos.y = height - this.size/2;
     }
 
-    if (dist(game.screen.ship.x, game.screen.ship.y, this.x, this.y) < this.size) {
+    if (dist(game.screen.ship.x, game.screen.ship.y, this.pos.x, this.pos.y) < this.size) {
         this.setStartSpot();
     }
 }
@@ -44,43 +46,49 @@ show() {
     stroke(game.screen.color2);
     strokeWeight(1);
     fill(this.color);
-    ellipse(this.x, this.y, this.size);
-    push();
+    ellipse(this.pos.x, this.pos.y, this.size);
+    pop();
 }
 
 update() {
-    // calls this.show() as last step of update
-    for (let i = 0; i < game.screen.ship.vectors.length; i++) {
-        // check enemy collision with isHit() for each vector
-        let vx = game.screen.ship.vectors[i].x + game.screen.ship.x;
-        let vy = game.screen.ship.vectors[i].y + game.screen.ship.y;
-        if (this.isHit(createVector(vx, vy))) {
-            // Check with Server
-            // Diesen Gegner aus Liste entfernen
-            game.screen.enemies.splice(game.screen.enemies.indexOf(this), 1);
-            // Kollision Schiff/Gegner überarbeiten! Abhängig davon womit das Schiff den Gegner trifft, werden ggf. mehrere Lebenspunkte abgezogen. (manche Vektoren doppelt gechecked?)
-            if (game.screen.ship.PlayerHP > 1) {
-                game.screen.ship.PlayerHP--;
-            } else {
-                game.screen.ship.PlayerHP = 0;
-                game.screen.end();
-                return;
-            }
+    if (game.screen.ship.collides(this)) {
+        // Check with Server
+        // Diesen Gegner aus Liste entfernen
+        if (random(1) < this.dropChance) {
+            game.choosePowerUp(this.pos.x, this.pos.y);
+        }
+        game.screen.enemies.splice(game.screen.enemies.indexOf(this), 1);
+        // Kollision Schiff/Gegner überarbeiten! Abhängig davon womit das Schiff den Gegner trifft, werden ggf. mehrere Lebenspunkte abgezogen. (manche Vektoren doppelt gechecked?)
+        if (game.screen.ship.PlayerHP > 1) {
+            game.screen.ship.PlayerHP--;
+        } else {
+            game.screen.ship.PlayerHP = 0;
+            game.screen.end();
+            return;
         }
     }
 
-    this.x = this.x + this.vel.x * this.speed;
-    this.y = this.y + this.vel.y * this.speed;
-
-    if (this.x < this.size/2) {
-        this.vel = createVector(random(1,10), random(-10, 10));
-    } else if (this.x > width - this.size/2) {
-        this.vel = createVector(random(-10,-1), random(-10, 10));
-    } else if (this.y < this.size/2) {
-        this.vel = createVector(random(-10,10), random(1, 10));
-    } else if (this.y > height - this.size/2) {
-        this.vel = createVector(random(-10,10), random(-1, -10));
+    let angle;
+    if (this.pos.x < this.size/2) {
+        this.pos.x = this.size/2;
+        angle = random(180) - 90;
+        this.vel.rotate(angle);
+    } else if (this.pos.x > width - this.size/2) {
+        this.pos.x = width - this.size/2;
+        angle = random(180) + 90;
+        this.vel.rotate(angle);
+    } else if (this.pos.y < this.size/2) {
+        this.pos.y = this.size/2;
+        angle = random(180);
+        this.vel.rotate(angle);
+    } else if (this.pos.y > height - this.size/2) {
+        this.pos.y = height - this.size/2;
+        angle = random(180) + 180;
+        this.vel.rotate(angle);
     }
+
+    this.vel.mult(this.speed);
+    this.pos.add(this.vel);
     this.vel.normalize();
     this.show();
 }
@@ -90,6 +98,9 @@ handleHit(bullet) {
         this.size -= bullet.damage;
     } else {
         game.screen.score += this.score;
+        if (random(1) < this.dropChance) {
+            game.choosePowerUp(this.pos.x, this.pos.y);
+        }
         // Diesen Gegner aus Liste entfernen
         game.screen.enemies.splice(game.screen.enemies.indexOf(this), 1);
     }
@@ -100,11 +111,11 @@ isHit(obj) {
     let hit = false;
 
     if (obj instanceof Bullet) {
-        if (dist(obj.pos.x, obj.pos.y, this.x, this.y) < this.size/2 + obj.size/2) {
+        if (dist(obj.pos.x, obj.pos.y, this.pos.x, this.pos.y) < this.size/2 + obj.size/2) {
             hit = true;
         }
     } else if (obj instanceof p5.Vector) {
-        if (dist(obj.x, obj.y, this.x, this.y) < this.size/2) hit = true;
+        if (dist(obj.x, obj.y, this.pos.x, this.pos.y) < this.size/2) hit = true;
     }
 
     return hit;
@@ -114,6 +125,17 @@ isDead(dmg) {
     // returns true, if given amount of dmg reduces life to or below zero
     if (this.size - dmg <= this.minsize) return true;
     else return false;
+}
+
+push(vector, duration, timestamp) {
+    let vec = vector.mult(this.knockbackSensitivity);
+    if (duration) {
+       if (millis() <= timestamp + duration) {
+           this.vel.add(vec);
+       }
+   } else {   // Wenn kein duration gegeben, instant push
+       this.vel.add(vec);
+   }
 }
 }
 

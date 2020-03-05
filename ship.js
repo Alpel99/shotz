@@ -20,6 +20,7 @@ constructor() {
     this.pos = createVector(this.x, this.y);    // ship position
     this.timestamps = [millis(), millis(), millis()];  // for evaluating shot delay
     this.bullets = [];
+    this.mods = [];
 }
 
 update() {
@@ -34,6 +35,12 @@ update() {
     this.pos.set(this.x, this.y);
     var toMouse = createVector(mouseX-this.x, mouseY-this.y);
     this.dir.rotate(toMouse.heading()-this.dir.heading());
+
+
+    // mods
+    this.mods.forEach((mod) => {
+        if (mod.type === 'pickup') mod.draw();
+    });
     }
 
 move() {
@@ -91,7 +98,7 @@ controls(mode) {
     } else if (mode === 'mouseClick') {
     } else if (mode === 'keyDown') {
         if (keyIsDown(32)) {
-            this.shoot(new Laser(this, 'yellow', this.dir, (p5.Vector.add(this.pos, this.vectors[0]))),
+            this.shoot(new Laser(this, 'yellow', this.dir, p5.Vector.add(this.pos, this.vectors[0])),
                        this.shotDelay, 0);
             /*this.shoot(new Bullet(this, 'yellow', this.vectors[1], (p5.Vector.add(this.pos, this.vectors[1]))),
                        this.shotDelay+300, 1);
@@ -144,6 +151,10 @@ constructor(x, y) {
     this.PlayerRNG = 500 + this.getSkillIncrease(user.skillup[this.constructor.name].RNG)*100;
     this.PlayerDASH = 10 + this.getSkillIncrease(user.skillup[this.constructor.name].DASH)*2;
     this.specialTime = 5;
+    this.specialActive = false;
+    this.empMaxRange = 240;
+    this.empRange = 0;
+    this.empActive = false;
 
     this.loadColor();
     //this.color = color(user.ships[this.constructor.name].color[0], user.ships[this.constructor.name].color[1], user.ships[this.constructor.name].color[2], user.ships[this.constructor.name].color[3]);
@@ -321,6 +332,8 @@ draw() {
     } else {
         this.PlayerDMG = this.DMG;
     }
+
+    if (this.empActive) this.emp();
 }
 
 dash() {
@@ -331,6 +344,52 @@ dash() {
 special() {
     //was neues ausdenken -> feuerrate = unendlich aber range kürzer?
     this.specialCounter = 60*this.specialTime;
+    this.specialActive = true;
     this.PlayerDMG += 5 + this.getSkillIncrease(user.skillup.Ship1.SPC);
+}
+
+emp() {
+    // Zeichnen des Effektes
+    push();
+        noFill();
+        let transparency = map(this.empRange, 0, this.empMaxRange, 0, 255);
+        stroke(255, 255, 255, 255-transparency);
+        circle(this.pos.x, this.pos.y, this.empRange);
+        strokeWeight(2);
+        circle(this.pos.x, this.pos.y, this.empRange-5);
+        strokeWeight(4);
+        circle(this.pos.x, this.pos.y, this.empRange-15);
+    pop();
+    this.empRange += 5;
+
+    // Deaktivieren des EMP, wenn komplett gezeichnet
+    if (this.empRange > this.empMaxRange) {
+        this.empActive = false;
+        this.empRange = 0;
+    }
+    // Auf Gegner checken (in EMP-range?) und ggf. wegdrücken
+    game.screen.enemies.forEach((e) => {
+        let toEnemy = createVector(e.pos.x-this.pos.x, e.pos.y-this.pos.y);
+        if(toEnemy.mag() <= this.empRange) {
+            // Stärke des Effektes abhängig von Entfernung zum Gegner
+            // z.B. this.empMaxRange = 200/toEnemy.mag() = 100 ergibt einen Wirkungsgrad von 2
+            toEnemy.mult(this.empMaxRange/toEnemy.mag());
+            let ts = millis();
+            e.push(toEnemy.mult(1/60), 1000, ts);
+        }
+    });
+
+}
+
+collides(obj) { // currently enemy or pickup
+    let collision = false;
+    let checkVector;
+
+    this.vectors.forEach((v) => {
+        checkVector = createVector(v.x + this.x, v.y + this.y);
+        if (obj.isHit(checkVector)) collision = true
+    });
+
+    return collision;
 }
 }

@@ -222,6 +222,7 @@ this.activeCounter = this.activeTime;
                 this.amount--;
             }
             //schubst gegner weg/hebt chase auf etc
+            game.screen.ship.empActive = true;
             break;
         case "SPC":
             game.screen.ship.special();
