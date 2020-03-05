@@ -21,6 +21,12 @@ constructor() {
     this.timestamps = [millis(), millis(), millis()];  // for evaluating shot delay
     this.bullets = [];
     this.mods = [];
+
+    //emp
+    this.empMaxRange = 240;
+    this.empRange = 0;
+    this.empActive = false;
+
 }
 
 update() {
@@ -41,6 +47,10 @@ update() {
     this.mods.forEach((mod) => {
         if (mod.type === 'pickup') mod.draw();
     });
+
+    //emp
+    if (this.empActive) this.emp();
+
     }
 
 move() {
@@ -139,6 +149,39 @@ collides(obj) { // currently enemy or pickup
 
     return collision;
 }
+
+emp() {
+    // Zeichnen des Effektes
+    push();
+        noFill();
+        let transparency = map(this.empRange, 0, this.empMaxRange, 0, 255);
+        stroke(255, 255, 255, 255-transparency);
+        circle(this.pos.x, this.pos.y, this.empRange);
+        strokeWeight(2);
+        circle(this.pos.x, this.pos.y, this.empRange-5);
+        strokeWeight(4);
+        circle(this.pos.x, this.pos.y, this.empRange-15);
+    pop();
+    this.empRange += 5;
+
+    // Deaktivieren des EMP, wenn komplett gezeichnet
+    if (this.empRange > this.empMaxRange) {
+        this.empActive = false;
+        this.empRange = 0;
+    }
+    // Auf Gegner checken (in EMP-range?) und ggf. wegdrücken
+    game.screen.enemies.forEach((e) => {
+        let toEnemy = createVector(e.pos.x-this.pos.x, e.pos.y-this.pos.y);
+        if(toEnemy.mag() <= this.empRange) {
+            // Stärke des Effektes abhängig von Entfernung zum Gegner
+            // z.B. this.empMaxRange = 200/toEnemy.mag() = 100 ergibt einen Wirkungsgrad von 2
+            toEnemy.mult(this.empMaxRange/toEnemy.mag());
+            let ts = millis();
+            e.push(toEnemy.mult(1/60), 1000, ts);
+        }
+    });
+}
+
 }
 
 class Ship1 extends Ship {
@@ -164,9 +207,7 @@ constructor(x, y) {
     this.PlayerDASH = 10 + this.getSkillIncrease(user.skillup[this.constructor.name].DASH)*2;
     this.specialTime = 5;
     this.specialActive = false;
-    this.empMaxRange = 240;
-    this.empRange = 0;
-    this.empActive = false;
+
 
     this.loadColor();
     //this.color = color(user.ships[this.constructor.name].color[0], user.ships[this.constructor.name].color[1], user.ships[this.constructor.name].color[2], user.ships[this.constructor.name].color[3]);
@@ -345,7 +386,6 @@ draw() {
         this.PlayerDMG = this.DMG;
     }
 
-    if (this.empActive) this.emp();
 }
 
 dash() {
@@ -359,37 +399,4 @@ special() {
     this.specialActive = true;
     this.PlayerDMG += 5 + this.getSkillIncrease(user.skillup.Ship1.SPC);
 }
-
-emp() {
-    // Zeichnen des Effektes
-    push();
-        noFill();
-        let transparency = map(this.empRange, 0, this.empMaxRange, 0, 255);
-        stroke(255, 255, 255, 255-transparency);
-        circle(this.pos.x, this.pos.y, this.empRange);
-        strokeWeight(2);
-        circle(this.pos.x, this.pos.y, this.empRange-5);
-        strokeWeight(4);
-        circle(this.pos.x, this.pos.y, this.empRange-15);
-    pop();
-    this.empRange += 5;
-
-    // Deaktivieren des EMP, wenn komplett gezeichnet
-    if (this.empRange > this.empMaxRange) {
-        this.empActive = false;
-        this.empRange = 0;
-    }
-    // Auf Gegner checken (in EMP-range?) und ggf. wegdrücken
-    game.screen.enemies.forEach((e) => {
-        let toEnemy = createVector(e.pos.x-this.pos.x, e.pos.y-this.pos.y);
-        if(toEnemy.mag() <= this.empRange) {
-            // Stärke des Effektes abhängig von Entfernung zum Gegner
-            // z.B. this.empMaxRange = 200/toEnemy.mag() = 100 ergibt einen Wirkungsgrad von 2
-            toEnemy.mult(this.empMaxRange/toEnemy.mag());
-            let ts = millis();
-            e.push(toEnemy.mult(1/60), 1000, ts);
-        }
-    });
-
-    }
 }
