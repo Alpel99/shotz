@@ -31,8 +31,9 @@ back() {
 
 controls(mode) {
     if (mode === 'keyPress') {
+        //l
         if(keyCode == 76) {
-            game.screen = new Level_menu();
+            this.lvl.end();
         }
     } else if (mode === 'mousePress') {
     } else if (mode === 'mouseClick') {

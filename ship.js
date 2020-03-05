@@ -127,6 +127,18 @@ getSkillIncrease(x) {
 var a = 3*Math.log(x+1.5)-1;
 return a;
 }
+
+collides(obj) { // currently enemy or pickup
+    let collision = false;
+    let checkVector;
+
+    this.vectors.forEach((v) => {
+        checkVector = createVector(v.x + this.x, v.y + this.y);
+        if (obj.isHit(checkVector)) collision = true
+    });
+
+    return collision;
+}
 }
 
 class Ship1 extends Ship {
@@ -379,17 +391,5 @@ emp() {
         }
     });
 
-}
-
-collides(obj) { // currently enemy or pickup
-    let collision = false;
-    let checkVector;
-
-    this.vectors.forEach((v) => {
-        checkVector = createVector(v.x + this.x, v.y + this.y);
-        if (obj.isHit(checkVector)) collision = true
-    });
-
-    return collision;
-}
+    }
 }

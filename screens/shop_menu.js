@@ -53,15 +53,8 @@ class Shop_menu {
     this.cpx = textWidth("Repaint: ");
     pop();
 
-    push();
-    imageMode(CENTER);
-    if(mouseX > 50 && mouseX < 150 && mouseY > height/4 - 5 && mouseY < height/4 + 45) {
-        image(this.applyButtonRed, 100, height/4 + 20);
-    } else {
-        image(this.applyButton, 100, height/4 + 20);
-    }
+    this.apply.draw();
 
-    pop();
   }
   background() {
     background(this.color0);
