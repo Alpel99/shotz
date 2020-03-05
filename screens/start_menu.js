@@ -4,10 +4,10 @@ constructor() {
     this.color1 = color(255, 0, 0);
     this.color2 = color(100, 0, 0);
     this.level =     new StartMenuItem("Level", width/5, height/3, this.color1);
-    this.shop =      new StartMenuItem("Shop", width/5 - 50, height/3 + 100, this.color2);
+    this.shop =      new StartMenuItem("Shop", width/5 - 50, height/3 + 100, this.color1);
     this.pvp =       new StartMenuItem("PVP", width/5 - 100, height/3 + 200, this.color2);
     this.skillups =     new StartMenuItem("Skillups", width/5 + 300, height/3, this.color1);
-    this.ships =     new StartMenuItem("Ships", width/5 + 250, height/3 + 100, this.color2  );
+    this.ships =     new StartMenuItem("Ships", width/5 + 250, height/3 + 100, this.color1);
     this.inventory = new StartMenuItem("Inventory", width/5 + 200, height/3 + 200, this.color2);
     this.rankings =  new StartMenuItem("Rankings", width/5 + 700, height/3, this.color2);
     this.user =  new StartMenuItem("User", width/5 + 650, height/3 + 100, this.color2);
@@ -46,19 +46,19 @@ controls(mode) {
             game.screen = new Level_menu();
             game.setup = false;
         } else if (this.shop.checkHover() === true) {
-            console.log("shop");
+            game.screen = new Shop_menu();
         } else if (this.pvp.checkHover() === true) {
             console.log("pvp");
         } else if (this.inventory.checkHover() === true) {
            console.log("inventory");
         } else if (this.ships.checkHover() === true) {
-            console.log("ships");
+            game.screen = new Ship_menu();
         } else if (this.rankings.checkHover() === true) {
             console.log("rankings");
         } else if (this.premium.checkHover() === true) {
             console.log("premium");
         } else if (this.skillups.checkHover() === true) {
-            game.screen = new Ship_menu();
+            game.screen = new Shipskill_menu();
         } else if (this.user.checkHover() === true) {
             console.log("user");
         } else if (this.keys.checkHover() === true) {

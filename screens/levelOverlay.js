@@ -7,16 +7,16 @@ draw() {
     push();
     rectMode(CENTER);
     fill(0);
-    var maxHP = game.screen.ship.baseHP + Math.round(game.screen.ship.getSkillIncrease(user.skillup.Ship1.HP));
+    //var maxHP = game.screen.ship.baseHP + game.screen.ship.maxHP;
     rect(width/2, 40, 300, 20, 5);
     rectMode(CORNER);
     fill(230,40,40);
-    rect(width/2 - 148, 32, map(game.screen.ship.PlayerHP, 0, maxHP, 0, 296), 16, 5);
+    rect(width/2 - 148, 32, map(game.screen.ship.PlayerHP, 0, game.screen.ship.maxHP, 0, 296), 16, 5);
     textAlign(CENTER, CENTER);
     fill(255);
     textSize(13);
     textStyle(BOLD);
-    text(game.screen.ship.PlayerHP + "/" + maxHP, width/2, 41);
+    text(game.screen.ship.PlayerHP + "/" + game.screen.ship.maxHP, width/2, 41);
     pop();
 
     // Text top left

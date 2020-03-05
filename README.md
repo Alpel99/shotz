@@ -4,9 +4,9 @@ Shotz game (more complex shooter)
 https://trello.com/b/2Vm2EXmP/shotz
 
 ## Goals:
-* shooter gameplay
+* :heavy_check_mark: shooter gameplay
 * different levels with different gameplay etc
-* exp for each level
+* :heavy_check_mark: exp for each level
 * levelups -> skillpoints for skilltree -> each ship own skilltree
 * different item drops from each level -> usable in all levels (through some sort of quickslot bar)
 * inventory page
@@ -22,7 +22,7 @@ https://trello.com/b/2Vm2EXmP/shotz
 * support
 * user page with statistics
 * rankings
-* designs for each ship (just change one specific triangle every time)
+* designs for each ship (just change one specific triangle color every time)
 
 
 ## Update Jan 03.03.2020

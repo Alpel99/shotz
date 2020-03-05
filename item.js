@@ -139,6 +139,9 @@ pop();
     if(this.active == true || this.activeCounter > 0) {
         push();
         stroke(game.screen.color1);
+        if(this.amount == 0) {
+            stroke(game.screen.color3);
+        }
         strokeWeight(3);
         noFill();
         rect(this.x, this.y, 50, 50, 2);

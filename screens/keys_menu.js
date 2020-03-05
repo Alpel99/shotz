@@ -10,9 +10,8 @@ constructor(ship) {
     }
     this.mode = "skill";
     //modes -> select: skill/key
-    this.resetButton = createGraphics(200, 75);
-    this.resetButtonRed = createGraphics(200, 75);
-    this.buttonDraw();
+
+    this.reset = new Button(width*0.9, height-150, 200, "RESET");
 }
 
 draw() {
@@ -30,13 +29,13 @@ draw() {
         textAlign(CENTER, BOTTOM)
         text(String.fromCharCode(user.items[i].keyCode), width/user.items.length*(i+0.5), height/1.5 - 50);
         if(user.items[i].active == true) {
+            this.mode = "key";
             push();
             noStroke();
             fill(64);
             rect(width/2 - 100, height/4, 100, 100);
             image(img_item, width/2 - 100, height/4);
             pop();
-            this.mode = "key";
         }
         textSize(20);
         textAlign(LEFT);
@@ -44,12 +43,8 @@ draw() {
         pop();
     }
 
-    imageMode(CENTER);
-    if(mouseX > width*0.9 - 100 && mouseX < width*0.9 + 100 && mouseY > height - 188 && mouseY < height - 112) {
-        image(this.resetButtonRed, width*0.9, height - 150);
-    } else {
-        image(this.resetButton, width*0.9, height - 150);
-    }
+    this.reset.draw();
+
     this.menuOverlay.draw();
 }
 
@@ -61,20 +56,30 @@ controls(mode) {
     if (mode === 'keyPress') {
         if(this.mode == "key") {
             var skill = user.items.find(element => element.active == true);
+            for(let i = 0; i < user.items.length; i++) {
+                if(user.items[i].keyCode == keyCode) {
+                    user.items[i].keyCode = "";
+                }
+            }
             skill.keyCode = keyCode;
             skill.active = false;
             this.mode = "skill";
         }
     } else if (mode === 'mousePress') {
+        for(let j = 0; j < user.items.length; j++) {
+            user.items[j].active = false;
+        }
+        this.mode = "skill";
         for(let i = 0; i < user.items.length; i++) {
             if(this.mouseHover((width/user.items.length)*(i+0.5), height/1.5, 75) == true) {
                 for(let j = 0; j < user.items.length; j++) {
                     user.items[j].active = false;
                 }
                 user.items[i].active = true;
+                this.mode = "key";
             }
         }
-        if(mouseX > width*0.9 - 100 && mouseX < width*0.9 + 100 && mouseY > height - 188 && mouseY < height - 112) {
+        if(this.reset.hover() == true) {
             user.items[0].keyCode = 49;
             user.items[1].keyCode = 50;
             user.items[2].keyCode = 51;
@@ -98,25 +103,6 @@ mouseHover(x, y, size) {
         hover = true;
     }
     return hover;
-}
-
-buttonDraw() {
-    this.resetButton.background(0);
-    this.resetButton.fill(128);
-    this.resetButton.rect(10, 10, this.resetButton.width - 20, this.resetButton.height - 20);
-    this.resetButton.fill(0);
-    this.resetButton.textSize(40);
-    this.resetButton.textAlign(CENTER, CENTER);
-    this.resetButton.text("RESET", this.resetButton.width/2, this.resetButton.height/2);
-
-
-    this.resetButtonRed.background(255);
-    this.resetButtonRed.fill(255,0,0);
-    this.resetButtonRed.rect(10, 10, this.resetButtonRed.width - 20, this.resetButtonRed.height - 20);
-    this.resetButtonRed.fill(0);
-    this.resetButtonRed.textSize(40);
-    this.resetButtonRed.textAlign(CENTER, CENTER);
-    this.resetButtonRed.text("RESET", this.resetButtonRed.width/2, this.resetButtonRed.height/2);
 }
 
 }
