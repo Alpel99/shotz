@@ -42,7 +42,6 @@ update() {
     var toMouse = createVector(mouseX-this.x, mouseY-this.y);
     this.dir.rotate(toMouse.heading()-this.dir.heading());
 
-
     // mods
     this.mods.forEach((mod) => {
         if (mod.type === 'pickup') mod.draw();
@@ -132,10 +131,10 @@ controls(mode) {
 }
 
 getSkillIncrease(x) {
-//x = 3*ln(x+1,5)-1
+//y = 3*ln(x+1,5)-1
 //Math.log == ln
-var a = 3*Math.log(x+1.5)-1;
-return a;
+var y = 3*Math.log(x+1.5)-1;
+return y;
 }
 
 collides(obj) { // currently enemy or pickup
@@ -162,7 +161,7 @@ emp() {
         strokeWeight(4);
         circle(this.pos.x, this.pos.y, this.empRange-15);
     pop();
-    this.empRange += 5;
+    this.empRange += 15;
 
     // Deaktivieren des EMP, wenn komplett gezeichnet
     if (this.empRange > this.empMaxRange) {
@@ -177,7 +176,7 @@ emp() {
             // z.B. this.empMaxRange = 200/toEnemy.mag() = 100 ergibt einen Wirkungsgrad von 2
             toEnemy.mult(this.empMaxRange/toEnemy.mag());
             let ts = millis();
-            e.push(toEnemy.mult(1/60), 1000, ts);
+            e.push(toEnemy.mult(1/30), 1000, ts);
         }
     });
 }
@@ -194,6 +193,15 @@ constructor(x, y) {
     this.vectors = [];
 
     //GAMEPLAY VARIABLES
+    this.loadStats();
+    this.specialActive = false;
+
+    //this.color = color(user.ships[this.constructor.name].color[0], user.ships[this.constructor.name].color[1], user.ships[this.constructor.name].color[2], user.ships[this.constructor.name].color[3]);
+    this.createVectors();
+    this.specialText = "The special fo this ship will increase the single bullet damage";
+}
+
+loadStats() {
     this.baseHP = 3;
     this.maxHP = Math.round(this.baseHP + this.getSkillIncrease(user.skillup[this.constructor.name].HP));
     this.crashDamage = 150;
@@ -206,13 +214,8 @@ constructor(x, y) {
     this.PlayerRNG = 500 + this.getSkillIncrease(user.skillup[this.constructor.name].RNG)*100;
     this.PlayerDASH = 10 + this.getSkillIncrease(user.skillup[this.constructor.name].DASH)*2;
     this.specialTime = 5;
-    this.specialActive = false;
-
 
     this.loadColor();
-    //this.color = color(user.ships[this.constructor.name].color[0], user.ships[this.constructor.name].color[1], user.ships[this.constructor.name].color[2], user.ships[this.constructor.name].color[3]);
-    this.createVectors();
-    this.specialText = "The special fo this ship will increase the single bullet damage";
 }
 
 createVectors() {
@@ -300,7 +303,19 @@ constructor(x, y) {
     this.vectors = [];
 
     //GAMEPLAY VARIABLES
-    this.baseHP = 3;
+    this.loadStats();
+
+    this.specialTime = 5;
+
+
+    //this.color = color(user.ships[this.constructor.name].color[0], user.ships[this.constructor.name].color[1], user.ships[this.constructor.name].color[2], user.ships[this.constructor.name].color[3]);
+    this.createVectors();
+
+    this.specialText = "The special of this Ship will\nincreasethe firerate = decrease the shotDelay a little bit\nthis increases the damage output significantly\nBanane mit Sosse";
+}
+
+loadStats() {
+    this.baseHP = 2;
     this.maxHP = Math.round(this.baseHP + this.getSkillIncrease(user.skillup[this.constructor.name].HP)/2);
     this.crashDamage = 300;
     this.shotDelay = 30 - this.getSkillIncrease(user.skillup[this.constructor.name].FR);
@@ -311,13 +326,8 @@ constructor(x, y) {
     this.PlayerSPD = 8 + this.getSkillIncrease(user.skillup[this.constructor.name].SPD)/1.5;
     this.PlayerRNG = 400 + this.getSkillIncrease(user.skillup[this.constructor.name].RNG)*75;
     this.PlayerDASH = 20 + this.getSkillIncrease(user.skillup[this.constructor.name].DASH)*5;
-    this.specialTime = 5;
 
     this.loadColor();
-    //this.color = color(user.ships[this.constructor.name].color[0], user.ships[this.constructor.name].color[1], user.ships[this.constructor.name].color[2], user.ships[this.constructor.name].color[3]);
-    this.createVectors();
-
-    this.specialText = "The special of this Ship will\nincreasethe firerate = decrease the shotDelay a little bit\nthis increases the damage output significantly\nBanane mit Sosse";
 }
 
 createVectors() {

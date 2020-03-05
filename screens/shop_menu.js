@@ -86,10 +86,9 @@ class Shop_menu {
             }
         }
         //APPLY
-        if(this.apply.hover() == true) {
+        if(this.apply.hover() == true && this.pickMode == "color" && user.money >= 50) {
           user.money -= 50;
           for(let i = 0; i < 4; i++) {
-            console.log(this.pickship.constructor.name);
             user.ships[this.pickship.constructor.name].color[i] = this.colorPicker.color().levels[i];
           }
           this.removePickers();

@@ -10,6 +10,7 @@ const powerups = [
             description: 'Erhöht die Lebenspunkte des Schiffs um 2.',
             onPickup: (pu) => {
                 game.screen.ship.PlayerHP += 2;
+                game.screen.ship.maxHP += 2;
                 game.screen.ship.mods.splice(game.screen.ship.mods.indexOf(pu.pickup), 1);
             },
             draw: (x, y, pu) => {
@@ -101,7 +102,7 @@ const powerups = [
                 game.screen.ship.shotDelay *= 0.95;
                 console.log(pu.pickup);
                 // console.log(game.screen.ship.mods[game.screen.ship.mods.indexOf(pu.pickup)]);
-                console.log(game.screen.ship.mods.indexOf(pu.pickup));
+                //console.log(game.screen.ship.mods.indexOf(pu.pickup));
                 game.screen.ship.mods.splice(game.screen.ship.mods.indexOf(pu.pickup), 1);
             },
             draw: (x, y, pu) => {

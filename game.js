@@ -60,10 +60,12 @@ drawPickup(x, y, pu, content) {
     // Aussehen Pickups
     push();
         strokeWeight(4);
-        fill(0, 0, 0, 100);
-        stroke(255, 204, 0);
+        fill(0, 100);
+        stroke(game.screen.color1);
         rect(x, y, 60, 60);
         rect(x-5, y-5, 70, 70);
+        noStroke();
+        fill(game.screen.color1);
         content();
     pop();
 
@@ -88,11 +90,11 @@ drawPickup(x, y, pu, content) {
         push();
             strokeWeight(2);
             fill(0, 0, 0, 100);
-            stroke(255, 204, 0);
+            stroke(game.screen.color1);
             rect(x+pos_hor, y+pos_ver, 300, 60);
 
             textSize(15);
-            fill('red');
+            fill(game.screen.color3);
             noStroke();
             text(pu.pickup.description, x+pos_hor+10, y+pos_ver+5, 280, 50);
         pop();
