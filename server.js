@@ -12,12 +12,19 @@ app.get('/node', function(req, res){
 });
 
 
-var io = require('socket.io')(server, {path: '/socket.io'});
+//var io = require('socket.io')(server, {path: '/socket.io'});
+var io = require('socket.io')(server, {origins: '*:*'}, {path: '/shotz'});
 
 io.sockets.on('connection',
 	function(socket) {
 		console.log('new client ' + socket.id);
 
+	socket.on('test',
+      		function(data) {
+			console.log(data);
+		}
+    	);
 });
+
 console.log("server is running");
 
