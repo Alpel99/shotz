@@ -31,11 +31,12 @@ controls(mode) {
 choosePowerUp(x, y) {
     // Chooses one powerup from powerups-object randomly and pushes it to ship.mods
     let pu = powerups[Math.floor(Math.random()*powerups.length)];
+    let ts = millis();
     this.screen.ship.mods.push({
         type: 'pickup',
         draw: this.wrapDraw(x, y, pu),
         onPickup: this.wrapOnPickup(pu),
-        timestamp: millis()
+        timestamp: ts
     });
 }
 
@@ -49,7 +50,7 @@ wrapOnPickup(pu) {
     return function() {pu.pickup.onPickup(pu)};
 }
 
-drawPickup(x, y, pu, content) {
+drawPickup(x, y, pu, content, timestamp) {
     /*
     *  Parameter:
     *  x, y:    Position des getöteten Gegners (dort wird pickup dargestellt)
@@ -97,20 +98,26 @@ drawPickup(x, y, pu, content) {
             text(pu.pickup.description, x+pos_hor+10, y+pos_ver+5, 280, 50);
         pop();
     }
-    //
-    // // Löschen der Pickups nach 5 Sekunden
+
+    // Löschen der Pickups nach 5 Sekunden
     // console.log(game.screen.ship.mods.indexOf(pu.pickup));
     // let index = game.screen.ship.mods.indexOf(pu.pickup);
     // console.log(index);
     // console.log(game.screen.ship.mods[index]);
-    // console.log(game.screen.ship.mods[index].timestamp);
-    // // console.log(pu.pickup.timestamp);
-    // // console.log(typeof pu.pickup.timestamp);
-    // // console.log(millis());
-    // // console.log(pu.pickup.timestamp - (millis()-5000));
-    // if (pu.pickup.timestamp < millis()-5000) {
-    //     game.screen.ship.mods.splice(game.screen.ship.mods.indexOf(pu.pickup), 1);
-    // }
+    // console.log(pu.timestamp);
+    // console.log(pu);
+    // console.log(pu.pickup.timestamp);
+    // console.log(typeof pu.pickup.timestamp);
+    // console.log(millis());
+    // console.log(pu.pickup.timestamp - (millis()-5000));
+    if (pu.pickup.timestamp < millis()-5000) {
+        game.screen.ship.mods.splice(game.screen.ship.mods.indexOf(pu.pickup), 1);
+    }
     }
 
+
+generateID () {
+    // Erzeugt eine zufällige id
+    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+}
 }

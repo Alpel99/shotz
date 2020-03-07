@@ -13,20 +13,24 @@ constructor() {
 
     this.img = createGraphics(150,150);
 
-    this.specialCounter = 0;
-
     // bullets
     this.dir = createVector(10, 0);             // ship facing direction
     this.pos = createVector(this.x, this.y);    // ship position
     this.timestamps = [millis(), millis(), millis()];  // for evaluating shot delay
     this.bullets = [];
+
     this.mods = [];
 
     //emp
-    this.empMaxRange = 240;
+    this.empMaxRange = 300; // orig: 240
     this.empRange = 0;
+    this.empTimeStamp = 0;
     this.empActive = false;
 
+    // special
+    this.specialTime = 5;
+    this.specialTimestamp = 0;
+    this.specialActive = false;
 }
 
 update() {
@@ -48,9 +52,11 @@ update() {
         if (mod.type === 'pickup') mod.draw();
     });
 
-    //emp
+    // emp
     if (this.empActive) this.emp();
 
+    // special
+    if (this.specialActive) this.special();
     }
 
 move() {
@@ -97,10 +103,10 @@ shoot(bullet_obj, delay, timestamp_index) {
     }
 
    }
+
 loadColor() {
     this.color = color(user.ships[this.constructor.name].color[0], user.ships[this.constructor.name].color[1], user.ships[this.constructor.name].color[2], user.ships[this.constructor.name].color[3]);
 }
-
 
 controls(mode) {
     if (mode === 'keyPress') {
@@ -108,12 +114,12 @@ controls(mode) {
     } else if (mode === 'mouseClick') {
     } else if (mode === 'keyDown') {
         if (keyIsDown(32)) {
-            this.shoot(new Laser(this, 'yellow', this.dir, p5.Vector.add(this.pos, this.vectors[0])),
+            this.shoot(new Bullet(this, 'yellow', this.dir, p5.Vector.add(this.pos, this.vectors[0])),
                        this.shotDelay, 0);
-            /*this.shoot(new Bullet(this, 'yellow', this.vectors[1], (p5.Vector.add(this.pos, this.vectors[1]))),
-                       this.shotDelay+300, 1);
-            this.shoot(new Bullet(this, 'yellow', this.vectors[10], (p5.Vector.add(this.pos, this.vectors[10]))),
-                       this.shotDelay+300, 2);*/
+            // this.shoot(new Bullet(this, 'yellow', this.vectors[1], (p5.Vector.add(this.pos, this.vectors[1]))),
+            //            this.shotDelay+300, 1);
+            // this.shoot(new Bullet(this, 'yellow', this.vectors[10], (p5.Vector.add(this.pos, this.vectors[10]))),
+            //            this.shotDelay+300, 2);
         }
 
         if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
@@ -132,10 +138,9 @@ controls(mode) {
 }
 
 getSkillIncrease(x) {
-//x = 3*ln(x+1,5)-1
-//Math.log == ln
-var a = 3*Math.log(x+1.5)-1;
-return a;
+    // x = 3*ln(x+1,5)-1
+    // Math.log == ln
+    return 3 * Math.log(x + 1.5) - 1;
 }
 
 collides(obj) { // currently enemy or pickup
@@ -150,6 +155,43 @@ collides(obj) { // currently enemy or pickup
     return collision;
 }
 
+// emp() {
+//     // Zeichnen des Effektes
+//     push();
+//         noFill();
+//         let transparency = map(this.empRange, 0, this.empMaxRange, 0, 255);
+//         stroke(255, 255, 255, 255-transparency);
+//         circle(this.pos.x, this.pos.y, this.empRange);
+//         strokeWeight(2);
+//         circle(this.pos.x, this.pos.y, this.empRange-5);
+//         strokeWeight(4);
+//         circle(this.pos.x, this.pos.y, this.empRange-15);
+//     pop();
+//     this.empRange += 5;
+//
+//     // Deaktivieren des EMP, wenn komplett gezeichnet und Zurücksetzen der Variablen
+//     if (this.empRange > this.empMaxRange) {
+//         this.empActive = false;
+//         this.empTimeStamp = 0;
+//         this.empRange = 0;
+//     }
+//     // Auf Gegner checken (in EMP-range?) und ggf. wegdrücken
+//     game.screen.enemies.forEach((e) => {
+//         let toEnemy = createVector(e.pos.x-this.pos.x, e.pos.y-this.pos.y);
+//         if (toEnemy.mag() <= this.empRange) {
+//             // Stärke des Effektes abhängig von Entfernung zum Gegner
+//             // z.B. this.empMaxRange = 200/toEnemy.mag() = 100 ergibt einen Wirkungsgrad von 2
+//             toEnemy.mult(this.empMaxRange/toEnemy.mag());
+//
+//             if (this.empTimeStamp === 0) {
+//                 this.empTimeStamp = millis();
+//                 // e.push(toEnemy.mult(1/60), 1500, this.empTimeStamp);
+//                 e.push(toEnemy.mult(1/60), 1500);
+//
+//             }
+//         }
+//     });
+// }
 emp() {
     // Zeichnen des Effektes
     push();
@@ -164,22 +206,49 @@ emp() {
     pop();
     this.empRange += 5;
 
-    // Deaktivieren des EMP, wenn komplett gezeichnet
+    // Deaktivieren des EMP (und Variablen zurücksetzen), wenn komplett gezeichnet
     if (this.empRange > this.empMaxRange) {
         this.empActive = false;
+        game.screen.enemies.forEach(e => e.empActive = false);
         this.empRange = 0;
     }
+
     // Auf Gegner checken (in EMP-range?) und ggf. wegdrücken
     game.screen.enemies.forEach((e) => {
         let toEnemy = createVector(e.pos.x-this.pos.x, e.pos.y-this.pos.y);
         if(toEnemy.mag() <= this.empRange) {
-            // Stärke des Effektes abhängig von Entfernung zum Gegner
-            // z.B. this.empMaxRange = 200/toEnemy.mag() = 100 ergibt einen Wirkungsgrad von 2
-            toEnemy.mult(this.empMaxRange/toEnemy.mag());
-            let ts = millis();
-            e.push(toEnemy.mult(1/60), 1000, ts);
+            if (!e.empActive) {
+                // Parameter vorbereiten
+                toEnemy.mult(this.empMaxRange/toEnemy.mag()); // Stärke des Effektes abhängig von Entfernung zum Gegner
+
+                let ts = millis();
+
+                // Funktionsreferenz speichern
+                let fn = e.push.bind(e, toEnemy.mult(1/60), 1500, ts);
+
+                // Funktion Enemy.pushes-Array hinzufügen
+                e.pushes.push(fn);
+                e.empActive = true;
+            }
         }
     });
+}
+
+special() {
+    // DMG-Boost Aktivieren
+    if (this.specialTimestamp === 0) {
+        this.specialTimestamp = millis();
+        this.PlayerDMG += 5 + this.getSkillIncrease(user.skillup.Ship1.SPC);
+        this.shotDelay /= 2;
+    }
+
+    // DMG-Boost Deaktivieren und Variablen zurücksetzen
+    if (this.specialTimestamp < (millis() - (this.specialTime * 1000))) {
+        this.specialActive = false;
+        this.specialTimestamp = 0;
+        this.PlayerDMG -= 5 + this.getSkillIncrease(user.skillup.Ship1.SPC);
+        this.shotDelay *= 2;
+    }
 }
 
 }
@@ -194,19 +263,17 @@ constructor(x, y) {
     this.vectors = [];
 
     //GAMEPLAY VARIABLES
-    this.baseHP = 3;
-    this.maxHP = Math.round(this.baseHP + this.getSkillIncrease(user.skillup[this.constructor.name].HP));
+    this.baseHP      = 3;
+    this.maxHP       = Math.round(this.baseHP + this.getSkillIncrease(user.skillup[this.constructor.name].HP));
     this.crashDamage = 150;
-    this.shotDelay = 50 - this.getSkillIncrease(user.skillup[this.constructor.name].FR);
+    this.shotDelay   = 250 - this.getSkillIncrease(user.skillup[this.constructor.name].FR);
     this.bulletspeed = 0.8 + this.getSkillIncrease(user.skillup[this.constructor.name].BSPD)*0.1;
-    this.PlayerHP = this.maxHP;
-    this.DMG = 10 + this.getSkillIncrease(user.skillup[this.constructor.name].DMG)*2;
-    this.PlayerDMG = this.DMG;
-    this.PlayerSPD = 5 + this.getSkillIncrease(user.skillup[this.constructor.name].SPD)/2;
-    this.PlayerRNG = 500 + this.getSkillIncrease(user.skillup[this.constructor.name].RNG)*100;
-    this.PlayerDASH = 10 + this.getSkillIncrease(user.skillup[this.constructor.name].DASH)*2;
-    this.specialTime = 5;
-    this.specialActive = false;
+    this.PlayerHP    = this.maxHP;
+    this.DMG         = 10 + this.getSkillIncrease(user.skillup[this.constructor.name].DMG)*2;
+    this.PlayerDMG   = this.DMG;
+    this.PlayerSPD   = 5 + this.getSkillIncrease(user.skillup[this.constructor.name].SPD)/2;
+    this.PlayerRNG   = 500 + this.getSkillIncrease(user.skillup[this.constructor.name].RNG)*100;
+    this.PlayerDASH  = 10 + this.getSkillIncrease(user.skillup[this.constructor.name].DASH)*2;
 
 
     this.loadColor();
@@ -269,22 +336,11 @@ draw() {
     imageMode(CENTER);
     image(this.img, this.x, this.y);
     pop();
-
-    if(this.specialCounter > 0) {
-        this.specialCounter--;
-    } else {
-        this.PlayerDMG = this.DMG;
-    }
 }
 
 dash() {
     this.x += this.dir.x*this.PlayerDASH;
     this.y += this.dir.y*this.PlayerDASH;
-}
-
-special() {
-    this.specialCounter = 60*this.specialTime;
-    this.PlayerDMG += 5 + this.getSkillIncrease(user.skillup.Ship1.SPC);
 }
 }
 
@@ -300,18 +356,17 @@ constructor(x, y) {
     this.vectors = [];
 
     //GAMEPLAY VARIABLES
-    this.baseHP = 3;
-    this.maxHP = Math.round(this.baseHP + this.getSkillIncrease(user.skillup[this.constructor.name].HP)/2);
+    this.baseHP      = 3;
+    this.maxHP       = Math.round(this.baseHP + this.getSkillIncrease(user.skillup[this.constructor.name].HP)/2);
     this.crashDamage = 300;
-    this.shotDelay = 30 - this.getSkillIncrease(user.skillup[this.constructor.name].FR);
+    this.shotDelay   = 30 - this.getSkillIncrease(user.skillup[this.constructor.name].FR);
     this.bulletspeed = 0.8 + this.getSkillIncrease(user.skillup[this.constructor.name].BSPD)*0.1;
-    this.PlayerHP = this.maxHP;
-    this.DMG = 5 + this.getSkillIncrease(user.skillup[this.constructor.name].DMG);
-    this.PlayerDMG = this.DMG;
-    this.PlayerSPD = 8 + this.getSkillIncrease(user.skillup[this.constructor.name].SPD)/1.5;
-    this.PlayerRNG = 400 + this.getSkillIncrease(user.skillup[this.constructor.name].RNG)*75;
-    this.PlayerDASH = 20 + this.getSkillIncrease(user.skillup[this.constructor.name].DASH)*5;
-    this.specialTime = 5;
+    this.PlayerHP    = this.maxHP;
+    this.DMG         = 5 + this.getSkillIncrease(user.skillup[this.constructor.name].DMG);
+    this.PlayerDMG   = this.DMG;
+    this.PlayerSPD   = 8 + this.getSkillIncrease(user.skillup[this.constructor.name].SPD)/1.5;
+    this.PlayerRNG   = 400 + this.getSkillIncrease(user.skillup[this.constructor.name].RNG)*75;
+    this.PlayerDASH  = 20 + this.getSkillIncrease(user.skillup[this.constructor.name].DASH)*5;
 
     this.loadColor();
     //this.color = color(user.ships[this.constructor.name].color[0], user.ships[this.constructor.name].color[1], user.ships[this.constructor.name].color[2], user.ships[this.constructor.name].color[3]);
@@ -379,13 +434,6 @@ draw() {
     imageMode(CENTER);
     image(this.img, this.x, this.y);
     pop();
-
-    if(this.specialCounter > 0) {
-        this.specialCounter--;
-    } else {
-        this.PlayerDMG = this.DMG;
-    }
-
 }
 
 dash() {
@@ -393,10 +441,36 @@ dash() {
     this.y += this.dir.y*this.PlayerDASH;
 }
 
-special() {
-    //was neues ausdenken -> feuerrate = unendlich aber range kürzer?
-    this.specialCounter = 60*this.specialTime;
-    this.specialActive = true;
-    this.PlayerDMG += 5 + this.getSkillIncrease(user.skillup.Ship1.SPC);
+// special() {
+//     //was neues ausdenken -> feuerrate = unendlich aber range kürzer?
+//     this.specialCounter = 60*this.specialTime;
+//     this.specialActive = true;
+//     this.PlayerDMG += 5 + this.getSkillIncrease(user.skillup.Ship1.SPC);
+// }
+
+// Override for Laser instead of bullet
+controls(mode) {
+    if (mode === 'keyPress') {
+    } else if (mode === 'mousePress') {
+    } else if (mode === 'mouseClick') {
+    } else if (mode === 'keyDown') {
+        if (keyIsDown(32)) {
+            this.shoot(new Laser(this, 'yellow', this.dir, p5.Vector.add(this.pos, this.vectors[0])),
+                       this.shotDelay, 0);
+        }
+
+        if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
+            this.x -= this.PlayerSPD;
+        }
+        if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) {
+            this.x += this.PlayerSPD;
+        }
+        if (keyIsDown(UP_ARROW) || keyIsDown(87)) {
+            this.y -= this.PlayerSPD;
+        }
+        if(keyIsDown(DOWN_ARROW) || keyIsDown(83)) {
+            this.y += this.PlayerSPD;
+        }
+    }
 }
 }

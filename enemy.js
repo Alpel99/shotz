@@ -15,6 +15,9 @@ constructor(color) {
     this.score = 5;                         // = Player-points per Kill
     this.dropChance = 0.9;                  // = Chance, dass powerUp fallen gelassen wird
     this.knockbackSensitivity = 1           // = Multiplier für Knockback-Vektor
+    this.pushTimeStamp = 0;
+    this.empActive = false;
+    this.pushes = [];                       // = speichert vorübergehend push-Funktionen, die auf diesen Gegner wirken
     this.chase = false;
     this.lock = false;
 }
@@ -87,6 +90,12 @@ update() {
         this.vel.rotate(angle);
     }
 
+    if (this.pushes.length > 0) {
+        this.pushes.forEach((push) => {
+            push();
+        });
+    }
+
     this.vel.mult(this.speed);
     this.pos.add(this.vel);
     this.vel.normalize();
@@ -127,15 +136,43 @@ isDead(dmg) {
     else return false;
 }
 
-push(vector, duration, timestamp) {
-    let vec = vector.mult(this.knockbackSensitivity);
+push(vector, duration, timestamp, fade = true) {
+    /*
+    *  @Parameter
+    *  vector: In welche Richtung und mit welcher Geschwindigkeit geht der push
+    *  duration: Wenn vorhanden, wirkt der push über diese Dauer, sonst instantly
+    *  timestamp: Startzeitpunkt des pushes
+    *  fade: boolean, default = true, Abruptes Ende des pushes, falls false, sonst langsame Entschleunigung
+    */
+
+    let vec = createVector(vector.x, vector.y).mult(this.knockbackSensitivity);
+    let tsdur = timestamp + duration;
+    let tsdurHalf = timestamp + (duration/2);
+
     if (duration) {
-       if (millis() <= timestamp + duration) {
-           this.vel.add(vec);
-       }
-   } else {   // Wenn kein duration gegeben, instant push
-       this.vel.add(vec);
-   }
+        if (fade) {
+            // duration + fadeout
+            if (millis() <= tsdurHalf) {
+                this.vel.add(vec);
+            } else if (millis() <= tsdur && millis() > tsdurHalf) {
+                vec.mult((tsdur-millis())/(duration/2)); // fadeout
+                this.vel.add(vec);
+            } else {
+                this.pushes.pop();
+            }
+        } else {
+            // duration without fadeout
+            if (millis() <= tsdur) {
+                this.vel.add(vec);
+            } else {
+                this.pushes.pop();
+            }
+        }
+    } else {
+        // no duration, instant push
+        this.vel.add(vec);
+        this.pushes.pop();
+    }
 }
 }
 

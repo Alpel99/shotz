@@ -69,3 +69,15 @@ https://trello.com/b/2Vm2EXmP/shotz
           für PUs erstellen, damit eindeutiger Zugriff möglich ist?!)  
         * Lösung für Timeout finden (Entfernen des Pickups vom Screen, wenn
           Spieler es zu lange nicht einsammelt - 5Sek?)  
+
+## Update Jan 07.03.2020
+* Minor PowerUp-Balancing (DMG, SPD)  
+* Ship.special() refactored  
+    * adjusted missing dmgUp,  
+    * now activation consistent to emp  
+* Ship.emp() refactored  
+    * scalability,  
+    * correct application of duration,  
+    * now only called once,  
+    * fadeout implemented,  
+    * now multiple pushes on single enemy possible  
