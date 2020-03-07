@@ -155,43 +155,6 @@ collides(obj) { // currently enemy or pickup
     return collision;
 }
 
-// emp() {
-//     // Zeichnen des Effektes
-//     push();
-//         noFill();
-//         let transparency = map(this.empRange, 0, this.empMaxRange, 0, 255);
-//         stroke(255, 255, 255, 255-transparency);
-//         circle(this.pos.x, this.pos.y, this.empRange);
-//         strokeWeight(2);
-//         circle(this.pos.x, this.pos.y, this.empRange-5);
-//         strokeWeight(4);
-//         circle(this.pos.x, this.pos.y, this.empRange-15);
-//     pop();
-//     this.empRange += 5;
-//
-//     // Deaktivieren des EMP, wenn komplett gezeichnet und Zurücksetzen der Variablen
-//     if (this.empRange > this.empMaxRange) {
-//         this.empActive = false;
-//         this.empTimeStamp = 0;
-//         this.empRange = 0;
-//     }
-//     // Auf Gegner checken (in EMP-range?) und ggf. wegdrücken
-//     game.screen.enemies.forEach((e) => {
-//         let toEnemy = createVector(e.pos.x-this.pos.x, e.pos.y-this.pos.y);
-//         if (toEnemy.mag() <= this.empRange) {
-//             // Stärke des Effektes abhängig von Entfernung zum Gegner
-//             // z.B. this.empMaxRange = 200/toEnemy.mag() = 100 ergibt einen Wirkungsgrad von 2
-//             toEnemy.mult(this.empMaxRange/toEnemy.mag());
-//
-//             if (this.empTimeStamp === 0) {
-//                 this.empTimeStamp = millis();
-//                 // e.push(toEnemy.mult(1/60), 1500, this.empTimeStamp);
-//                 e.push(toEnemy.mult(1/60), 1500);
-//
-//             }
-//         }
-//     });
-// }
 emp() {
     // Zeichnen des Effektes
     push();
