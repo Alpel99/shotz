@@ -8,6 +8,32 @@ const powerups = [
             name: 'hpUP',
             type: 'pickup',
             description: 'Erhöht die Lebenspunkte des Schiffs um 2.',
+            onPickup: () => {
+                // console.log("onPickup aufgerufen", this);
+                game.screen.ship.PlayerHP += 2;
+                game.screen.ship.mods.splice(game.screen.ship.mods.indexOf(this), 1);
+            },
+            draw: (x, y, pu) => {
+                // console.log("draw aufgerufen", this);
+                let content = () => {
+                    textSize(25);
+                    text("HP+", x+5, y+30);
+                }
+                game.drawPickup(x, y, pu, content, this.timestamp);
+            },
+            // hello: (name) => {
+            //     console.log(`Hello ${name}, we are in`, this);
+            // }
+        },
+        mod: null
+    },
+    {
+        name: 'hpUP',
+        count: 'multiple',  // Wie oft kann es eingesammelt werden? unique/multiple
+        pickup: {           // Alles zum sammelbaren Icon
+            name: 'hpUP',
+            type: 'pickup',
+            description: 'Erhöht die Lebenspunkte des Schiffs um 2.',
             onPickup: (pu) => {
                 game.screen.ship.PlayerHP += 2;
                 game.screen.ship.mods.splice(game.screen.ship.mods.indexOf(pu.pickup), 1);

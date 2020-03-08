@@ -36,7 +36,7 @@ constructor() {
 update() {
     // update the vectors from the ship
     this.angle = atan2(mouseY - this.y, mouseX - this.x) + PI*0.5;
-    this.vectors.forEach(element => element.rotate(this.angle - this.prevangle));
+    this.vectors.forEach(v => v.rotate(this.angle - this.prevangle));
     this.prevangle = this.angle;
     this.move();
 
@@ -49,6 +49,9 @@ update() {
 
     // mods
     this.mods.forEach((mod) => {
+        // console.log("in ship.mods.forEach");
+        // console.log(this.mods);
+        // console.log(mod);
         if (mod.type === 'pickup') mod.draw();
     });
 
@@ -60,38 +63,22 @@ update() {
     }
 
 move() {
-    var xmin = width;
-    var ymin = height;
-    var xmax = 0;
-    var ymax = 0;
+    let xmin = width;
+    let ymin = height;
+    let xmax = 0;
+    let ymax = 0;
 
-    for(let i = 0; i < this.vectors.length; i++) {
-        if(this.vectors[i].x + this.x < xmin) {
-            xmin = this.vectors[i].x + this.x;
-        }
-        if(this.vectors[i].y + this.y < ymin) {
-            ymin = this.vectors[i].y + this.y;
-        }
-        if(this.vectors[i].x + this.x > xmax) {
-            xmax = this.vectors[i].x + this.x;
-        }
-        if(this.vectors[i].y + this.y > ymax) {
-            ymax = this.vectors[i].y + this.y;
-        }
+    for (let i = 0; i < this.vectors.length; i++) {
+        if (this.vectors[i].x + this.x < xmin) xmin = this.vectors[i].x + this.x;
+        if (this.vectors[i].y + this.y < ymin) ymin = this.vectors[i].y + this.y;
+        if (this.vectors[i].x + this.x > xmax) xmax = this.vectors[i].x + this.x;
+        if (this.vectors[i].y + this.y > ymax) ymax = this.vectors[i].y + this.y;
     }
 
-    if(xmin < 0) {
-        this.x = this.x + this.PlayerSPD;
-    }
-    if(ymin < 0) {
-        this.y = this.y + this.PlayerSPD;
-    }
-    if(xmax > width) {
-        this.x = this.x - this.PlayerSPD;
-    }
-    if(ymax > height) {
-        this.y = this.y - this.PlayerSPD;
-    }
+    if (xmin < 0)      this.x = this.x + this.PlayerSPD * dt;
+    if (ymin < 0)      this.y = this.y + this.PlayerSPD * dt;
+    if (xmax > width)  this.x = this.x - this.PlayerSPD * dt;
+    if (ymax > height) this.y = this.y - this.PlayerSPD * dt;
 }
 
 shoot(bullet_obj, delay, timestamp_index) {
@@ -105,7 +92,7 @@ shoot(bullet_obj, delay, timestamp_index) {
    }
 
 loadColor() {
-    this.color = color(user.ships[this.constructor.name].color[0], user.ships[this.constructor.name].color[1], user.ships[this.constructor.name].color[2], user.ships[this.constructor.name].color[3]);
+    this.color = user.ships[this.constructor.name].color;
 }
 
 controls(mode) {
@@ -121,19 +108,10 @@ controls(mode) {
             // this.shoot(new Bullet(this, 'yellow', this.vectors[10], (p5.Vector.add(this.pos, this.vectors[10]))),
             //            this.shotDelay+300, 2);
         }
-
-        if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
-            this.x -= this.PlayerSPD;
-        }
-        if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) {
-            this.x += this.PlayerSPD;
-        }
-        if (keyIsDown(UP_ARROW) || keyIsDown(87)) {
-            this.y -= this.PlayerSPD;
-        }
-        if(keyIsDown(DOWN_ARROW) || keyIsDown(83)) {
-            this.y += this.PlayerSPD;
-        }
+        if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) this.x -= this.PlayerSPD * dt;
+        if (keyIsDown(RIGHT_ARROW)|| keyIsDown(68)) this.x += this.PlayerSPD * dt;
+        if (keyIsDown(UP_ARROW)   || keyIsDown(87)) this.y -= this.PlayerSPD * dt;
+        if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) this.y += this.PlayerSPD * dt;
     }
 }
 
@@ -179,7 +157,8 @@ emp() {
     // Auf Gegner checken (in EMP-range?) und ggf. wegdrücken
     game.screen.enemies.forEach((e) => {
         let toEnemy = createVector(e.pos.x-this.pos.x, e.pos.y-this.pos.y);
-        if(toEnemy.mag() <= this.empRange) {
+
+        if (toEnemy.mag() <= this.empRange) {
             if (!e.empActive) {
                 // Parameter vorbereiten
                 toEnemy.mult(this.empMaxRange/toEnemy.mag()); // Stärke des Effektes abhängig von Entfernung zum Gegner
@@ -214,6 +193,12 @@ special() {
     }
 }
 
+
+dash() {
+    this.x += this.dir.x*this.PlayerDASH;
+    this.y += this.dir.y*this.PlayerDASH;
+}
+
 }
 
 class Ship1 extends Ship {
@@ -240,9 +225,8 @@ constructor(x, y) {
 
 
     this.loadColor();
-    //this.color = color(user.ships[this.constructor.name].color[0], user.ships[this.constructor.name].color[1], user.ships[this.constructor.name].color[2], user.ships[this.constructor.name].color[3]);
     this.createVectors();
-    this.specialText = "The special fo this ship will increase the single bullet damage";
+    this.specialText = "The special of this ship drastically increases bullet damage and rate of fire over 5 seconds";
 }
 
 createVectors() {
@@ -300,11 +284,6 @@ draw() {
     image(this.img, this.x, this.y);
     pop();
 }
-
-dash() {
-    this.x += this.dir.x*this.PlayerDASH;
-    this.y += this.dir.y*this.PlayerDASH;
-}
 }
 
 
@@ -332,10 +311,10 @@ constructor(x, y) {
     this.PlayerDASH  = 20 + this.getSkillIncrease(user.skillup[this.constructor.name].DASH)*5;
 
     this.loadColor();
-    //this.color = color(user.ships[this.constructor.name].color[0], user.ships[this.constructor.name].color[1], user.ships[this.constructor.name].color[2], user.ships[this.constructor.name].color[3]);
     this.createVectors();
 
-    this.specialText = "The special of this Ship will\nincreasethe firerate = decrease the shotDelay a little bit\nthis increases the damage output significantly\nBanane mit Sosse";
+    this.specialText = "The special of this Ship increases the rate of fire a little bit" +
+                        "\nBanane mit Sosse";
 }
 
 createVectors() {
@@ -399,18 +378,6 @@ draw() {
     pop();
 }
 
-dash() {
-    this.x += this.dir.x*this.PlayerDASH;
-    this.y += this.dir.y*this.PlayerDASH;
-}
-
-// special() {
-//     //was neues ausdenken -> feuerrate = unendlich aber range kürzer?
-//     this.specialCounter = 60*this.specialTime;
-//     this.specialActive = true;
-//     this.PlayerDMG += 5 + this.getSkillIncrease(user.skillup.Ship1.SPC);
-// }
-
 // Override for Laser instead of bullet
 controls(mode) {
     if (mode === 'keyPress') {
@@ -421,19 +388,10 @@ controls(mode) {
             this.shoot(new Laser(this, 'yellow', this.dir, p5.Vector.add(this.pos, this.vectors[0])),
                        this.shotDelay, 0);
         }
-
-        if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
-            this.x -= this.PlayerSPD;
-        }
-        if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) {
-            this.x += this.PlayerSPD;
-        }
-        if (keyIsDown(UP_ARROW) || keyIsDown(87)) {
-            this.y -= this.PlayerSPD;
-        }
-        if(keyIsDown(DOWN_ARROW) || keyIsDown(83)) {
-            this.y += this.PlayerSPD;
-        }
+        if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) this.x -= this.PlayerSPD * dt;
+        if (keyIsDown(RIGHT_ARROW)|| keyIsDown(68)) this.x += this.PlayerSPD * dt;
+        if (keyIsDown(UP_ARROW)   || keyIsDown(87)) this.y -= this.PlayerSPD * dt;
+        if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) this.y += this.PlayerSPD * dt;
     }
 }
 }

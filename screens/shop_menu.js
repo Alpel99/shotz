@@ -54,8 +54,8 @@ class Shop_menu {
     pop();
 
     this.apply.draw();
-
   }
+
   background() {
     background(this.color0);
     noStroke();
@@ -78,27 +78,24 @@ class Shop_menu {
       } else if (mode === 'mouseClick') {
         for(let i = 0; i < this.ships.length; i++) {
             if(this.mouseHover(this.ships[i].x, this.ships[i].y, 150) == true && this.pickMode == "ship") {
-                this.colorPicker = createColorPicker(color(user.ships[this.ships[i].constructor.name].color[0], user.ships[this.ships[i].constructor.name].color[1], user.ships[this.ships[i].constructor.name].color[2], user.ships[this.ships[i].constructor.name].color[3]));
+                this.colorPicker = createColorPicker(user.ships[this.ships[i].constructor.name].color);
                 this.colorPicker.position(this.cpx + 50, height/4-20);
                 this.pickMode = "color";
                 this.pickship = this.ships[i];
                 break;
             }
         }
-        //APPLY
+        // APPLY
         if(this.apply.hover() == true) {
           user.money -= 50;
-          for(let i = 0; i < 4; i++) {
-            console.log(this.pickship.constructor.name);
-            user.ships[this.pickship.constructor.name].color[i] = this.colorPicker.color().levels[i];
-          }
+          user.ships[this.pickship.constructor.name].color = this.colorPicker.color();
           this.removePickers();
         }
       }
   }
 
   mouseHover(x, y, size) {
-      //Center from rectagnle that mouse hovers
+      // Center from rectangle that mouse hovers
       var hover = false;
       if(mouseX > x-size/2 && mouseX < x+size/2 && mouseY > y-size/2 && mouseY < y+size/2) {
           hover = true;

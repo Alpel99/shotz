@@ -32,23 +32,47 @@ choosePowerUp(x, y) {
     // Chooses one powerup from powerups-object randomly and pushes it to ship.mods
     let pu = powerups[Math.floor(Math.random()*powerups.length)];
     let ts = millis();
-    this.screen.ship.mods.push({
+
+    let pickup = {
         type: 'pickup',
-        draw: this.wrapDraw(x, y, pu),
-        onPickup: this.wrapOnPickup(pu),
-        timestamp: ts
-    });
+        name: pu.pickup.name,
+        description: pu.pickup.description,
+    }
+
+    pickup.onPickup = pu.pickup.onPickup.bind(pickup);
+    pickup.draw = pu.pickup.draw.bind(pickup, x, y, pu);
+
+    // let pickupObj = {
+    //     type: 'pickup',
+    //     timestamp: ts
+    // };
+    // // console.log(pu);
+    // console.log(pu.pickup);
+    // // console.log(pu.pickup.onPickup);
+    //
+    // function hello(name) {
+    //     console.log(`Hello ${name}, we are in`, this);
+    // }
+    //
+    // pickupObj.hello = hello.bind(pickupObj, "Jan");
+    // // pickupObj.hello = pu.pickup.hello.bind(pickupObj, "Jan");
+    // pickupObj.draw = pu.pickup.draw.bind(pickupObj, x, y, pu);
+    // pickupObj.onPickup = pu.pickup.onPickup.bind(pickupObj);
+
+    this.screen.ship.mods.push(pickup);
+    // console.log(this.screen.ship.mods);
 }
 
-wrapDraw(x, y, pu) {
-    // wraps draw() for context variables/parameter
-    return function() {pu.pickup.draw(x, y, pu)};
-}
+// wrapDraw(x, y, pu) {
+//     // wraps draw() for context variables/parameter
+//     let fn = pu.pickup.draw(x, y, pu)
+//     return fn;
+// }
 
-wrapOnPickup(pu) {
-    // wraps onPickup() for context variables/parameter
-    return function() {pu.pickup.onPickup(pu)};
-}
+// wrapOnPickup(pu) {
+//     // wraps onPickup() for context variables/parameter
+//     return function() {pu.pickup.onPickup(pu)};
+// }
 
 drawPickup(x, y, pu, content, timestamp) {
     /*

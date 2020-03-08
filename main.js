@@ -1,4 +1,11 @@
-let game, user, width, height, cvn, fr, dt;
+let game,   // game-Objekt
+    user,   // Nutzer-Objekt
+    width,  // Breite des Canvas
+    height, // Höhe des Canvas
+    cvn,    // Referenz zum Canvas
+    fr,     // festgelegte Framerate
+    dt,     // delta time -
+    font;   // text font für das gesamte Spiel (es ist auch möglich mehrere zu laden, um spezifsche Texte hervorzuheben)
 
 function preload() {
     width = windowWidth - 20;
@@ -8,11 +15,13 @@ function preload() {
     user = new User(); // get Serverdata
     game = new Game();
 
+    font = loadFont('assets/fonts/Oxanium/Oxanium-Medium.ttf');
 }
 
 function setup() {
     fr = 60;
     frameRate(fr);
+    textFont(font);
     cvn = createCanvas(width, height);
     //figure out if this works with nodejs backend
     user.activeShip = new Ship1(width/2, height/2);

@@ -71,7 +71,7 @@ https://trello.com/b/2Vm2EXmP/shotz
           Spieler es zu lange nicht einsammelt - 5Sek?)  
 
 ## Update Jan 07.03.2020
-* Minor PowerUp-Balancing (DMG, SPD)  
+* Minor PowerUp-Balancing (DMG, SPD, Ship.special())  
 * Ship.special() refactored  
     * adjusted missing dmgUp,  
     * now activation consistent to emp  
@@ -79,5 +79,14 @@ https://trello.com/b/2Vm2EXmP/shotz
     * scalability,  
     * correct application of duration,  
     * now only called once,  
-    * fadeout implemented,  
+    * push-fadeout implemented,  
     * now multiple pushes on single enemy possible  
+
+## Update Jan 08.03.2020
+* Minor Improvements:  
+    * loadColor now loads color(), instead of Array[255,255,255,255]  
+    * dt to all movements (ship, enemy) for framerate independent movement  
+    * added "this"-context to powerups with .bind() - perfect targeting of pu in ship.mods-array - wrapDraw and wrapOnPickup now obsolete  
+    * new (imho fitting) text font (found on https://fonts.google.com/?category=Sans+Serif,Display,Monospace ; https://p5js.org/reference/#/p5/loadFont)  
+    * added bounding box for specialtext in shipdata.js for better text alignment
+    * set dropChance of default enemy to 0.1

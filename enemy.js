@@ -13,13 +13,13 @@ constructor(color) {
     this.setStartSpot();                    // = Startlocation
 
     this.score = 5;                         // = Player-points per Kill
-    this.dropChance = 0.9;                  // = Chance, dass powerUp fallen gelassen wird
+    this.dropChance = 0.1;                  // = Chance, dass powerUp fallen gelassen wird
     this.knockbackSensitivity = 1           // = Multiplier für Knockback-Vektor
-    this.pushTimeStamp = 0;
-    this.empActive = false;
+    this.empActive = false;                 // = Damit Ship weiß, ob dieser Gegner schon vom EMP betroffen ist
     this.pushes = [];                       // = speichert vorübergehend push-Funktionen, die auf diesen Gegner wirken
-    this.chase = false;
-    this.lock = false;
+
+    this.chase = false;                     // Keine Verwendung bisher
+    this.lock = false;                      // Keine Verwendung bisher
 }
 
 setStartSpot() {
@@ -91,12 +91,10 @@ update() {
     }
 
     if (this.pushes.length > 0) {
-        this.pushes.forEach((push) => {
-            push();
-        });
+        this.pushes.forEach(push => push());
     }
 
-    this.vel.mult(this.speed);
+    this.vel.mult(this.speed * dt);
     this.pos.add(this.vel);
     this.vel.normalize();
     this.show();
