@@ -29,60 +29,33 @@ controls(mode) {
 }
 
 choosePowerUp(x, y) {
-    // Chooses one powerup from powerups-object randomly and pushes it to ship.mods
+    // Wählt ein zufälliges Powerup aus dem powerups-Objekt aus und pusht es in ship.mods
     let pu = powerups[Math.floor(Math.random()*powerups.length)];
     let ts = millis();
 
+    // Pickup-Objekt zum push vorbereiten
     let pickup = {
         type: 'pickup',
         name: pu.pickup.name,
         description: pu.pickup.description,
+        timestamp: ts
     }
-
     pickup.onPickup = pu.pickup.onPickup.bind(pickup);
     pickup.draw = pu.pickup.draw.bind(pickup, x, y, pu);
 
-    // let pickupObj = {
-    //     type: 'pickup',
-    //     timestamp: ts
-    // };
-    // // console.log(pu);
-    // console.log(pu.pickup);
-    // // console.log(pu.pickup.onPickup);
-    //
-    // function hello(name) {
-    //     console.log(`Hello ${name}, we are in`, this);
-    // }
-    //
-    // pickupObj.hello = hello.bind(pickupObj, "Jan");
-    // // pickupObj.hello = pu.pickup.hello.bind(pickupObj, "Jan");
-    // pickupObj.draw = pu.pickup.draw.bind(pickupObj, x, y, pu);
-    // pickupObj.onPickup = pu.pickup.onPickup.bind(pickupObj);
-
     this.screen.ship.mods.push(pickup);
-    // console.log(this.screen.ship.mods);
 }
 
-// wrapDraw(x, y, pu) {
-//     // wraps draw() for context variables/parameter
-//     let fn = pu.pickup.draw(x, y, pu)
-//     return fn;
-// }
-
-// wrapOnPickup(pu) {
-//     // wraps onPickup() for context variables/parameter
-//     return function() {pu.pickup.onPickup(pu)};
-// }
-
-drawPickup(x, y, pu, content, timestamp) {
+drawPickup(x, y, pu, pickup, content) {
     /*
     *  Parameter:
     *  x, y:    Position des getöteten Gegners (dort wird pickup dargestellt)
     *  pu:      Referenz zum richtigen PowerUp-Objekt
-    *  content: Aussehen des pickups (innerhalb des gelben Rahmens - bisher nur Buchstabenkürzel)
+    *  pickup:  Referenz zum temporären pickup-Obkekt
+    *  content: Aussehen des pickups (innerhalb des gelben Rahmens)
     */
 
-    // Aussehen Pickups
+    // Aussehen des Pickups
     push();
         strokeWeight(4);
         fill(0, 0, 0, 100);
@@ -94,8 +67,8 @@ drawPickup(x, y, pu, content, timestamp) {
 
     // Schiffkolission zum Einsammeln des Pickups
     game.screen.ship.vectors.forEach((v) => {
-        const vx = v.x + game.screen.ship.x;
-        const vy = v.y + game.screen.ship.y;
+        const vx = v.x + game.screen.ship.pos.x;
+        const vy = v.y + game.screen.ship.pos.y;
         if (vx >= x && vx <= x+60 && vy >= y && vy <= y+60) {
             pu.pickup.onPickup(pu);
         }
@@ -123,22 +96,11 @@ drawPickup(x, y, pu, content, timestamp) {
         pop();
     }
 
-    // Löschen der Pickups nach 5 Sekunden
-    // console.log(game.screen.ship.mods.indexOf(pu.pickup));
-    // let index = game.screen.ship.mods.indexOf(pu.pickup);
-    // console.log(index);
-    // console.log(game.screen.ship.mods[index]);
-    // console.log(pu.timestamp);
-    // console.log(pu);
-    // console.log(pu.pickup.timestamp);
-    // console.log(typeof pu.pickup.timestamp);
-    // console.log(millis());
-    // console.log(pu.pickup.timestamp - (millis()-5000));
-    if (pu.pickup.timestamp < millis()-5000) {
-        game.screen.ship.mods.splice(game.screen.ship.mods.indexOf(pu.pickup), 1);
+    // Löschen des Pickups nach 10 Sekunden
+    if (pickup.timestamp < millis()-10000) {
+        game.screen.ship.mods.splice(game.screen.ship.mods.indexOf(pickup), 1);
     }
-    }
-
+}
 
 generateID () {
     // Erzeugt eine zufällige id

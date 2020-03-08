@@ -4,25 +4,24 @@
 */
 class Ship {
 constructor() {
-    this.x = width/2;
-    this.y = height/2;
+    this.pos = createVector(width/2, height/2); // ship position
+    this.vel = createVector(0, 0);              // ship velocity
+    this.dir = createVector(10, 0);             // ship facing direction
 
     //get the vectors from the ship
     this.prevangle = 0;
     this.angle = 0;
-
     this.img = createGraphics(150,150);
 
     // bullets
-    this.dir = createVector(10, 0);             // ship facing direction
-    this.pos = createVector(this.x, this.y);    // ship position
     this.timestamps = [millis(), millis(), millis()];  // for evaluating shot delay
     this.bullets = [];
 
+    // powerups
     this.mods = [];
 
-    //emp
-    this.empMaxRange = 300; // orig: 240
+    // emp
+    this.empMaxRange = 300;
     this.empRange = 0;
     this.empTimeStamp = 0;
     this.empActive = false;
@@ -35,17 +34,16 @@ constructor() {
 
 update() {
     // update the vectors from the ship
-    this.angle = atan2(mouseY - this.y, mouseX - this.x) + PI*0.5;
+    this.angle = atan2(mouseY - this.pos.y, mouseX - this.pos.x) + PI*0.5;
     this.vectors.forEach(v => v.rotate(this.angle - this.prevangle));
     this.prevangle = this.angle;
-    this.move();
+
+    var toMouse = createVector(mouseX-this.pos.x, mouseY-this.pos.y);
+    this.dir.rotate(toMouse.heading()-this.dir.heading());
+    this.walls();
 
     // bullets
     this.bullets.forEach(b => b.update());
-    this.pos.set(this.x, this.y);
-    var toMouse = createVector(mouseX-this.x, mouseY-this.y);
-    this.dir.rotate(toMouse.heading()-this.dir.heading());
-
 
     // mods
     this.mods.forEach((mod) => {
@@ -62,23 +60,24 @@ update() {
     if (this.specialActive) this.special();
     }
 
-move() {
+walls() {
+    // checks for walls and replaces ship if necessary
     let xmin = width;
     let ymin = height;
     let xmax = 0;
     let ymax = 0;
 
     for (let i = 0; i < this.vectors.length; i++) {
-        if (this.vectors[i].x + this.x < xmin) xmin = this.vectors[i].x + this.x;
-        if (this.vectors[i].y + this.y < ymin) ymin = this.vectors[i].y + this.y;
-        if (this.vectors[i].x + this.x > xmax) xmax = this.vectors[i].x + this.x;
-        if (this.vectors[i].y + this.y > ymax) ymax = this.vectors[i].y + this.y;
+        if (this.vectors[i].x + this.pos.x < xmin) xmin = this.vectors[i].x + this.pos.x;
+        if (this.vectors[i].y + this.pos.y < ymin) ymin = this.vectors[i].y + this.pos.y;
+        if (this.vectors[i].x + this.pos.x > xmax) xmax = this.vectors[i].x + this.pos.x;
+        if (this.vectors[i].y + this.pos.y > ymax) ymax = this.vectors[i].y + this.pos.y;
     }
 
-    if (xmin < 0)      this.x = this.x + this.PlayerSPD * dt;
-    if (ymin < 0)      this.y = this.y + this.PlayerSPD * dt;
-    if (xmax > width)  this.x = this.x - this.PlayerSPD * dt;
-    if (ymax > height) this.y = this.y - this.PlayerSPD * dt;
+    if (xmin < 0)      this.pos.x = this.pos.x + this.PlayerSPD * dt;
+    if (ymin < 0)      this.pos.y = this.pos.y + this.PlayerSPD * dt;
+    if (xmax > width)  this.pos.x = this.pos.x - this.PlayerSPD * dt;
+    if (ymax > height) this.pos.y = this.pos.y - this.PlayerSPD * dt;
 }
 
 shoot(bullet_obj, delay, timestamp_index) {
@@ -108,10 +107,10 @@ controls(mode) {
             // this.shoot(new Bullet(this, 'yellow', this.vectors[10], (p5.Vector.add(this.pos, this.vectors[10]))),
             //            this.shotDelay+300, 2);
         }
-        if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) this.x -= this.PlayerSPD * dt;
-        if (keyIsDown(RIGHT_ARROW)|| keyIsDown(68)) this.x += this.PlayerSPD * dt;
-        if (keyIsDown(UP_ARROW)   || keyIsDown(87)) this.y -= this.PlayerSPD * dt;
-        if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) this.y += this.PlayerSPD * dt;
+        if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) this.pos.x -= this.PlayerSPD * dt;
+        if (keyIsDown(RIGHT_ARROW)|| keyIsDown(68)) this.pos.x += this.PlayerSPD * dt;
+        if (keyIsDown(UP_ARROW)   || keyIsDown(87)) this.pos.y -= this.PlayerSPD * dt;
+        if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) this.pos.y += this.PlayerSPD * dt;
     }
 }
 
@@ -126,7 +125,7 @@ collides(obj) { // currently enemy or pickup
     let checkVector;
 
     this.vectors.forEach((v) => {
-        checkVector = createVector(v.x + this.x, v.y + this.y);
+        checkVector = createVector(v.x + this.pos.x, v.y + this.pos.y);
         if (obj.isHit(checkVector)) collision = true
     });
 
@@ -168,7 +167,7 @@ emp() {
                 // Funktionsreferenz speichern
                 let fn = e.push.bind(e, toEnemy.mult(1/60), 1500, ts);
 
-                // Funktion Enemy.pushes-Array hinzufügen
+                // Funktion dem Enemy.pushes-Array hinzufügen
                 e.pushes.push(fn);
                 e.empActive = true;
             }
@@ -193,10 +192,9 @@ special() {
     }
 }
 
-
 dash() {
-    this.x += this.dir.x*this.PlayerDASH;
-    this.y += this.dir.y*this.PlayerDASH;
+    this.pos.x += this.dir.x*this.PlayerDASH;
+    this.pos.y += this.dir.y*this.PlayerDASH;
 }
 
 }
@@ -205,8 +203,8 @@ class Ship1 extends Ship {
 constructor(x, y) {
     super();
     this.name = "Sharion"
-    this.x = x;
-    this.y = y;
+    this.pos.x = x;
+    this.pos.y = y;
     //get the vectors from the ship
     this.vectors = [];
 
@@ -281,7 +279,7 @@ draw() {
         this.img.triangle(this.vectors[7].x,this.vectors[7].y,this.vectors[8].x,this.vectors[8].y,this.vectors[12].x,this.vectors[12].y);
         this.img.pop();
     imageMode(CENTER);
-    image(this.img, this.x, this.y);
+    image(this.img, this.pos.x, this.pos.y);
     pop();
 }
 }
@@ -292,8 +290,8 @@ class Ship2 extends Ship {
 constructor(x, y) {
     super();
     this.name = "Corinat"
-    this.x = x;
-    this.y = y;
+    this.pos.x = x;
+    this.pos.y = y;
     //get the vectors from the ship
     this.vectors = [];
 
@@ -374,7 +372,7 @@ draw() {
         this.img.triangle(this.vectors[11].x,this.vectors[11].y,this.vectors[12].x,this.vectors[12].y,this.vectors[13].x,this.vectors[13].y);
         this.img.pop();
     imageMode(CENTER);
-    image(this.img, this.x, this.y);
+    image(this.img, this.pos.x, this.pos.y);
     pop();
 }
 
@@ -388,10 +386,10 @@ controls(mode) {
             this.shoot(new Laser(this, 'yellow', this.dir, p5.Vector.add(this.pos, this.vectors[0])),
                        this.shotDelay, 0);
         }
-        if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) this.x -= this.PlayerSPD * dt;
-        if (keyIsDown(RIGHT_ARROW)|| keyIsDown(68)) this.x += this.PlayerSPD * dt;
-        if (keyIsDown(UP_ARROW)   || keyIsDown(87)) this.y -= this.PlayerSPD * dt;
-        if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) this.y += this.PlayerSPD * dt;
+        if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) this.pos.x -= this.PlayerSPD * dt;
+        if (keyIsDown(RIGHT_ARROW)|| keyIsDown(68)) this.pos.x += this.PlayerSPD * dt;
+        if (keyIsDown(UP_ARROW)   || keyIsDown(87)) this.pos.y -= this.PlayerSPD * dt;
+        if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) this.pos.y += this.PlayerSPD * dt;
     }
 }
 }

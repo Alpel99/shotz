@@ -77,7 +77,7 @@ class Shop_menu {
       } else if (mode === 'mousePress') {
       } else if (mode === 'mouseClick') {
         for(let i = 0; i < this.ships.length; i++) {
-            if(this.mouseHover(this.ships[i].x, this.ships[i].y, 150) == true && this.pickMode == "ship") {
+            if(this.mouseHover(this.ships[i].pos.x, this.ships[i].pos.y, 150) == true && this.pickMode == "ship") {
                 this.colorPicker = createColorPicker(user.ships[this.ships[i].constructor.name].color);
                 this.colorPicker.position(this.cpx + 50, height/4-20);
                 this.pickMode = "color";

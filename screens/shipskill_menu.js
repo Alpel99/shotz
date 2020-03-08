@@ -42,7 +42,6 @@ draw() {
     background(this.r,this.g,this.b);
 
     this.ships.forEach(s => s.draw());
-
     this.menuOverlay.draw();
 }
 
@@ -55,7 +54,7 @@ controls(mode) {
     } else if (mode === 'mousePress') {
     } else if (mode === 'mouseClick') {
         for(let i = 0; i < this.ships.length; i++) {
-            if(this.mouseHover(this.ships[i].x, this.ships[i].y, 150) == true) {
+            if(this.mouseHover(this.ships[i].pos.x, this.ships[i].pos.y, 150) == true) {
                 game.screen = new Skill_menu(this.ships[i]);
                 break;
             }
