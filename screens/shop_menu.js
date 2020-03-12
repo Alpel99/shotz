@@ -3,11 +3,11 @@ class Shop_menu {
     this.color0 = color(0);
     this.color1 = color(255);
     this.color2 = color(0);
-    this.s = 20;
+    this.s = 100;
     this.w = width/this.s;
     this.h = height/this.s;
     this.offset = 0;
-    this.offdiff = 0.0003;
+    this.offdiff = 0.001;
 
     this.pickMode = "ship";
     //ship, color
@@ -61,7 +61,7 @@ class Shop_menu {
     noStroke();
     for(let i = 0; i < this.w; i++) {
       for(let j = 0; j < this.h; j++) {
-        fill(color(noise(i+this.offset*0.4*20,j+this.offset*2.3*20)*255));
+        fill(color(noise(i+this.offset*0.4,j+this.offset*2.3)*255));
         rect(i*this.s,j*this.s,this.s,this.s);
       }
 
