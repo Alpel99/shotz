@@ -9,7 +9,9 @@ const powerups = [
             type: 'pickup',
             description: 'Erhöht die Lebenspunkte des Schiffs um 2.',
             onPickup: function() {
-                game.screen.ship.PlayerHP += 2;
+                if(game.screen.ship.PlayerHP < game.screen.ship.maxHP) {
+                    game.screen.ship.PlayerHP++;
+                }
                 game.screen.ship.mods.splice(game.screen.ship.mods.indexOf(this), 1);
             },
             draw: function(x, y, pu) {

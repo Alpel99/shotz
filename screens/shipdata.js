@@ -3,8 +3,8 @@ constructor(ship) {
     this.color1 = color(0);
     this.ship = ship;
     this.ship.loadStats();
-    this.ship.x = width/6;
-    this.ship.y = height/4;
+    this.ship.pos.x = width/6;
+    this.ship.pos.y = height/4;
 
     this.menuOverlay = new MenuOverlay();
     this.select = new Button(width/6, height/2, 200, "SELECT");
