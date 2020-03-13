@@ -15,13 +15,13 @@ function preload() {
     user = new User(); // get Serverdata
     game = new Game();
 
-    //font = loadFont('assets/fonts/Oxanium/Oxanium-Medium.ttf');
+    font = loadFont('assets/fonts/Oxanium/Oxanium-Medium.ttf');
 }
 
 function setup() {
     fr = 60;
     frameRate(fr);
-    //textFont(font);
+    textFont(font);
     cvn = createCanvas(width, height);
 //    socket = io.connect('https://alpel.ddns.net/shotz', {path: '/socket.io'});
     //socket = io.connect('alpel.ddns.net:3000', {path:'/shotz/'});
