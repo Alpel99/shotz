@@ -41,7 +41,17 @@ draw() {
     }
     background(this.r,this.g,this.b);
 
-    this.ships.forEach(s => s.draw());
+    for(let i = 0; i < this.ships.length; i++) {
+        if(this.ships[i].constructor.name == user.activeShip.constructor.name) {
+            push();
+            rectMode(CENTER);
+            fill(255-this.r, 255-this.g, 255-this.b, 200);
+            noStroke();
+            rect(this.ships[i].x, this.ships[i].y, 150, 150, 20);
+            pop();
+        }
+        this.ships[i].draw();
+    }
 
     this.menuOverlay.draw();
 

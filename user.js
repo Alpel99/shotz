@@ -24,6 +24,7 @@ new Item(10, "DASH", -1, 10, color(255), 81, 0.2, 30)
 
 this.skillpoints = 15;
 this.skillup = {
+    "active": 0,
     "Ship1": {
         "HP": 0,
         "DMG": 0,

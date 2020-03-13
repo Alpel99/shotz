@@ -17,7 +17,8 @@ constructor(ship) {
     this.firerate = createGraphics(100, 100);
     this.drawSkillups();
 
-    this.skillButton = new Button()
+    this.skillButton = new Button(width*0.7, height/2, 200, "Skillup");
+    this.data = new Button(width-150, height-70, 200, "Shipdata");
 
     this.skillItems = [
     new SkillItem(this.hp, "HP"),
@@ -31,7 +32,7 @@ constructor(ship) {
     new SkillItem(this.loot, "LT"),
     new SkillItem(this.exp, "EXP")
     ];
-    this.skillItems[0].active = true;
+    this.skillItems[user.skillup.active].active = true;
 
     this.menuOverlay = new MenuOverlay();
 }
@@ -83,11 +84,12 @@ draw() {
     text(this.ship.name, width/6, height/4 + 100);
     pop();
 
+    this.data.draw();
     this.menuOverlay.draw();
 }
 
 back() {
-    game.screen = new Shipskill_menu();
+    game.screen = new Ship_menu();
 }
 
 controls(mode) {
@@ -103,6 +105,9 @@ controls(mode) {
                 }
             }
         }
+    if(this.data.hover() == true) {
+        game.screen = new Shipdata(this.ship);
+    }
     } else if (mode === 'mouseClick') {
         for(let i = 0; i < this.skillItems.length; i++) {
             if(this.mouseHover((width/(this.skillItems.length+1))*(i+1), height*0.7, 100) == true) {
@@ -110,9 +115,11 @@ controls(mode) {
                     this.skillItems[j].active = false;
                 }
                 this.skillItems[i].active = true;
+                user.skillup.active = i;
             }
         }
     }
+
 }
 
 mouseHover(x, y, size) {

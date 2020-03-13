@@ -52,7 +52,7 @@ constructor() {
 
     // ship
     this.ship = user.activeShip; //needs this.ammo ??
-    this.ship.loadColor();
+    this.ship.loadStats();
 
     // variable vor ammo selection! like user.selectedammo = 0;
 
