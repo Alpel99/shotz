@@ -89,7 +89,7 @@ draw() {
 }
 
 back() {
-    game.screen = new Shipskill_menu();
+    game.screen = new Ship_menu();
 }
 
 controls(mode) {

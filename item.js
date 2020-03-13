@@ -225,7 +225,7 @@ this.activeCounter = this.activeTime;
             game.screen.ship.empActive = true;
             break;
         case "SPC":
-            game.screen.ship.special();
+            game.screen.ship.specialActive = true;
             this.activeCounter = game.screen.ship.specialTime*60;
             break;
         case "DASH":

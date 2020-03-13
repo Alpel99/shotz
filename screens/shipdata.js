@@ -18,7 +18,7 @@ draw() {
 
     pop();
     push();
-    translate(-this.ship.x, -this.ship.y);
+    translate(-this.ship.pos.x, -this.ship.pos.y);
     scale(2);
     this.ship.draw();
     pop();
@@ -43,7 +43,8 @@ draw() {
     textSize(20);
     fill(0);
     textAlign(CENTER, TOP);
-    text(this.ship.specialText, width/6, height/1.5);
+    rectMode(CENTER);
+    text(this.ship.specialText, width/6, height/1.5, width/6, height/8);
     pop();
 
     this.menuOverlay.draw();

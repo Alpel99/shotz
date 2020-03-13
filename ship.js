@@ -4,87 +4,80 @@
 */
 class Ship {
 constructor() {
-    this.x = width/2;
-    this.y = height/2;
+    this.pos = createVector(width/2, height/2); // ship position
+    this.vel = createVector(0, 0);              // ship velocity
+    this.dir = createVector(10, 0);             // ship facing direction
 
     //get the vectors from the ship
     this.prevangle = 0;
     this.angle = 0;
-
     this.img = createGraphics(150,150);
 
-    this.specialCounter = 0;
-
     // bullets
-    this.dir = createVector(10, 0);             // ship facing direction
-    this.pos = createVector(this.x, this.y);    // ship position
     this.timestamps = [millis(), millis(), millis()];  // for evaluating shot delay
     this.bullets = [];
+
+    // powerups
     this.mods = [];
 
-    //emp
-    this.empMaxRange = 240;
+    // emp
+    this.empMaxRange = 300;
     this.empRange = 0;
+    this.empTimeStamp = 0;
     this.empActive = false;
 
+    // special
+    this.specialTime = 5;
+    this.specialTimestamp = 0;
+    this.specialActive = false;
 }
 
 update() {
     // update the vectors from the ship
-    this.angle = atan2(mouseY - this.y, mouseX - this.x) + PI*0.5;
-    this.vectors.forEach(element => element.rotate(this.angle - this.prevangle));
+    this.angle = atan2(mouseY - this.pos.y, mouseX - this.pos.x) + PI*0.5;
+    this.vectors.forEach(v => v.rotate(this.angle - this.prevangle));
     this.prevangle = this.angle;
-    this.move();
+
+    var toMouse = createVector(mouseX-this.pos.x, mouseY-this.pos.y);
+    this.dir.rotate(toMouse.heading()-this.dir.heading());
+    this.walls();
 
     // bullets
     this.bullets.forEach(b => b.update());
-    this.pos.set(this.x, this.y);
-    var toMouse = createVector(mouseX-this.x, mouseY-this.y);
-    this.dir.rotate(toMouse.heading()-this.dir.heading());
 
     // mods
     this.mods.forEach((mod) => {
+        // console.log("in ship.mods.forEach");
+        // console.log(this.mods);
+        // console.log(mod);
         if (mod.type === 'pickup') mod.draw();
     });
 
-    //emp
+    // emp
     if (this.empActive) this.emp();
 
+    // special
+    if (this.specialActive) this.special();
     }
 
-move() {
-    var xmin = width;
-    var ymin = height;
-    var xmax = 0;
-    var ymax = 0;
+walls() {
+    // checks for walls and replaces ship if necessary
+    let xmin = width;
+    let ymin = height;
+    let xmax = 0;
+    let ymax = 0;
 
-    for(let i = 0; i < this.vectors.length; i++) {
-        if(this.vectors[i].x + this.x < xmin) {
-            xmin = this.vectors[i].x + this.x;
-        }
-        if(this.vectors[i].y + this.y < ymin) {
-            ymin = this.vectors[i].y + this.y;
-        }
-        if(this.vectors[i].x + this.x > xmax) {
-            xmax = this.vectors[i].x + this.x;
-        }
-        if(this.vectors[i].y + this.y > ymax) {
-            ymax = this.vectors[i].y + this.y;
-        }
+    for (let i = 0; i < this.vectors.length; i++) {
+        if (this.vectors[i].x + this.pos.x < xmin) xmin = this.vectors[i].x + this.pos.x;
+        if (this.vectors[i].y + this.pos.y < ymin) ymin = this.vectors[i].y + this.pos.y;
+        if (this.vectors[i].x + this.pos.x > xmax) xmax = this.vectors[i].x + this.pos.x;
+        if (this.vectors[i].y + this.pos.y > ymax) ymax = this.vectors[i].y + this.pos.y;
     }
 
-    if(xmin < 0) {
-        this.x = this.x + this.PlayerSPD;
-    }
-    if(ymin < 0) {
-        this.y = this.y + this.PlayerSPD;
-    }
-    if(xmax > width) {
-        this.x = this.x - this.PlayerSPD;
-    }
-    if(ymax > height) {
-        this.y = this.y - this.PlayerSPD;
-    }
+    if (xmin < 0)      this.pos.x = this.pos.x + this.PlayerSPD * dt;
+    if (ymin < 0)      this.pos.y = this.pos.y + this.PlayerSPD * dt;
+    if (xmax > width)  this.pos.x = this.pos.x - this.PlayerSPD * dt;
+    if (ymax > height) this.pos.y = this.pos.y - this.PlayerSPD * dt;
 }
 
 shoot(bullet_obj, delay, timestamp_index) {
@@ -96,10 +89,10 @@ shoot(bullet_obj, delay, timestamp_index) {
     }
 
    }
-loadColor() {
-    this.color = color(user.ships[this.constructor.name].color[0], user.ships[this.constructor.name].color[1], user.ships[this.constructor.name].color[2], user.ships[this.constructor.name].color[3]);
-}
 
+loadColor() {
+    this.color = user.ships[this.constructor.name].color;
+}
 
 controls(mode) {
     if (mode === 'keyPress') {
@@ -107,34 +100,24 @@ controls(mode) {
     } else if (mode === 'mouseClick') {
     } else if (mode === 'keyDown') {
         if (keyIsDown(32)) {
-            this.shoot(new Laser(this, 'yellow', this.dir, p5.Vector.add(this.pos, this.vectors[0])),
+            this.shoot(new Bullet(this, 'yellow', this.dir, p5.Vector.add(this.pos, this.vectors[0])),
                        this.shotDelay, 0);
-            /*this.shoot(new Bullet(this, 'yellow', this.vectors[1], (p5.Vector.add(this.pos, this.vectors[1]))),
-                       this.shotDelay+300, 1);
-            this.shoot(new Bullet(this, 'yellow', this.vectors[10], (p5.Vector.add(this.pos, this.vectors[10]))),
-                       this.shotDelay+300, 2);*/
+            // this.shoot(new Bullet(this, 'yellow', this.vectors[1], (p5.Vector.add(this.pos, this.vectors[1]))),
+            //            this.shotDelay+300, 1);
+            // this.shoot(new Bullet(this, 'yellow', this.vectors[10], (p5.Vector.add(this.pos, this.vectors[10]))),
+            //            this.shotDelay+300, 2);
         }
-
-        if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
-            this.x -= this.PlayerSPD;
-        }
-        if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) {
-            this.x += this.PlayerSPD;
-        }
-        if (keyIsDown(UP_ARROW) || keyIsDown(87)) {
-            this.y -= this.PlayerSPD;
-        }
-        if(keyIsDown(DOWN_ARROW) || keyIsDown(83)) {
-            this.y += this.PlayerSPD;
-        }
+        if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) this.pos.x -= this.PlayerSPD * dt;
+        if (keyIsDown(RIGHT_ARROW)|| keyIsDown(68)) this.pos.x += this.PlayerSPD * dt;
+        if (keyIsDown(UP_ARROW)   || keyIsDown(87)) this.pos.y -= this.PlayerSPD * dt;
+        if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) this.pos.y += this.PlayerSPD * dt;
     }
 }
 
 getSkillIncrease(x) {
-//y = 3*ln(x+1,5)-1
-//Math.log == ln
-var y = 3*Math.log(x+1.5)-1;
-return y;
+    // y = 3*ln(x+1,5)-1
+    // Math.log == ln
+    return 3 * Math.log(x + 1.5) - 1;
 }
 
 collides(obj) { // currently enemy or pickup
@@ -142,7 +125,7 @@ collides(obj) { // currently enemy or pickup
     let checkVector;
 
     this.vectors.forEach((v) => {
-        checkVector = createVector(v.x + this.x, v.y + this.y);
+        checkVector = createVector(v.x + this.pos.x, v.y + this.pos.y);
         if (obj.isHit(checkVector)) collision = true
     });
 
@@ -163,22 +146,55 @@ emp() {
     pop();
     this.empRange += 15;
 
-    // Deaktivieren des EMP, wenn komplett gezeichnet
+    // Deaktivieren des EMP (und Variablen zurücksetzen), wenn komplett gezeichnet
     if (this.empRange > this.empMaxRange) {
         this.empActive = false;
+        game.screen.enemies.forEach(e => e.empActive = false);
         this.empRange = 0;
     }
+
     // Auf Gegner checken (in EMP-range?) und ggf. wegdrücken
     game.screen.enemies.forEach((e) => {
         let toEnemy = createVector(e.pos.x-this.pos.x, e.pos.y-this.pos.y);
-        if(toEnemy.mag() <= this.empRange) {
-            // Stärke des Effektes abhängig von Entfernung zum Gegner
-            // z.B. this.empMaxRange = 200/toEnemy.mag() = 100 ergibt einen Wirkungsgrad von 2
-            toEnemy.mult(this.empMaxRange/toEnemy.mag());
-            let ts = millis();
-            e.push(toEnemy.mult(1/30), 1000, ts);
+
+        if (toEnemy.mag() <= this.empRange) {
+            if (!e.empActive) {
+                // Parameter vorbereiten
+                toEnemy.mult(this.empMaxRange/toEnemy.mag()); // Stärke des Effektes abhängig von Entfernung zum Gegner
+
+                let ts = millis();
+
+                // Funktionsreferenz speichern
+                let fn = e.push.bind(e, toEnemy.mult(1/60), 1500, ts);
+
+                // Funktion dem Enemy.pushes-Array hinzufügen
+                e.pushes.push(fn);
+                e.empActive = true;
+            }
         }
     });
+}
+
+special() {
+    // DMG-Boost Aktivieren
+    if (this.specialTimestamp === 0) {
+        this.specialTimestamp = millis();
+        this.PlayerDMG += 5 + this.getSkillIncrease(user.skillup.Ship1.SPC);
+        this.shotDelay /= 2;
+    }
+
+    // DMG-Boost Deaktivieren und Variablen zurücksetzen
+    if (this.specialTimestamp < (millis() - (this.specialTime * 1000))) {
+        this.specialActive = false;
+        this.specialTimestamp = 0;
+        this.PlayerDMG -= 5 + this.getSkillIncrease(user.skillup.Ship1.SPC);
+        this.shotDelay *= 2;
+    }
+}
+
+dash() {
+    this.pos.x += this.dir.x*this.PlayerDASH;
+    this.pos.y += this.dir.y*this.PlayerDASH;
 }
 
 }
@@ -187,8 +203,8 @@ class Ship1 extends Ship {
 constructor(x, y) {
     super();
     this.name = "Sharion"
-    this.x = x;
-    this.y = y;
+    this.pos.x = x;
+    this.pos.y = y;
     //get the vectors from the ship
     this.vectors = [];
 
@@ -204,8 +220,9 @@ constructor(x, y) {
 loadStats() {
     this.baseHP = 3;
     this.maxHP = Math.round(this.baseHP + this.getSkillIncrease(user.skillup[this.constructor.name].HP));
+
     this.crashDamage = 150;
-    this.shotDelay = 50 - this.getSkillIncrease(user.skillup[this.constructor.name].FR);
+    this.shotDelay   = 250 - this.getSkillIncrease(user.skillup[this.constructor.name].FR);
     this.bulletspeed = 0.8 + this.getSkillIncrease(user.skillup[this.constructor.name].BSPD)*0.1;
     this.PlayerHP = this.maxHP;
     this.DMG = 10 + this.getSkillIncrease(user.skillup[this.constructor.name].DMG)*2;
@@ -270,24 +287,8 @@ draw() {
         this.img.triangle(this.vectors[7].x,this.vectors[7].y,this.vectors[8].x,this.vectors[8].y,this.vectors[12].x,this.vectors[12].y);
         this.img.pop();
     imageMode(CENTER);
-    image(this.img, this.x, this.y);
+    image(this.img, this.pos.x, this.pos.y);
     pop();
-
-    if(this.specialCounter > 0) {
-        this.specialCounter--;
-    } else {
-        this.PlayerDMG = this.DMG;
-    }
-}
-
-dash() {
-    this.x += this.dir.x*this.PlayerDASH;
-    this.y += this.dir.y*this.PlayerDASH;
-}
-
-special() {
-    this.specialCounter = 60*this.specialTime;
-    this.PlayerDMG += 5 + this.getSkillIncrease(user.skillup.Ship1.SPC);
 }
 }
 
@@ -297,8 +298,8 @@ class Ship2 extends Ship {
 constructor(x, y) {
     super();
     this.name = "Corinat"
-    this.x = x;
-    this.y = y;
+    this.pos.x = x;
+    this.pos.y = y;
     //get the vectors from the ship
     this.vectors = [];
 
@@ -318,7 +319,7 @@ loadStats() {
     this.baseHP = 2;
     this.maxHP = Math.round(this.baseHP + this.getSkillIncrease(user.skillup[this.constructor.name].HP)/2);
     this.crashDamage = 300;
-    this.shotDelay = 30 - this.getSkillIncrease(user.skillup[this.constructor.name].FR);
+    this.shotDelay   = 30 - this.getSkillIncrease(user.skillup[this.constructor.name].FR);
     this.bulletspeed = 0.8 + this.getSkillIncrease(user.skillup[this.constructor.name].BSPD)*0.1;
     this.PlayerHP = this.maxHP;
     this.DMG = 5 + this.getSkillIncrease(user.skillup[this.constructor.name].DMG);
@@ -387,26 +388,24 @@ draw() {
         this.img.triangle(this.vectors[11].x,this.vectors[11].y,this.vectors[12].x,this.vectors[12].y,this.vectors[13].x,this.vectors[13].y);
         this.img.pop();
     imageMode(CENTER);
-    image(this.img, this.x, this.y);
+    image(this.img, this.pos.x, this.pos.y);
     pop();
+}
 
-    if(this.specialCounter > 0) {
-        this.specialCounter--;
-    } else {
-        this.PlayerDMG = this.DMG;
+// Override for Laser instead of bullet
+controls(mode) {
+    if (mode === 'keyPress') {
+    } else if (mode === 'mousePress') {
+    } else if (mode === 'mouseClick') {
+    } else if (mode === 'keyDown') {
+        if (keyIsDown(32)) {
+            this.shoot(new Laser(this, 'yellow', this.dir, p5.Vector.add(this.pos, this.vectors[0])),
+                       this.shotDelay, 0);
+        }
+        if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) this.pos.x -= this.PlayerSPD * dt;
+        if (keyIsDown(RIGHT_ARROW)|| keyIsDown(68)) this.pos.x += this.PlayerSPD * dt;
+        if (keyIsDown(UP_ARROW)   || keyIsDown(87)) this.pos.y -= this.PlayerSPD * dt;
+        if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) this.pos.y += this.PlayerSPD * dt;
     }
-
-}
-
-dash() {
-    this.x += this.dir.x*this.PlayerDASH;
-    this.y += this.dir.y*this.PlayerDASH;
-}
-
-special() {
-    //was neues ausdenken -> feuerrate = unendlich aber range kürzer?
-    this.specialCounter = 60*this.specialTime;
-    this.specialActive = true;
-    this.PlayerDMG += 5 + this.getSkillIncrease(user.skillup.Ship1.SPC);
 }
 }

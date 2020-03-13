@@ -44,7 +44,7 @@ constructor() {
         userammo1.amount = 10000;
     }
 
-    //items/etc
+    // items/etc
     for(let i = 0; i < user.items.length; i++) {
         user.items[i].activeCounter = -1;
         user.items[i].counter = 0;

@@ -15,8 +15,11 @@ constructor(color) {
     this.score = 5;                         // = Player-points per Kill
     this.dropChance = 0.9;                  // = Chance, dass powerUp fallen gelassen wird
     this.knockbackSensitivity = 1           // = Multiplier für Knockback-Vektor
-    this.chase = false;
-    this.lock = false;
+    this.empActive = false;                 // = Damit Ship weiß, ob dieser Gegner schon vom EMP betroffen ist
+    this.pushes = [];                       // = speichert vorübergehend push-Funktionen, die auf diesen Gegner wirken
+
+    this.chase = false;                     // Keine Verwendung bisher
+    this.lock = false;                      // Keine Verwendung bisher
 }
 
 setStartSpot() {
@@ -36,7 +39,7 @@ setStartSpot() {
         this.pos.y = height - this.size/2;
     }
 
-    if (dist(game.screen.ship.x, game.screen.ship.y, this.pos.x, this.pos.y) < this.size) {
+    if (dist(game.screen.ship.pos.x, game.screen.ship.pos.y, this.pos.x, this.pos.y) < this.size) {
         this.setStartSpot();
     }
 }
@@ -87,7 +90,11 @@ update() {
         this.vel.rotate(angle);
     }
 
-    this.vel.mult(this.speed);
+    if (this.pushes.length > 0) {
+        this.pushes.forEach(push => push());
+    }
+
+    this.vel.mult(this.speed * dt);
     this.pos.add(this.vel);
     this.vel.normalize();
     this.show();
@@ -127,15 +134,43 @@ isDead(dmg) {
     else return false;
 }
 
-push(vector, duration, timestamp) {
-    let vec = vector.mult(this.knockbackSensitivity);
+push(vector, duration, timestamp, fade = true) {
+    /*
+    *  @Parameter
+    *  vector: In welche Richtung und mit welcher Geschwindigkeit geht der push
+    *  duration: Wenn vorhanden, wirkt der push über diese Dauer, sonst instantly
+    *  timestamp: Startzeitpunkt des pushes
+    *  fade: boolean, default = true, Abruptes Ende des pushes, falls false, sonst langsame Entschleunigung
+    */
+
+    let vec = createVector(vector.x, vector.y).mult(this.knockbackSensitivity);
+    let tsdur = timestamp + duration;
+    let tsdurHalf = timestamp + (duration/2);
+
     if (duration) {
-       if (millis() <= timestamp + duration) {
-           this.vel.add(vec);
-       }
-   } else {   // Wenn kein duration gegeben, instant push
-       this.vel.add(vec);
-   }
+        if (fade) {
+            // duration + fadeout
+            if (millis() <= tsdurHalf) {
+                this.vel.add(vec);
+            } else if (millis() <= tsdur && millis() > tsdurHalf) {
+                vec.mult((tsdur-millis())/(duration/2)); // fadeout
+                this.vel.add(vec);
+            } else {
+                this.pushes.pop();
+            }
+        } else {
+            // duration without fadeout
+            if (millis() <= tsdur) {
+                this.vel.add(vec);
+            } else {
+                this.pushes.pop();
+            }
+        }
+    } else {
+        // no duration, instant push
+        this.vel.add(vec);
+        this.pushes.pop();
+    }
 }
 }
 
@@ -206,7 +241,7 @@ setStartSpot() {
         this.pos.y = height/2;
     }
 
-    if (dist(game.screen.ship.x, game.screen.ship.y, this.pos.x, this.pos.y) < this.w) {
+    if (dist(game.screen.ship.pos.x, game.screen.ship.pos.y, this.pos.x, this.pos.y) < this.w) {
         this.setStartSpot();
     }
 }
@@ -298,7 +333,7 @@ move() {
             this.vel.rotate(PI);
         }
         // Bewegung zum Schiff und ab dist = 200 darum kreisen
-        // if (dist(this.pos.x, this.pos.y, game.screen.ship.x, game.screen.ship.y) > this.orbitDist) {
+        // if (dist(this.pos.x, this.pos.y, game.screen.ship.pos.x, game.screen.ship.pos.y) > this.orbitDist) {
         if (this.toShip.mag() > this.orbitDist) {
             this.vel = this.toShip.normalize();
             console.log(this.vel);
@@ -308,8 +343,8 @@ move() {
             console.log(this.vel);
         // } else {
         //     // maybe there is a more elegant way, to get the circle movement (to prevent the stutter)
-        //     // this.pos.x = game.screen.ship.x + cos(this.alpha) * this.orbitDist;
-        //     // this.pos.y = game.screen.ship.y + sin(this.alpha) * this.orbitDist;
+        //     // this.pos.x = game.screen.ship.pos.x + cos(this.alpha) * this.orbitDist;
+        //     // this.pos.y = game.screen.ship.pos.y + sin(this.alpha) * this.orbitDist;
         //     // console.log("rotate");
         //     // this.alpha++;
         }
@@ -322,7 +357,7 @@ move() {
 }
 
 update() {
-    this.toShip.set(game.screen.ship.x, game.screen.ship.y).sub(this.pos);
+    this.toShip.set(game.screen.ship.pos.x, game.screen.ship.pos.y).sub(this.pos);
     // console.log(this.toShip.mag());
     this.move();
 
@@ -338,7 +373,7 @@ update() {
     // OLD update
     for (let i = 0; i < game.screen.ship.vectors.length; i++) {
         // check enemy collision with isHit() for each vector
-        let v = createVector(game.screen.ship.vectors[i].x + game.screen.ship.x, game.screen.ship.vectors[i].y + game.screen.ship.y);
+        let v = createVector(game.screen.ship.vectors[i].x + game.screen.ship.pos.x, game.screen.ship.vectors[i].y + game.screen.ship.pos.y);
         if (this.isHit(v)) {
             this.handleHit(v);
             if (game.screen.ship.PlayerHP > 1) {
@@ -371,8 +406,8 @@ handleHit(obj) {
                 // doesnt work yet - because of multiple ship.vertices?
                 this.life -= game.screen.ship.crashDamage;
                 // Gegner versetzen, um multiple Kollision zu vermeiden
-                this.pos.x = this.pos.x - (game.screen.ship.x - this.pos.x);
-                this.pos.y = this.pos.y - (game.screen.ship.y - this.pos.y);
+                this.pos.x = this.pos.x - (game.screen.ship.pos.x - this.pos.x);
+                this.pos.y = this.pos.y - (game.screen.ship.pos.y - this.pos.y);
             }
             this.frameCount = frameCount;
         } else {
@@ -430,7 +465,6 @@ isHit(obj) {
             hit = true;
         }
     }
-
 
   //   for (let current = 0; current<this.vertices.length; current++) {
   // }

@@ -66,7 +66,7 @@ controls(mode) {
     } else if (mode === 'mousePress') {
     } else if (mode === 'mouseClick') {
         for(let i = 0; i < this.ships.length; i++) {
-            if(this.mouseHover(this.ships[i].x, this.ships[i].y, 150) == true) {
+            if(this.mouseHover(this.ships[i].pos.x, this.ships[i].pos.y, 150) == true) {
                 game.screen = new Shipdata(this.ships[i]);
                 break;
             }
