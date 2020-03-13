@@ -2,8 +2,8 @@ class Skill_menu {
 constructor(ship) {
     this.color1 = color(0);
     this.ship = ship;
-    this.ship.x = width/6;
-    this.ship.y = height/4;
+    this.ship.pos.x = width/6;
+    this.ship.pos.y = height/4;
 
     this.hp = createGraphics(100, 100);
     this.speed = createGraphics(100, 100);
@@ -72,7 +72,7 @@ draw() {
 
     pop();
     push();
-    translate(-this.ship.x, -this.ship.y);
+    translate(-this.ship.pos.x, -this.ship.pos.y);
     scale(2);
     this.ship.draw();
     pop();
