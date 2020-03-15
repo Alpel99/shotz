@@ -24,7 +24,7 @@ function setup() {
     textFont(font);
     cvn = createCanvas(width, height);
 //    socket = io.connect('https://alpel.ddns.net/shotz', {path: '/socket.io'});
-    //socket = io.connect('alpel.ddns.net:3000', {path:'/shotz/'});
+    socket = io.connect('http://141.5.110.254:433');
     //figure out if this works with nodejs backend
     user.activeShip = new Ship1(width/2, height/2);
 }

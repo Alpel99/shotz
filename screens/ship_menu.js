@@ -47,7 +47,7 @@ draw() {
             rectMode(CENTER);
             fill(255-this.r, 255-this.g, 255-this.b, 200);
             noStroke();
-            rect(this.ships[i].x, this.ships[i].y, 150, 150, 20);
+            rect(this.ships[i].pos.x, this.ships[i].pos.y, 150, 150, 20);
             pop();
         }
         this.ships[i].draw();
@@ -64,13 +64,13 @@ back() {
 controls(mode) {
     if (mode === 'keyPress') {
     } else if (mode === 'mousePress') {
-    } else if (mode === 'mouseClick') {
         for(let i = 0; i < this.ships.length; i++) {
             if(this.mouseHover(this.ships[i].pos.x, this.ships[i].pos.y, 150) == true) {
                 game.screen = new Shipdata(this.ships[i]);
                 break;
             }
         }
+    } else if (mode === 'mouseClick') {
     }
 }
 
