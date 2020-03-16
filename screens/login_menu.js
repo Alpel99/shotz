@@ -94,7 +94,7 @@ controls(mode) {
 		socket.emit('login', data);
 	}
 	if(this.register.hover() == true && this.mode == "register") {
-		if(this.password.value() == this.check.value() && this.password.value().length > 3) {
+		if(this.password.value() == this.check.value() && this.password.value().length > 5) {
                         this.mode = "login";
                         this.fail = false;
                 	var data = {
