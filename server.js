@@ -34,6 +34,7 @@ io.sockets.on('connection',
 			for(let i = 0; i < logindata.length; i++) {
 				if(logindata[i].username == data.username) {
 					error = true;
+					socket.emit('registrationfail', true);
 				}
 			}
 			if(error == false) {

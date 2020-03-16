@@ -80,6 +80,12 @@ draw() {
 		this.login.draw();
 	}
 	this.register.draw();
+
+/*	socket.on('loginsucceed', 
+		function(data) {
+			console.log(data);
+	});
+*/
 }
 
 controls(mode) {

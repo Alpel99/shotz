@@ -28,6 +28,7 @@ function setup() {
     socket = io.connect('http://141.5.110.254', {path: '/socket.io'});
     //figure out if this works with nodejs backend
     user.activeShip = new Ship1(width/2, height/2);
+	sockets();
 }
 
 function draw() {
@@ -59,6 +60,20 @@ function resizeCanvas() {
     }
 }
 
+function sockets() {
+        socket.on('loginsucceed',
+                function(data) {
+			console.log("login");
+                        console.log(data);
+        });
+
+        socket.on('registrationfail',
+                function(data) {
+			console.log("registration")
+                        console.log(data);
+        });
+
+}
 // function windowResized() {
 //     let pxRatio = width/height;
 //     console.log(pxRatio);
