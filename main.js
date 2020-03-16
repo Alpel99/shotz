@@ -25,14 +25,13 @@ function setup() {
     frameRate(fr);
     textFont(font);
     cvn = createCanvas(width, height);
-//    socket = io.connect('https://alpel.ddns.net/shotz', {path: '/socket.io'});
     socket = io.connect('http://141.5.110.254', {path: '/socket.io'});
     //figure out if this works with nodejs backend
     user.activeShip = new Ship1(width/2, height/2);
 }
 
 function draw() {
-    socket.emit('test',dt);
+//    socket.emit('test',dt);
     cvn.clear();
     dt = deltaTime / (1000/fr);
     /*

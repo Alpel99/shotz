@@ -1,30 +1,26 @@
 var express = require('express');
+var fs = require('fs');
 
 var app = express();
-
 var server = app.listen(3000, '127.0.0.1');
-
-
 app.use(express.static(__dirname));
 
-/*
-app.get('/node', function(req, res){
-      res.send("Hello World!");
+var logindata = JSON.parse(fs.readFileSync('/data/logindata.json', {flags:'a'}));
 
-});
-*/
 
-//var io = require('socket.io')(server, {path: '/socket.io'});
-//var io = require('socket.io')(server, {origins: '*:*'}, {path: '/shotz'});
-//var io = require('socket.io')(server, {path: '/socket.io', origin: 'http://141.5.110.254', credentials: true});
 var io = require('socket.io')(server, {path: '/socket.io'});
 
 io.sockets.on('connection',
 	function(socket) {
 		console.log('new client ' + socket.id);
 
-	socket.on('test',
+	socket.on('login',
       		function(data) {
+			console.log(data);
+		}),
+	socket.on('register',
+		function(data) {
+			console.log("register");
 			console.log(data);
 		}
     	);
