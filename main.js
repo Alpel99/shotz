@@ -7,6 +7,8 @@ let game,   // game-Objekt
     dt,     // delta time -
     font;   // text font für das gesamte Spiel (es ist auch möglich mehrere zu laden, um spezifsche Texte hervorzuheben)
 
+let socket;
+
 function preload() {
     width = windowWidth - 20;
     height = windowHeight - 20;
@@ -24,13 +26,13 @@ function setup() {
     textFont(font);
     cvn = createCanvas(width, height);
 //    socket = io.connect('https://alpel.ddns.net/shotz', {path: '/socket.io'});
-    socket = io.connect('http://141.5.110.254:433');
+    socket = io.connect('http://141.5.110.254', {path: '/socket.io'});
     //figure out if this works with nodejs backend
     user.activeShip = new Ship1(width/2, height/2);
 }
 
 function draw() {
-    //socket.emit('test',dt);
+    socket.emit('test',dt);
     cvn.clear();
     dt = deltaTime / (1000/fr);
     /*
