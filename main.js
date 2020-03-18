@@ -5,6 +5,7 @@ let game,   // game-Objekt
     cvn,    // Referenz zum Canvas
     fr,     // festgelegte Framerate
     dt,     // delta time -
+    img_item, //image for items
     font;   // text font für das gesamte Spiel (es ist auch möglich mehrere zu laden, um spezifsche Texte hervorzuheben)
 
 let socket;
@@ -14,7 +15,8 @@ function preload() {
     height = windowHeight - 20;
     resizeCanvas();
 
-    user = new User(); // get Serverdata
+    img_item = createGraphics(50, 50);
+    user = new User();
     game = new Game();
 
     font = loadFont('assets/fonts/Oxanium/Oxanium-Medium.ttf');
@@ -27,12 +29,12 @@ function setup() {
     cvn = createCanvas(width, height);
     socket = io.connect('http://141.5.110.254', {path: '/socket.io'});
     //figure out if this works with nodejs backend
-    user.activeShip = new Ship1(width/2, height/2);
-	sockets();
+    //user.activeShip = new Ship1(width/2, height/2);
+    //sets up all basic socket interactions
+    sockets();
 }
 
 function draw() {
-//    socket.emit('test',dt);
     cvn.clear();
     dt = deltaTime / (1000/fr);
     /*
@@ -63,15 +65,22 @@ function resizeCanvas() {
 function sockets() {
         socket.on('loginsucceed',
                 function(data) {
+			game.screen.handleLogin(data);
 			console.log("login");
                         console.log(data);
         });
 
-        socket.on('registrationfail',
+        socket.on('registrationsucceed',
                 function(data) {
+			game.screen.handleRegister(data);
 			console.log("registration")
                         console.log(data);
         });
+
+	socket.on('userdata',
+		function(data) {
+			user.loadData(data);
+	});
 
 }
 // function windowResized() {

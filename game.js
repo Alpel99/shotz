@@ -1,6 +1,7 @@
 class Game {
     constructor() {
         this.screen = new Login_menu();
+//        this.screen = new Start_menu();
 //        this.setup = false;
         this.menuOverlay = new MenuOverlay();
     }

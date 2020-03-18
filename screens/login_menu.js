@@ -42,8 +42,8 @@ constructor() {
         this.check.style('font-weight', '700');
         this.check.style('font-size', '17');
 
-	this.login = new Button(this.x + 75 , height/2 + 100, 150, "LOGIN");
-	this.register = new Button(this.x + 75 , height/2 + 250, 150, "REGISTER");
+	this.login = new Button(this.x + 75 , height/2 + 100, 150, "Login");
+	this.register = new Button(this.x + 75 , height/2 + 250, 150, "Register");
 }
 
 draw() {
@@ -71,21 +71,21 @@ draw() {
 		text("Confirm", this.x - 5, height/3 + 285)
 	}
 	if(this.fail == true) {
-		fill(this.color2)
-		text("Passwords didn't match \nor it was too short", width/2, height/2);
+		textAlign(CENTER);
+		fill(this.color2);
+		text(this.error, width/2, height/2);
 	}
 	pop();
 
-	if(this.mode == "login") {
-		this.login.draw();
-	}
+	this.login.draw();
 	this.register.draw();
 
-/*	socket.on('loginsucceed', 
-		function(data) {
-			console.log(data);
-	});
-*/
+	if(this.mode == "register") {
+		this.login.y = height/2 + 350;
+	} else {
+		this.login.y = height/2 + 150;
+	}
+
 }
 
 controls(mode) {
@@ -99,30 +99,56 @@ controls(mode) {
 		}
 		socket.emit('login', data);
 	}
+
+	if(this.login.hover() == true && this.mode == "register") {
+		this.mode = "login";
+	}
+
 	if(this.register.hover() == true && this.mode == "register") {
 		if(this.password.value() == this.check.value() && this.password.value().length > 5) {
-                        this.mode = "login";
-                        this.fail = false;
                 	var data = {
                         	username: this.username.value(),
 	                        password: this.password.value()
 	                }
 	                socket.emit('register', data);
-			this.fix = true;
-			this.password.value('');
-			this.check.value('');
-			this.username.value('');
 		}
 		else {
 			this.fail = true;
+			this.error = "The username is already taken,\nthe passwords didn't match\nor the password is shorter\nthan 6 charachters"
 		}
 	}
-        if(this.register.hover() == true && this.mode == "login" && this.fix == false) {
+        if(this.register.hover() == true && this.mode == "login") {
                 this.mode = "register";
         }
-	this.fix = false;
+
     } else if (mode === 'mouseClick') {
     }
+}
+
+handleLogin(data) {
+if(data == true) {
+	this.check.hide();
+	this.password.hide();
+	this.username.hide();
+	game.screen = new Start_menu();
+	this.fail = false;
+} else {
+	this.fail = true;
+	this.error = "Login not successfull\n wrong passowrd\n or wrong username";
+}
+}
+
+handleRegister(data) {
+if(data == true) {
+	this.password.value('');
+	this.username.value('');
+	this.check.value('');
+	this.fail = false;
+	this.mode = "login";
+} else {
+	this.fail = true;
+	this.error = "This username already taken\nplease choose a different one";
+}
 }
 
 
