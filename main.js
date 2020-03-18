@@ -66,15 +66,11 @@ function sockets() {
         socket.on('loginsucceed',
                 function(data) {
 			game.screen.handleLogin(data);
-			console.log("login");
-                        console.log(data);
         });
 
         socket.on('registrationsucceed',
                 function(data) {
 			game.screen.handleRegister(data);
-			console.log("registration")
-                        console.log(data);
         });
 
 	socket.on('userdata',

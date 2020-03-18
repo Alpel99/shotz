@@ -93,7 +93,7 @@ shoot(bullet_obj, delay, timestamp_index) {
 loadColor() {
 	this.color = color(255);
 	for(let i = 0; i < 4; i++) {
-		this.color.maxes.rgb[i] = color(user.ships[this.constructor.name].color[i];
+		this.color.maxes.rgb[i] = user.ships[this.constructor.name].color[i];
 	}
 }
 

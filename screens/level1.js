@@ -83,6 +83,8 @@ end() {
     var str_ammo = "x2 Ammo: " + ammo2;
     var str_etc = "";
 
+    game.sendData();
+
     //actually send to the server
     this.post = new Post(this.color0, this.color1, this.color2, this, str_exp, str_coinz, str_ammo, str_etc);
     this.mode = "post";

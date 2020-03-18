@@ -90,14 +90,16 @@ draw() {
 
 controls(mode) {
     if (mode === 'keyPress') {
+	if(keyCode == 13 && this.mode == "login") {
+		this.loginsubmit();
+	}
+        if(keyCode == 13 && this.mode == "register") {
+                this.registersubmit();
+        }
     } else if (mode === 'mousePress') {
 	//use this
 	if(this.login.hover() == true && this.mode == "login") {
-		var data = {
-			username: this.username.value(),
-			password: this.password.value()
-		}
-		socket.emit('login', data);
+		this.loginsubmit();
 	}
 
 	if(this.login.hover() == true && this.mode == "register") {
@@ -105,17 +107,7 @@ controls(mode) {
 	}
 
 	if(this.register.hover() == true && this.mode == "register") {
-		if(this.password.value() == this.check.value() && this.password.value().length > 5) {
-                	var data = {
-                        	username: this.username.value(),
-	                        password: this.password.value()
-	                }
-	                socket.emit('register', data);
-		}
-		else {
-			this.fail = true;
-			this.error = "The username is already taken,\nthe passwords didn't match\nor the password is shorter\nthan 6 charachters"
-		}
+		this.registersubmit();
 	}
         if(this.register.hover() == true && this.mode == "login") {
                 this.mode = "register";
@@ -123,6 +115,28 @@ controls(mode) {
 
     } else if (mode === 'mouseClick') {
     }
+}
+
+registersubmit() {
+if(this.password.value() == this.check.value() && this.password.value().length > 5) {
+        var data = {
+                username: this.username.value(),
+                password: this.password.value()
+        	}
+        socket.emit('register', data);
+        }
+        else {
+	        this.fail = true;
+        	this.error = "The username is already taken,\nthe passwords didn't match\nor the password is too short";
+	}
+}
+
+loginsubmit() {
+var data = {
+        username: this.username.value(),
+        password: this.password.value()
+}
+socket.emit('login', data);
 }
 
 handleLogin(data) {

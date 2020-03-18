@@ -32,6 +32,7 @@ constructor(ship) {
     new SkillItem(this.loot, "LT"),
     new SkillItem(this.exp, "EXP")
     ];
+
     this.skillItems[user.skillup.active].active = true;
 
     this.menuOverlay = new MenuOverlay();
@@ -101,6 +102,7 @@ controls(mode) {
                     if(this.skillItems[i].active == true) {
                         user.skillup[this.ship.constructor.name][this.skillItems[i].use]++;
                         user.skillpoints--;
+			game.sendData();
                     }
                 }
             }

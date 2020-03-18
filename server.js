@@ -60,6 +60,13 @@ io.sockets.on('connection',
 		}
     	);
 
+	socket.on('userdatain',
+		function(data) {
+			fs.writeFileSync('/data/userdata/'+connections[socket.id].id+'.json', JSON.stringify(data), {flags: 'w'});
+			console.log(data);
+		}
+	);
+
 	socket.on('disconnect', function() {
 		delete connections[socket.id];
 	});

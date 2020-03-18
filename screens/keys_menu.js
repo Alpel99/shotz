@@ -4,6 +4,7 @@ constructor(ship) {
     this.color1 = color(0);
     this.menuOverlay = new MenuOverlay();
     this.name = "keys_menu";
+    this.warning = false;
 
     for(let i = 0; i < user.items.length; i++) {
         user.items[i].active = false;
@@ -37,6 +38,11 @@ draw() {
             image(img_item, width/2 - 100, height/4);
             pop();
         }
+	if(this.warning == true) {
+		fill(255,20,20);
+		textSize(40);
+		text("There are some items that have no key assigned, press ESC again to continue", width/2, height/2);
+	}
         textSize(20);
         textAlign(LEFT);
         text("Standard Controls\nBack(in Menus): ESC/Backspace\n", 40, height - 150);
@@ -49,7 +55,15 @@ draw() {
 }
 
 back() {
-    game.screen = new Start_menu();
+	for(let i = 0; i < user.items.length; i++) {
+		if(user.items[i].keyCode == "") {
+			this.warning = !this.warning;
+			break;
+		}
+	}
+    if(this.warning == false) {
+        game.screen = new Start_menu();
+    }
 }
 
 controls(mode) {
@@ -61,9 +75,11 @@ controls(mode) {
                     user.items[i].keyCode = "";
                 }
             }
+	    this.warning = false;
             skill.keyCode = keyCode;
             skill.active = false;
             this.mode = "skill";
+	    game.sendData();
         }
     } else if (mode === 'mousePress') {
         for(let j = 0; j < user.items.length; j++) {
@@ -91,6 +107,7 @@ controls(mode) {
             user.items[8].keyCode = 70;
             user.items[9].keyCode = 81;
             //user.items[10].keyCode = 71;
+	   game.sendData();
         }
     } else if (mode === 'mouseClick') {
     }

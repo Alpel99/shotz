@@ -25,6 +25,10 @@ controls(mode) {
             keyCode === BACKSPACE) {
             if (this.screen.back()) this.screen.back();
         }
+	if(keyCode === 222) {
+		//Ä
+		this.sendData();
+	}
     }
     this.screen.controls(mode);
 }
@@ -45,6 +49,11 @@ choosePowerUp(x, y) {
     pickup.draw = pu.pickup.draw.bind(pickup, x, y, pu);
 
     this.screen.ship.mods.push(pickup);
+}
+
+sendData() {
+	var data = user.sendData();
+	socket.emit('userdatain', data);
 }
 
 drawPickup(x, y, pu, pickup, content) {

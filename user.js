@@ -23,7 +23,6 @@ new Item(9, "SPC", -1, 10, color(255, 255, 0), data.items.SPC.keyCode, 1, 60),
 new Item(10, "DASH", -1, 10, color(255), data.items.DASH.keyCode, 0.2, 30)
 ];
 
-
 this.ships = {
     "Ship1": {
         "color": data.ships.Ship1.color,
@@ -94,4 +93,57 @@ this.skillup = {
 this.activeShip = new Ship1(width/2, height/2);
 
 } //end loadData
+
+sendData() {
+//making data ready to be shipped to the server
+var data = {
+	money: this.money,
+	skillpoints: this.skillpoints,
+	items: {
+		ammo1: {
+			amount: this.items[0].amount,
+			keyCode: this.items[0].keyCode
+		},
+                ammo2: {
+                        amount: this.items[1].amount,
+                        keyCode: this.items[1].keyCode
+                },
+                ammo3: {
+                        amount: this.items[2].amount,
+                        keyCode: this.items[2].keyCode
+                },
+                ammo4: {
+                        amount: this.items[3].amount,
+                        keyCode: this.items[3].keyCode
+                },
+                ammo5: {
+                        amount: this.items[4].amount,
+                        keyCode: this.items[4].keyCode
+                },
+                ISH: {
+                        amount: this.items[5].amount,
+                        keyCode: this.items[5].keyCode
+                },
+                EMP: {
+                        amount: this.items[6].amount,
+                        keyCode: this.items[6].keyCode
+                },
+                MINE: {
+                        amount: this.items[7].amount,
+                        keyCode: this.items[7].keyCode
+                },
+                SPC: {
+                        keyCode: this.items[8].keyCode
+                },
+                DASH: {
+                        keyCode: this.items[9].keyCode
+                }
+	},
+	ships: this.ships,
+	experience: this.experience,
+	skillup: this.skillup
+}
+return data;
+} //end sendData
+
 }

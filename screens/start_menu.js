@@ -15,6 +15,7 @@ constructor() {
     this.banner =    new StartBanner();
     this.name = "start_menu";
     this.menuOverlay = new MenuOverlay();
+    this.logout = new Button (100, height - 50, 150, "Logout");
 }
 
 draw() {
@@ -31,6 +32,7 @@ draw() {
     this.keys.draw();
 
     this.menuOverlay.draw();
+    this.logout.draw();
 }
 
 back() {
@@ -39,6 +41,9 @@ back() {
 
 controls(mode) {
     if (mode === 'keyPress') {
+	if(keyCode == 76) {
+	    game.screen = new Login_menu();
+	}
     } else if (mode === 'mousePress') {
         if (this.level.checkHover() === true) {
             game.screen = new Level_menu();
@@ -60,6 +65,9 @@ controls(mode) {
         } else if (this.keys.checkHover() === true) {
             game.screen = new Keys_menu();
         }
+	if(this.logout.hover() == true) {
+	   game.screen = new Login_menu();
+	}
     } else if (mode === 'mouseClick') {
     }
 }

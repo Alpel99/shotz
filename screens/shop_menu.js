@@ -90,8 +90,9 @@ class Shop_menu {
           user.money -= 50;
 	//hope this works
         for(let i = 0; i < 4; i++) {
-		user.ships[this.pickship.constructor.name].color[i] = this.colorPicker.color.maxes.rgb[i]
+		user.ships[this.pickship.constructor.name].color[i] = this.colorPicker.color().maxes.rgb[i];
         }
+	game.sendData();
           this.removePickers();
         }
       }
