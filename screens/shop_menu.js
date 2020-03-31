@@ -117,9 +117,8 @@ class Shop_menu {
   }
 
   removePickers() {
-    var inputs = document.getElementsByTagName('input');
-    for(let i = 0; i < inputs.length; i++) {
-      inputs[i].parentElement.removeChild(inputs[i]);
+    if(this.colorPicker) {
+      this.colorPicker.remove();
     }
     this.pickMode = "ship";
   }

@@ -1,21 +1,11 @@
 class Game {
     constructor() {
         this.screen = new Login_menu();
-//        this.screen = new Start_menu();
-//        this.setup = false;
         this.menuOverlay = new MenuOverlay();
     }
 
 draw() {
     this.screen.draw();
-
-/*    if (this.setup == false) {
-        try {
-            this.screen.setup();
-        } catch(error) {
-        }
-        this.setup = true;
-    }*/
 }
 
 controls(mode) {
@@ -29,6 +19,11 @@ controls(mode) {
 		//Ä
 		this.sendData();
 	}
+  if(keyCode === 186) {
+    //Ü -- download userdata.json
+    var data = user.sendData();
+      saveJSON(data, 'userdata.json');
+  }
     }
     this.screen.controls(mode);
 }
@@ -49,11 +44,6 @@ choosePowerUp(x, y) {
     pickup.draw = pu.pickup.draw.bind(pickup, x, y, pu);
 
     this.screen.ship.mods.push(pickup);
-}
-
-sendData() {
-	var data = user.sendData();
-	socket.emit('userdatain', data);
 }
 
 drawPickup(x, y, pu, pickup, content) {
@@ -112,10 +102,5 @@ drawPickup(x, y, pu, pickup, content) {
     if (pickup.timestamp < millis()-10000) {
         game.screen.ship.mods.splice(game.screen.ship.mods.indexOf(pickup), 1);
     }
-}
-
-generateID () {
-    // Erzeugt eine zufällige id
-    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 }
 }

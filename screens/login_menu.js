@@ -141,9 +141,9 @@ socket.emit('login', data);
 
 handleLogin(data) {
 if(data == true) {
-	this.check.hide();
-	this.password.hide();
-	this.username.hide();
+	game.screen.username.remove();
+	game.screen.password.remove();
+	game.screen.check.remove();
 	game.screen = new Start_menu();
 	this.fail = false;
 } else {
