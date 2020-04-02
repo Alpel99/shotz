@@ -2,6 +2,7 @@ class Game {
     constructor() {
         this.screen = new Login_menu();
         this.menuOverlay = new MenuOverlay();
+        this.sounds = new Sounds();
     }
 
 draw() {
@@ -30,6 +31,10 @@ controls(mode) {
 
 choosePowerUp(x, y) {
     // Wählt ein zufälliges Powerup aus dem powerups-Objekt aus und pusht es in ship.mods
+    game.sounds.drop1.pause();
+    game.sounds.drop1.currentTime = 0;
+    game.sounds.drop1.play();
+
     let pu = powerups[Math.floor(Math.random()*powerups.length)];
     let ts = millis();
 
@@ -73,6 +78,9 @@ drawPickup(x, y, pu, pickup, content) {
         const vy = v.y + game.screen.ship.pos.y;
         if (vx >= x && vx <= x+60 && vy >= y && vy <= y+60) {
             pu.pickup.onPickup(pu);
+            game.sounds.drop1.pause();
+            game.sounds.drop1.currentTime = 0;
+            game.sounds.drop1.play();
         }
     });
 

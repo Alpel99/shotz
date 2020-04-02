@@ -86,7 +86,19 @@ shoot(bullet_obj, delay, timestamp_index) {
         this.bullets.push(bullet_obj);
         this.timestamps[timestamp_index] = millis();
         game.screen.ammo.amount--;
+        if(bullet_obj.constructor.name == "Laser") {
+
+          //sound.currentTime = 0;
+          game.sounds.laser1.pause();
+          game.sounds.laser1.currentTime = 0;
+          game.sounds.laser1.play();
+        } else {
+          game.sounds.bullet1.pause();
+          game.sounds.bullet1.currentTime = 0;
+          game.sounds.bullet1.play();
+        }
     }
+
 
    }
 
@@ -322,7 +334,7 @@ loadStats() {
     this.baseHP = 2;
     this.maxHP = Math.round(this.baseHP + this.getSkillIncrease(user.skillup[this.constructor.name].HP)/2);
     this.crashDamage = 300;
-    this.shotDelay   = 30 - this.getSkillIncrease(user.skillup[this.constructor.name].FR);
+    this.shotDelay   = 100 - this.getSkillIncrease(user.skillup[this.constructor.name].FR);
     this.bulletspeed = 0.8 + this.getSkillIncrease(user.skillup[this.constructor.name].BSPD)*0.1;
     this.PlayerHP = this.maxHP;
     this.DMG = 5 + this.getSkillIncrease(user.skillup[this.constructor.name].DMG);

@@ -19,7 +19,8 @@ constructor(color) {
     this.pushes = [];                       // = speichert vorübergehend push-Funktionen, die auf diesen Gegner wirken
 
     this.chase = false;                     // Keine Verwendung bisher
-    this.lock = false;                      // Keine Verwendung bisher
+    this.lock = false;
+    this.border = game.screen.color2;                  // Keine Verwendung bisher
 }
 
 setStartSpot() {
@@ -46,8 +47,8 @@ setStartSpot() {
 
 show() {
     push();
-    stroke(game.screen.color2);
-    strokeWeight(1);
+    stroke(this.border);
+    strokeWeight(1.5);
     fill(this.color);
     ellipse(this.pos.x, this.pos.y, this.size);
     pop();
@@ -57,9 +58,15 @@ update() {
     if (game.screen.ship.collides(this)) {
         // Check with Server
         // Diesen Gegner aus Liste entfernen
+        /*
         if (random(1) < this.dropChance) {
             game.choosePowerUp(this.pos.x, this.pos.y);
         }
+        für getroffen werden kein PU
+        */
+        game.sounds.hit1.pause();
+        game.sounds.hit1.currentTime = 0;
+        game.sounds.hit1.play();
         game.screen.enemies.splice(game.screen.enemies.indexOf(this), 1);
         // Kollision Schiff/Gegner überarbeiten! Abhängig davon womit das Schiff den Gegner trifft, werden ggf. mehrere Lebenspunkte abgezogen. (manche Vektoren doppelt gechecked?)
         if (game.screen.ship.PlayerHP > 1) {
@@ -98,11 +105,17 @@ update() {
     this.pos.add(this.vel);
     this.vel.normalize();
     this.show();
+
+    if(this.border.time < millis()) {
+      this.border = game.screen.color2;
+    }
 }
 
 handleHit(bullet) {
     if (!this.isDead(bullet.damage)) {
         this.size -= bullet.damage;
+        this.border = game.screen.color3;
+        this.border.time = millis() + 100;
     } else {
         game.screen.score += this.score;
         if (random(1) < this.dropChance) {

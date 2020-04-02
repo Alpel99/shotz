@@ -10,8 +10,9 @@ constructor() {
     this.inventory = new StartMenuItem("Inventory", width/5 + 250, height/3 + 100, this.color2);
     this.keys =      new StartMenuItem("Controls", width/5 + 200, height/3 + 200, this.color1);
     this.rankings =  new StartMenuItem("Rankings", width/5 + 700, height/3, this.color2);
-    this.user =     new StartMenuItem("User", width/5 + 650, height/3 + 100, this.color2);
+    this.user =      new StartMenuItem("User", width/5 + 650, height/3 + 100, this.color2);
     this.premium =   new StartMenuItem("Premium", width/5 + 600, height/3 + 200, this.color2);
+    this.credits =   new StartMenuItem("Credits", width/5 + 1000, height/3 + 100, this.color1);
     this.banner =    new StartBanner();
     this.name = "start_menu";
     this.menuOverlay = new MenuOverlay();
@@ -30,6 +31,7 @@ draw() {
     this.premium.draw();
     this.user.draw();
     this.keys.draw();
+    this.credits.draw();
 
     this.menuOverlay.draw();
     this.logout.draw();
@@ -64,6 +66,8 @@ controls(mode) {
             console.log("user");
         } else if (this.keys.checkHover() === true) {
             game.screen = new Keys_menu();
+        } else if (this.credits.checkHover() === true) {
+            game.screen = new Credits();
         }
 	if(this.logout.hover() == true) {
 	   game.screen = new Login_menu();
