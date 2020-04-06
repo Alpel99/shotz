@@ -2,11 +2,13 @@ class Shipdata {
 constructor(ship) {
     this.color1 = color(0);
     this.ship = ship;
+    this.ship.loadStats();
     this.ship.pos.x = width/6;
     this.ship.pos.y = height/4;
 
     this.menuOverlay = new MenuOverlay();
     this.select = new Button(width/6, height/2, 200, "SELECT");
+    this.skillups = new Button(width-150, height-70, 200, "Skillups");
 }
 
 draw() {
@@ -33,8 +35,9 @@ draw() {
         this.select.draw();
     }
 
-    this.data();
+    this.skillups.draw();
 
+    this.data();
 
     push();
     textSize(20);
@@ -87,6 +90,9 @@ controls(mode) {
     } else if (mode === 'mousePress') {
         if(this.select.hover() == true) {
             user.activeShip = this.ship;
+        }
+        if(this.skillups.hover() == true) {
+            game.screen = new Skill_menu(this.ship);
         }
     } else if (mode === 'mouseClick') {
     }

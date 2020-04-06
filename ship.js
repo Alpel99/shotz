@@ -91,7 +91,10 @@ shoot(bullet_obj, delay, timestamp_index) {
    }
 
 loadColor() {
-    this.color = user.ships[this.constructor.name].color;
+	this.color = color(255);
+	for(let i = 0; i < 4; i++) {
+		this.color.maxes.rgb[i] = user.ships[this.constructor.name].color[i];
+	}
 }
 
 controls(mode) {
@@ -115,7 +118,7 @@ controls(mode) {
 }
 
 getSkillIncrease(x) {
-    // x = 3*ln(x+1,5)-1
+    // y = 3*ln(x+1,5)-1
     // Math.log == ln
     return 3 * Math.log(x + 1.5) - 1;
 }
@@ -144,7 +147,7 @@ emp() {
         strokeWeight(4);
         circle(this.pos.x, this.pos.y, this.empRange-15);
     pop();
-    this.empRange += 5;
+    this.empRange += 15;
 
     // Deaktivieren des EMP (und Variablen zurücksetzen), wenn komplett gezeichnet
     if (this.empRange > this.empMaxRange) {
@@ -209,22 +212,30 @@ constructor(x, y) {
     this.vectors = [];
 
     //GAMEPLAY VARIABLES
-    this.baseHP      = 3;
-    this.maxHP       = Math.round(this.baseHP + this.getSkillIncrease(user.skillup[this.constructor.name].HP));
+    this.loadStats();
+    this.specialActive = false;
+
+    //this.color = color(user.ships[this.constructor.name].color[0], user.ships[this.constructor.name].color[1], user.ships[this.constructor.name].color[2], user.ships[this.constructor.name].color[3]);
+    this.createVectors();
+    this.specialText = "The special fo this ship will increase the single bullet damage";
+}
+
+loadStats() {
+    this.baseHP = 3;
+    this.maxHP = Math.round(this.baseHP + this.getSkillIncrease(user.skillup[this.constructor.name].HP));
+
     this.crashDamage = 150;
     this.shotDelay   = 250 - this.getSkillIncrease(user.skillup[this.constructor.name].FR);
     this.bulletspeed = 0.8 + this.getSkillIncrease(user.skillup[this.constructor.name].BSPD)*0.1;
-    this.PlayerHP    = this.maxHP;
-    this.DMG         = 10 + this.getSkillIncrease(user.skillup[this.constructor.name].DMG)*2;
-    this.PlayerDMG   = this.DMG;
-    this.PlayerSPD   = 5 + this.getSkillIncrease(user.skillup[this.constructor.name].SPD)/2;
-    this.PlayerRNG   = 500 + this.getSkillIncrease(user.skillup[this.constructor.name].RNG)*100;
-    this.PlayerDASH  = 10 + this.getSkillIncrease(user.skillup[this.constructor.name].DASH)*2;
-
+    this.PlayerHP = this.maxHP;
+    this.DMG = 10 + this.getSkillIncrease(user.skillup[this.constructor.name].DMG)*2;
+    this.PlayerDMG = this.DMG;
+    this.PlayerSPD = 5 + this.getSkillIncrease(user.skillup[this.constructor.name].SPD)/2;
+    this.PlayerRNG = 500 + this.getSkillIncrease(user.skillup[this.constructor.name].RNG)*100;
+    this.PlayerDASH = 10 + this.getSkillIncrease(user.skillup[this.constructor.name].DASH)*2;
+    this.specialTime = 5;
 
     this.loadColor();
-    this.createVectors();
-    this.specialText = "The special of this ship drastically increases bullet damage and rate of fire over 5 seconds";
 }
 
 createVectors() {
@@ -296,23 +307,31 @@ constructor(x, y) {
     this.vectors = [];
 
     //GAMEPLAY VARIABLES
-    this.baseHP      = 3;
-    this.maxHP       = Math.round(this.baseHP + this.getSkillIncrease(user.skillup[this.constructor.name].HP)/2);
+    this.loadStats();
+
+    this.specialTime = 5;
+
+
+    //this.color = color(user.ships[this.constructor.name].color[0], user.ships[this.constructor.name].color[1], user.ships[this.constructor.name].color[2], user.ships[this.constructor.name].color[3]);
+    this.createVectors();
+
+    this.specialText = "The special of this Ship will\nincreasethe firerate = decrease the shotDelay a little bit\nthis increases the damage output significantly\nBanane mit Sosse";
+}
+
+loadStats() {
+    this.baseHP = 2;
+    this.maxHP = Math.round(this.baseHP + this.getSkillIncrease(user.skillup[this.constructor.name].HP)/2);
     this.crashDamage = 300;
     this.shotDelay   = 180 - this.getSkillIncrease(user.skillup[this.constructor.name].FR);
     this.bulletspeed = 0.8 + this.getSkillIncrease(user.skillup[this.constructor.name].BSPD)*0.1;
-    this.PlayerHP    = this.maxHP;
-    this.DMG         = 5 + this.getSkillIncrease(user.skillup[this.constructor.name].DMG);
-    this.PlayerDMG   = this.DMG;
-    this.PlayerSPD   = 8 + this.getSkillIncrease(user.skillup[this.constructor.name].SPD)/1.5;
-    this.PlayerRNG   = 400 + this.getSkillIncrease(user.skillup[this.constructor.name].RNG)*75;
-    this.PlayerDASH  = 20 + this.getSkillIncrease(user.skillup[this.constructor.name].DASH)*5;
+    this.PlayerHP = this.maxHP;
+    this.DMG = 5 + this.getSkillIncrease(user.skillup[this.constructor.name].DMG);
+    this.PlayerDMG = this.DMG;
+    this.PlayerSPD = 8 + this.getSkillIncrease(user.skillup[this.constructor.name].SPD)/1.5;
+    this.PlayerRNG = 400 + this.getSkillIncrease(user.skillup[this.constructor.name].RNG)*75;
+    this.PlayerDASH = 20 + this.getSkillIncrease(user.skillup[this.constructor.name].DASH)*5;
 
     this.loadColor();
-    this.createVectors();
-
-    this.specialText = "The special of this Ship increases the rate of fire a little bit" +
-                        "\nBanane mit Sosse";
 }
 
 createVectors() {

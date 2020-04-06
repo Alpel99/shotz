@@ -6,16 +6,16 @@ constructor() {
     this.level =     new StartMenuItem("Level", width/5, height/3, this.color1);
     this.shop =      new StartMenuItem("Shop", width/5 - 50, height/3 + 100, this.color1);
     this.pvp =       new StartMenuItem("PVP", width/5 - 100, height/3 + 200, this.color2);
-    this.skillups =     new StartMenuItem("Skillups", width/5 + 300, height/3, this.color1);
-    this.ships =     new StartMenuItem("Ships", width/5 + 250, height/3 + 100, this.color1);
-    this.inventory = new StartMenuItem("Inventory", width/5 + 200, height/3 + 200, this.color2);
+    this.ships =     new StartMenuItem("Ships", width/5 + 300, height/3, this.color1);
+    this.inventory = new StartMenuItem("Inventory", width/5 + 250, height/3 + 100, this.color2);
+    this.keys =      new StartMenuItem("Controls", width/5 + 200, height/3 + 200, this.color1);
     this.rankings =  new StartMenuItem("Rankings", width/5 + 700, height/3, this.color2);
-    this.user =  new StartMenuItem("User", width/5 + 650, height/3 + 100, this.color2);
+    this.user =     new StartMenuItem("User", width/5 + 650, height/3 + 100, this.color2);
     this.premium =   new StartMenuItem("Premium", width/5 + 600, height/3 + 200, this.color2);
-    this.keys = new StartMenuItem("Controls", width/5 + 150, height/3 + 300, this.color1);
     this.banner =    new StartBanner();
     this.name = "start_menu";
     this.menuOverlay = new MenuOverlay();
+    this.logout = new Button (100, height - 50, 150, "Logout");
 }
 
 draw() {
@@ -28,11 +28,11 @@ draw() {
     this.inventory.draw();
     this.rankings.draw();
     this.premium.draw();
-    this.skillups.draw();
     this.user.draw();
     this.keys.draw();
 
     this.menuOverlay.draw();
+    this.logout.draw();
 }
 
 back() {
@@ -41,6 +41,9 @@ back() {
 
 controls(mode) {
     if (mode === 'keyPress') {
+	if(keyCode == 76) {
+	    game.screen = new Login_menu();
+	}
     } else if (mode === 'mousePress') {
         if (this.level.checkHover() === true) {
             game.screen = new Level_menu();
@@ -57,13 +60,14 @@ controls(mode) {
             console.log("rankings");
         } else if (this.premium.checkHover() === true) {
             console.log("premium");
-        } else if (this.skillups.checkHover() === true) {
-            game.screen = new Shipskill_menu();
         } else if (this.user.checkHover() === true) {
             console.log("user");
         } else if (this.keys.checkHover() === true) {
             game.screen = new Keys_menu();
         }
+	if(this.logout.hover() == true) {
+	   game.screen = new Login_menu();
+	}
     } else if (mode === 'mouseClick') {
     }
 }

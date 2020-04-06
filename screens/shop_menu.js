@@ -3,11 +3,11 @@ class Shop_menu {
     this.color0 = color(0);
     this.color1 = color(255);
     this.color2 = color(0);
-    this.s = 20;
+    this.s = 100;
     this.w = width/this.s;
     this.h = height/this.s;
     this.offset = 0;
-    this.offdiff = 0.0003;
+    this.offdiff = 0.001;
 
     this.pickMode = "ship";
     //ship, color
@@ -61,7 +61,7 @@ class Shop_menu {
     noStroke();
     for(let i = 0; i < this.w; i++) {
       for(let j = 0; j < this.h; j++) {
-        fill(color(noise(i+this.offset*0.4*20,j+this.offset*2.3*20)*255));
+        fill(color(noise(i+this.offset*0.4,j+this.offset*2.3)*255));
         rect(i*this.s,j*this.s,this.s,this.s);
       }
 
@@ -86,9 +86,13 @@ class Shop_menu {
             }
         }
         // APPLY
-        if(this.apply.hover() == true) {
+        if(this.apply.hover() == true && this.pickMode == "color" && user.money >= 50) {
           user.money -= 50;
-          user.ships[this.pickship.constructor.name].color = this.colorPicker.color();
+	//hope this works
+        for(let i = 0; i < 4; i++) {
+		user.ships[this.pickship.constructor.name].color[i] = this.colorPicker.color().maxes.rgb[i];
+        }
+	game.sendData();
           this.removePickers();
         }
       }
@@ -113,9 +117,8 @@ class Shop_menu {
   }
 
   removePickers() {
-    var inputs = document.getElementsByTagName('input');
-    for(let i = 0; i < inputs.length; i++) {
-      inputs[i].parentElement.removeChild(inputs[i]);
+    if(this.colorPicker) {
+      this.colorPicker.remove();
     }
     this.pickMode = "ship";
   }

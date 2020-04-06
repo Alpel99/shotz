@@ -52,7 +52,7 @@ constructor() {
 
     // ship
     this.ship = user.activeShip; //needs this.ammo ??
-    this.ship.loadColor();
+    this.ship.loadStats();
 
     // variable vor ammo selection! like user.selectedammo = 0;
 
@@ -82,6 +82,8 @@ end() {
     var str_coinz = "Coinz: " + coinz;
     var str_ammo = "x2 Ammo: " + ammo2;
     var str_etc = "";
+
+    game.sendData();
 
     //actually send to the server
     this.post = new Post(this.color0, this.color1, this.color2, this, str_exp, str_coinz, str_ammo, str_etc);

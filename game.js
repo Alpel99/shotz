@@ -1,20 +1,11 @@
 class Game {
     constructor() {
-        this.screen = new Start_menu();
-        this.setup = false;
+        this.screen = new Login_menu();
         this.menuOverlay = new MenuOverlay();
     }
 
 draw() {
     this.screen.draw();
-
-    if (this.setup == false) {
-        try {
-            this.screen.setup();
-        } catch(error) {
-        }
-        this.setup = true;
-    }
 }
 
 controls(mode) {
@@ -24,6 +15,15 @@ controls(mode) {
             keyCode === BACKSPACE) {
             if (this.screen.back()) this.screen.back();
         }
+	if(keyCode === 222) {
+		//Ä
+		this.sendData();
+	}
+  if(keyCode === 186) {
+    //Ü -- download userdata.json
+    var data = user.sendData();
+      saveJSON(data, 'userdata.json');
+  }
     }
     this.screen.controls(mode);
 }
@@ -58,10 +58,12 @@ drawPickup(x, y, pu, pickup, content) {
     // Aussehen des Pickups
     push();
         strokeWeight(4);
-        fill(0, 0, 0, 100);
-        stroke(255, 204, 0);
+        fill(0, 100);
+        stroke(game.screen.color1);
         rect(x, y, 60, 60);
         rect(x-5, y-5, 70, 70);
+        noStroke();
+        fill(game.screen.color1);
         content();
     pop();
 
@@ -86,11 +88,11 @@ drawPickup(x, y, pu, pickup, content) {
         push();
             strokeWeight(2);
             fill(0, 0, 0, 100);
-            stroke(255, 204, 0);
+            stroke(game.screen.color1);
             rect(x+pos_hor, y+pos_ver, 300, 60);
 
             textSize(15);
-            fill('red');
+            fill(game.screen.color3);
             noStroke();
             text(pu.pickup.description, x+pos_hor+10, y+pos_ver+5, 280, 50);
         pop();
