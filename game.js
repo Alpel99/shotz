@@ -50,8 +50,8 @@ drawPickup(x, y, pu, pickup, content) {
     /*
     *  Parameter:
     *  x, y:    Position des getöteten Gegners (dort wird pickup dargestellt)
-    *  pu:      Referenz zum richtigen PowerUp-Objekt
-    *  pickup:  Referenz zum temporären pickup-Obkekt
+    *  pu:      Referenz zum richtigen PowerUp-Objekt (aus powerups.js)
+    *  pickup:  Referenz zum temporären pickup-Obkekt (das in choosePowerup() erstellt wurde)
     *  content: Aussehen des pickups (innerhalb des gelben Rahmens)
     */
 
@@ -70,7 +70,7 @@ drawPickup(x, y, pu, pickup, content) {
         const vx = v.x + game.screen.ship.pos.x;
         const vy = v.y + game.screen.ship.pos.y;
         if (vx >= x && vx <= x+60 && vy >= y && vy <= y+60) {
-            pu.pickup.onPickup(pu);
+            pickup.onPickup(pu);
         }
     });
 
@@ -98,8 +98,21 @@ drawPickup(x, y, pu, pickup, content) {
 
     // Löschen des Pickups nach 10 Sekunden
     if (pickup.timestamp < millis()-10000) {
-        game.screen.ship.mods.splice(game.screen.ship.mods.indexOf(pickup), 1);
+        this.deletePickUp(pickup);
     }
+}
+
+deletePickUp(pickup) {
+    // Identifiziert Pickup anhand seines timestamps und entfernt es aus der Liste
+    let index;
+    for (let i = 0; i < game.screen.ship.mods.length; i++) {
+        const mod = game.screen.ship.mods[i];
+        if (mod.timestamp === pickup.timestamp) {
+            index = i;
+            break;
+        }
+    }
+    game.screen.ship.mods.splice(index, 1);
 }
 
 generateID () {

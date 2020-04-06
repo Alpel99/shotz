@@ -10,7 +10,7 @@ const powerups = [
             description: 'Erhöht die Lebenspunkte des Schiffs um 2.',
             onPickup: function() {
                 game.screen.ship.PlayerHP += 2;
-                game.screen.ship.mods.splice(game.screen.ship.mods.indexOf(this), 1);
+                game.deletePickUp(this);
             },
             draw: function(x, y, pu) {
                 let content = () => {
@@ -31,7 +31,7 @@ const powerups = [
             description: 'Erhöht den Schaden des Schiffes um 2.',
             onPickup: function() {
                 game.screen.ship.PlayerDMG += 2;
-                game.screen.ship.mods.splice(game.screen.ship.mods.indexOf(this), 1);
+                game.deletePickUp(this);
             },
             draw: function(x, y, pu) {
                 // hier wird das Aussehen des pickups (innerhalb des Vierecks) an game.drawPickup() übergeben
@@ -54,7 +54,7 @@ const powerups = [
             description: 'Erhöht die Bewegungsgeschwindigkeit des Schiffes.',
             onPickup: function() {
                 game.screen.ship.PlayerSPD += 0.5;
-                game.screen.ship.mods.splice(game.screen.ship.mods.indexOf(this), 1);
+                game.deletePickUp(this);
             },
             draw: function(x, y, pu) {
                 // hier wird das Aussehen des pickups (innerhalb des Vierecks) an game.drawPickup() übergeben
@@ -77,7 +77,8 @@ const powerups = [
             onPickup: function() {
                 game.screen.ship.bulletspeed += 0.1;
                 game.screen.ship.PlayerRNG += 50;
-                game.screen.ship.mods.splice(game.screen.ship.mods.indexOf(this), 1);
+                game.deletePickUp(this);
+
             },
             draw: function(x, y, pu) {
                 // hier wird das Aussehen des pickups (innerhalb des Vierecks) an game.drawPickup() übergeben
@@ -99,7 +100,7 @@ const powerups = [
             description: 'Erhöht die Feuerrate.',
             onPickup: function() {
                 game.screen.ship.shotDelay *= 0.95;
-                game.screen.ship.mods.splice(game.screen.ship.mods.indexOf(this), 1);
+                game.deletePickUp(this);
             },
             draw: function(x, y, pu) {
                 // hier wird das Aussehen des pickups (innerhalb des Vierecks) an game.drawPickup() übergeben
