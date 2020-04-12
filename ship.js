@@ -86,7 +86,19 @@ shoot(bullet_obj, delay, timestamp_index) {
         this.bullets.push(bullet_obj);
         this.timestamps[timestamp_index] = millis();
         game.screen.ammo.amount--;
+        if(bullet_obj.constructor.name == "Laser") {
+
+          //sound.currentTime = 0;
+          game.sounds.laser1.pause();
+          game.sounds.laser1.currentTime = 0;
+          game.sounds.laser1.play();
+        } else {
+          game.sounds.bullet1.pause();
+          game.sounds.bullet1.currentTime = 0;
+          game.sounds.bullet1.play();
+        }
     }
+
 
    }
 
