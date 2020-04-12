@@ -83,12 +83,11 @@ https://trello.com/b/2Vm2EXmP/shotz
     * now multiple pushes on single enemy possible  
 
 ## Update Jan 08.03.2020
-* Minor Improvements:  
+* Many minor Improvements:  
     * loadColor now loads color(), instead of Array[255,255,255,255]  
     * dt to all movements (ship, enemy) for framerate independent movement  
     * added "this"-context to powerups with .bind() - wrapDraw and wrapOnPickup now obsolete  
     * new (imho fitting) text font (found on https://fonts.google.com/?category=Sans+Serif,Display,Monospace ; https://p5js.org/reference/#/p5/loadFont)  
     * added bounding box for specialtext in shipdata.js for better text alignment  
-    * set dropChance of default enemy to 0.1  
     * Ship-Position konsequent auf ship.pos umgestellt (ingame, wie auch in den Menus)  
     * pickup timeout implemented (vanishes after 10 sec, if not collected)

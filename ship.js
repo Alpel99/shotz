@@ -334,7 +334,7 @@ loadStats() {
     this.baseHP = 2;
     this.maxHP = Math.round(this.baseHP + this.getSkillIncrease(user.skillup[this.constructor.name].HP)/2);
     this.crashDamage = 300;
-    this.shotDelay   = 100 - this.getSkillIncrease(user.skillup[this.constructor.name].FR);
+    this.shotDelay   = 180 - this.getSkillIncrease(user.skillup[this.constructor.name].FR);
     this.bulletspeed = 0.8 + this.getSkillIncrease(user.skillup[this.constructor.name].BSPD)*0.1;
     this.PlayerHP = this.maxHP;
     this.DMG = 5 + this.getSkillIncrease(user.skillup[this.constructor.name].DMG);
