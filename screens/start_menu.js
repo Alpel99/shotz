@@ -96,7 +96,12 @@ draw() {
     if (hover === false) {
         triangle(this.x - 10, this.y, this.x - 10, this.y + 50, this.x - 40, this.y + 50);
         triangle(this.x + 10 + textWidth(this.text), this.y, this.x + 10 + textWidth(this.text), this.y + 50, this.x + 40 + textWidth(this.text), this.y);
+        this.sounds = false;
     } else {
+        if(this.sounds == false) {
+          game.sounds.play("menu1");
+          this.sounds = true;
+        }
         triangle(this.x - 10, this.y, this.x - 10, this.y + 50, this.x - 40, this.y);
         triangle(this.x + 10 + textWidth(this.text), this.y, this.x + 10 + textWidth(this.text), this.y + 50, this.x + 40 + textWidth(this.text), this.y + 50);
     }

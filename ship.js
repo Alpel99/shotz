@@ -87,15 +87,10 @@ shoot(bullet_obj, delay, timestamp_index) {
         this.timestamps[timestamp_index] = millis();
         game.screen.ammo.amount--;
         if(bullet_obj.constructor.name == "Laser") {
-
           //sound.currentTime = 0;
-          game.sounds.laser1.pause();
-          game.sounds.laser1.currentTime = 0;
-          game.sounds.laser1.play();
+          game.sounds.play("laser1")
         } else {
-          game.sounds.bullet1.pause();
-          game.sounds.bullet1.currentTime = 0;
-          game.sounds.bullet1.play();
+          game.sounds.bullet1.play("bullet1");
         }
     }
 
@@ -148,6 +143,8 @@ collides(obj) { // currently enemy or pickup
 }
 
 emp() {
+    //Sounds
+    game.sounds.play("emp3");
     // Zeichnen des Effektes
     push();
         noFill();
@@ -208,6 +205,7 @@ special() {
 }
 
 dash() {
+    game.sounds.play("dash1");
     this.pos.x += this.dir.x*this.PlayerDASH;
     this.pos.y += this.dir.y*this.PlayerDASH;
 }

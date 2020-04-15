@@ -64,9 +64,7 @@ update() {
         }
         für getroffen werden kein PU
         */
-        game.sounds.hit1.pause();
-        game.sounds.hit1.currentTime = 0;
-        game.sounds.hit1.play();
+        game.sounds.play("hit1");
         game.screen.enemies.splice(game.screen.enemies.indexOf(this), 1);
         // Kollision Schiff/Gegner überarbeiten! Abhängig davon womit das Schiff den Gegner trifft, werden ggf. mehrere Lebenspunkte abgezogen. (manche Vektoren doppelt gechecked?)
         if (game.screen.ship.PlayerHP > 1) {
