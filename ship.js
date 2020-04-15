@@ -30,6 +30,9 @@ constructor() {
     this.specialTime = 5;
     this.specialTimestamp = 0;
     this.specialActive = false;
+
+    // mines
+    this.mines = [];
 }
 
 update() {
@@ -58,6 +61,13 @@ update() {
 
     // special
     if (this.specialActive) this.special();
+
+    // mines
+    if (this.mines.length > 0) {
+        this.mines.forEach(mine => {
+            mine.draw();
+        });
+    }
     }
 
 walls() {
@@ -148,6 +158,9 @@ collides(obj) { // currently enemy or pickup
 }
 
 emp() {
+    // Sound
+    game.sounds.nova1.play();
+
     // Zeichnen des Effektes
     push();
         noFill();
@@ -210,6 +223,10 @@ special() {
 dash() {
     this.pos.x += this.dir.x*this.PlayerDASH;
     this.pos.y += this.dir.y*this.PlayerDASH;
+}
+
+layMine() {
+    this.mines.push(new Mine(this.pos, this.PlayerDMG*5, 350));
 }
 
 }

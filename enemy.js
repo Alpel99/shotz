@@ -6,6 +6,7 @@ constructor(color) {
 
     this.speed = (1/(this.size*2)*200) * game.screen.speed;
     this.color = color;                                 // = @param: Farbe von Lvl vorgegeben
+    this.color.setAlpha(100);
 
     this.vel = createVector(random(-10,10), random(-10, 10)).normalize();
     this.pos = createVector(0, 0);
@@ -67,6 +68,7 @@ update() {
         game.sounds.hit1.pause();
         game.sounds.hit1.currentTime = 0;
         game.sounds.hit1.play();
+
         game.screen.enemies.splice(game.screen.enemies.indexOf(this), 1);
         // Kollision Schiff/Gegner überarbeiten! Abhängig davon womit das Schiff den Gegner trifft, werden ggf. mehrere Lebenspunkte abgezogen. (manche Vektoren doppelt gechecked?)
         if (game.screen.ship.PlayerHP > 1) {
@@ -130,7 +132,7 @@ isHit(obj) {
     // returns true, if given bullet or vector has hit this Enemy
     let hit = false;
 
-    if (obj instanceof Bullet) {
+    if (obj instanceof Bullet || obj instanceof Mine) {
         if (dist(obj.pos.x, obj.pos.y, this.pos.x, this.pos.y) < this.size/2 + obj.size/2) {
             hit = true;
         }

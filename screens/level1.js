@@ -3,7 +3,7 @@ constructor() {
     this.color0 = color(90); //Background
     this.color1 = color(40,200,40); //enemies, active Items, Keys
     this.color2 = color(0); //Background Items, amount text
-    this.color3 = color(200); //cooldown arc color
+    this.color3 = color(200, 150); //cooldown arc color
 
     this.name = "Level1";
 

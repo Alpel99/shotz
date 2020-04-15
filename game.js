@@ -3,10 +3,14 @@ class Game {
         this.screen = new Login_menu();
         this.menuOverlay = new MenuOverlay();
         this.sounds = new Sounds();
+        this.effects = [];          // Ein Versuch eines Event-Loops für Effekte, aktuell nur Explosionen
     }
 
 draw() {
     this.screen.draw();
+    if (this.effects.length > 0) {
+        this.effects.forEach(ef => ef.fn());
+    }
 }
 
 controls(mode) {
