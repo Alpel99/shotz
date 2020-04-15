@@ -31,7 +31,8 @@ class Mine {
             strokeWeight(1);
             fill(color(30, 30, 30));
             ellipse(this.pos.x, this.pos.y, this.size);
-            if ((Math.floor(millis() + this.blinkOffset / 1000) ) % 2 === 0) {
+            // if ((Math.floor(millis() + this.blinkOffset / 1000) ) % 2 === 0) {
+            if ((Math.floor(millis() / 1000) ) % 2 === 0) {
                 fill('red');
             } else {
                 fill('yellow');
@@ -50,7 +51,7 @@ class Mine {
     trigger() {
         // Mine aus der Liste in Ship.mines entfernen
         const index = game.screen.ship.mines.filter(mine => mine.id === this.id);
-        console.log(index);
+        console.log("Das ist nicht der Index, sondern die Mine selbst!!", index);
         game.screen.ship.mines.splice(index, 1);
 
         game.screen.enemies.forEach((e) => {
