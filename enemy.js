@@ -1,5 +1,6 @@
 class Enemy {
 constructor(color) {
+    this.id = game.generateID();
     this.minsize = 50;
     this.maxsize = 250;
     this.size = floor(random(this.maxsize)) + this.minsize;  // = Größe = HP
@@ -16,7 +17,6 @@ constructor(color) {
     this.score = 5;                         // = Player-points per Kill
     this.dropChance = 0.9;                  // = Chance, dass powerUp fallen gelassen wird
     this.knockbackSensitivity = 1           // = Multiplier für Knockback-Vektor
-    this.empActive = false;                 // = Damit Ship weiß, ob dieser Gegner schon vom EMP betroffen ist
     this.pushes = [];                       // = speichert vorübergehend push-Funktionen, die auf diesen Gegner wirken
 
     this.chase = false;                     // Keine Verwendung bisher
@@ -69,7 +69,7 @@ update() {
         game.sounds.hit1.currentTime = 0;
         game.sounds.hit1.play();
 
-        game.screen.enemies.splice(game.screen.enemies.indexOf(this), 1);
+        game.removeFromList(game.screen.enemies, this)
         // Kollision Schiff/Gegner überarbeiten! Abhängig davon womit das Schiff den Gegner trifft, werden ggf. mehrere Lebenspunkte abgezogen. (manche Vektoren doppelt gechecked?)
         if (game.screen.ship.PlayerHP > 1) {
             game.screen.ship.PlayerHP--;
@@ -100,7 +100,7 @@ update() {
     }
 
     if (this.pushes.length > 0) {
-        this.pushes.forEach(push => push());
+        this.pushes.forEach(push => push.fn());
     }
 
     this.vel.mult(this.speed * dt);
@@ -123,8 +123,7 @@ handleHit(bullet) {
         if (random(1) < this.dropChance) {
             game.choosePowerUp(this.pos.x, this.pos.y);
         }
-        // Diesen Gegner aus Liste entfernen
-        game.screen.enemies.splice(game.screen.enemies.indexOf(this), 1);
+        game.removeFromList(game.screen.enemies, this);
     }
 }
 
@@ -412,7 +411,7 @@ handleHit(obj) {
         } else {
             game.screen.score += this.score;
             // Diesen Gegner aus Liste entfernen
-            game.screen.enemies.splice(game.screen.enemies.indexOf(this), 1);
+            game.removeFromList(game.screen.enemies, this);
         }
     } else if (obj instanceof p5.Vector) {
         // Hit by ship
@@ -428,7 +427,7 @@ handleHit(obj) {
         } else {
             game.screen.score += this.score;
             // Diesen Gegner aus Liste entfernen
-            game.screen.enemies.splice(game.screen.enemies.indexOf(this), 1);
+            game.removeFromList(game.screen.enemies, this);
         }
     }
 

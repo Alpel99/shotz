@@ -7,9 +7,24 @@ class Game {
     }
 
 draw() {
-    this.screen.draw();
+    // translate muss vor allen anderen draw-Operationen ausgeführt werden
     if (this.effects.length > 0) {
-        this.effects.forEach(ef => ef.fn());
+        this.effects.forEach(ef => {
+            if (ef.type === 'screenshake') {
+                ef.fn();
+            }
+        });
+    }
+
+    this.screen.draw();
+
+    // Alle anderen Effekte müssen nach den normalen draw-Operationen ausgeführt werden.
+    if (this.effects.length > 0) {
+        this.effects.forEach(ef => {
+            if(ef.type !== 'screenshake') {
+                ef.fn();
+            }
+        });
     }
 }
 
@@ -132,5 +147,21 @@ deletePickUp(pickup) {
 generateID () {
     // Erzeugt eine zufällige id
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+}
+
+
+removeFromList(list, element) {
+    // Typische Operation ein Element von einer Liste entfernen, wenn es nicht mehr dargestellt werden soll
+    // Bedingung: das Element hat eine ID (game.generateID())
+    // Parameter:
+    // list: Liste, aus der das Element entfernt werden soll
+    // element: Element, das aus der Liste entfernt werden soll
+
+    for (let i = 0; i < list.length; i++) {
+        if (list[i].id === element.id) {
+            list.splice(i, 1);
+            break;
+        }
+    }
 }
 }

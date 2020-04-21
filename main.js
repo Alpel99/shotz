@@ -8,7 +8,6 @@ let game,   // game-Objekt
     img_item, //image for items
     data;   //userdata for local development
     //font;   // text font für das gesamte Spiel (es ist auch möglich mehrere zu laden, um spezifsche Texte hervorzuheben)
-
 let socket;
 
 function preload() {

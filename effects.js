@@ -1,6 +1,23 @@
-// Explosion (für Minen und evtl. explosive shots)
+/*
+    Das Modellieren der Effekte ist kniffelig in p5.js, da diesselbe Funktion im
+    draw()-Loop immer wieder neu aufgerufen wird, wir aber Variablen benötigen, die
+    über alle dieser Funktionsaufrufe konsistent bleibt. Deshalb Sind alle Effekte
+    in Form eines Closures geschrieben.
+    Die Äußere Funktion enthält alle Daten, die für den Effekt benötigt werden und
+    gibt die Funktion zurück, die den Effekt darstellt. So kann der Effekt - gespeichert
+    im Array game.effects wiederholt in draw() aufgerufen werden, ohne dass die
+    dafür nötigen Daten verloren gehen.
+*/
 
+// Explosion (für Minen und evtl. explosive shots)
 function explosion(pos, range, color, ts, loop) {
+    /*
+        pos: Position der Explosion
+        range: Reichweite der Explosion
+        color: primäre Farbe der Explosion
+        ts: TimeStamp des Explosionsbeginns
+        loop: Array, in dem die Explosion als Effekt zur Ausführung gespeichert ist
+    */
     let explRange = 0;     // current range
     let particles = [];    // container for particle effects
     let expl_id = game.generateID();
@@ -54,12 +71,12 @@ function explosion(pos, range, color, ts, loop) {
             loop.splice(index, 1);
         }
 
-
         particles.forEach((particle) => {particle.draw();});
     }
 
     class ExplosionParticle {
         constructor(pos, range, color, ts) {
+            this.id = game.generateID();
             this.pos = pos;
             this.range = range;
             this.color = color;
@@ -84,14 +101,45 @@ function explosion(pos, range, color, ts, loop) {
                 pop();
                 this.r = (millis() - this.ts)/5;
             } else {
-                particles.splice(particles.indexOf(this), 1);
+                game.removeFromList(particles, this);
             }
         }
     }
 
-    index = loop.length;
     loop.push({
+        type: 'explosion',
         fn: explode,
         id: expl_id
+    });
+}
+
+// Screenshake
+
+function screenshake(inten, ts, loop) {
+    /*
+        inten: Stärke des Effekts (max. Abweichung in Pixel)
+        ts: TimeStamp des Explosionsbeginns
+        loop: Array, in dem die Explosion als Effekt zur Ausführung gespeichert ist
+    */
+    let intensity = inten;
+    let shake_id = game.generateID();
+
+    function shake() {
+        if (intensity > 0.5) {
+            let shakeX = random(intensity);
+            let shakeY = random(intensity);
+
+            translate(shakeX, shakeY);
+            intensity *= 0.5;
+        } else {
+            let index = loop.filter(e => e.id = shake_id);
+            loop.splice(index, 1);
+        }
+    }
+
+    loop.push({
+        type: 'screenshake',
+        fn: shake,
+        id: shake_id
     });
 }

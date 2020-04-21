@@ -7,8 +7,7 @@ class Mine {
         this.blinkOffset = random(10);
         this.size = 50;
         this.id = game.generateID();
-        console.log(this.id);
-        console.log(game.effects);
+        this.triggered = false;
 
         this.l1 = this.pos.copy().sub(createVector(-this.size/2, -this.size/2));
         this.l2 = this.pos.copy().sub(createVector( this.size/2,  this.size/2));
@@ -38,6 +37,13 @@ class Mine {
                 fill('yellow');
             }
             ellipse(this.pos.x, this.pos.y, this.size/2);
+            textSize(15);
+            // // id
+            // text(this.id, this.pos.x+30, this.pos.y+30);
+            // range
+            noFill();
+            stroke(color(255,0,0,50));
+            ellipse(this.pos.x, this.pos.y, this.range);
         pop();
 
         // collision check und trigger
@@ -50,34 +56,47 @@ class Mine {
 
     trigger() {
         // Mine aus der Liste in Ship.mines entfernen
-        const index = game.screen.ship.mines.filter(mine => mine.id === this.id);
-        console.log("Das ist nicht der Index, sondern die Mine selbst!!", index);
-        game.screen.ship.mines.splice(index, 1);
-
+        this.triggered = true;
+        const index = 0;
+        for (let i = 0; i < game.screen.ship.mines.length; i++) {
+            let mine = game.screen.ship.mines[i];
+            if (mine.triggered) {
+                game.screen.ship.mines.splice(i, 1);
+                break;
+            }
+        }
+        let betroffen = 0;
         game.screen.enemies.forEach((e) => {
-
             let toEnemy = createVector(e.pos.x-this.pos.x, e.pos.y-this.pos.y);
 
             if (toEnemy.mag() <= this.range) {
-                if (!e.empActive) {
+
+                // prüfen, ob der Gegner schon von diesem push() betroffen ist
+                let foundPush = false;
+                e.pushes.forEach(push => {
+                    if (push.id === e.pushes[e.pushes.length-1].id) foundPush = true;
+                });
+
+                // falls nicht füge ein push() hinzu
+                if (e.pushes.length === 0 || foundPush === false) {
                     // Rückstoß
                     toEnemy.mult(this.range/toEnemy.mag()); // Stärke des Effektes abhängig von Entfernung zum Gegner
 
-                    let ts = millis();
-
-                    // Funktionsreferenz speichern
-                    let fn = e.push.bind(e, toEnemy.mult(1/60), 1000, ts);
-
                     // Funktion dem Enemy.pushes-Array hinzufügen
-                    e.pushes.push(fn);
-                    e.empActive = true;
+                    let p = {
+                        id: game.generateID(),
+                        fn: e.push.bind(e, toEnemy.mult(1/60), 1000, millis())
+                    }
+                    e.pushes.push(p);
 
                     // Schaden
+                    // e.color = 'black';
                     e.handleHit(this);
                 }
+                betroffen++;
             }
         });
-
+        console.log(betroffen);
         // Explosionsanimation
         explosion(
             this.pos,
@@ -86,5 +105,6 @@ class Mine {
             millis(),
             game.effects
         )
+        screenshake(20, millis(), game.effects);
     }
 }

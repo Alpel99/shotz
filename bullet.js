@@ -1,5 +1,6 @@
 class Bullet {
 constructor(shooter, color, dir, start) {
+    this.id = game.generateID();
     this.shooter = shooter;                          // Who shot? Aktuell nur game.screen.ship, aber perspektivisch auch Enemies
     this.color = color;                              // bullet color - ammo color auf diese Weise übergeben?
     this.pos = createVector(start.x, start.y);       // current bullet position
@@ -35,7 +36,7 @@ update() {
     // bullet surpasses max range (= hitsWall)
     if (this.pos.dist(this.start) > this.shooter.PlayerRNG) {
         // bullet aus Liste entfernen
-        this.shooter.bullets.splice(this.shooter.bullets.indexOf(this), 1);
+        game.removeFromList(this.shooter.bullets, this);
     }
 
     // bullet hits enemy
@@ -43,7 +44,7 @@ update() {
         if (e.isHit(this)) {
             e.handleHit(this);
             // bullet aus Liste entfernen
-            this.shooter.bullets.splice(this.shooter.bullets.indexOf(this), 1);
+            game.removeFromList(this.shooter.bullets, this);
         }
     });
     this.show();

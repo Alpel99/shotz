@@ -33,6 +33,7 @@ constructor() {
 
     // mines
     this.mines = [];
+    this.explosionRadius = 250;
 }
 
 update() {
@@ -50,9 +51,6 @@ update() {
 
     // mods
     this.mods.forEach((mod) => {
-        // console.log("in ship.mods.forEach");
-        // console.log(this.mods);
-        // console.log(mod);
         if (mod.type === 'pickup') mod.draw();
     });
 
@@ -63,11 +61,9 @@ update() {
     if (this.specialActive) this.special();
 
     // mines
-    if (this.mines.length > 0) {
-        this.mines.forEach(mine => {
-            mine.draw();
-        });
-    }
+    this.mines.forEach(mine => {
+        mine.draw();
+    });
     }
 
 walls() {
@@ -177,7 +173,6 @@ emp() {
     // Deaktivieren des EMP (und Variablen zurücksetzen), wenn komplett gezeichnet
     if (this.empRange > this.empMaxRange) {
         this.empActive = false;
-        game.screen.enemies.forEach(e => e.empActive = false);
         this.empRange = 0;
     }
 
@@ -186,18 +181,25 @@ emp() {
         let toEnemy = createVector(e.pos.x-this.pos.x, e.pos.y-this.pos.y);
 
         if (toEnemy.mag() <= this.empRange) {
-            if (!e.empActive) {
+            // prüfen, ob der Gegner schon von diesem push() betroffen ist
+            let foundPush = false;
+            e.pushes.forEach(push => {
+                if (push.id === e.pushes[e.pushes.length-1].id) foundPush = true;
+            });
+
+            // falls nicht füge ein push() hinzu
+            if (e.pushes.length === 0 || foundPush === false) {
                 // Parameter vorbereiten
                 toEnemy.mult(this.empMaxRange/toEnemy.mag()); // Stärke des Effektes abhängig von Entfernung zum Gegner
 
-                let ts = millis();
-
                 // Funktionsreferenz speichern
-                let fn = e.push.bind(e, toEnemy.mult(1/60), 1500, ts);
+                let p = {
+                    id: game.generateID(),
+                    fn: e.push.bind(e, toEnemy.mult(1/60), 1500, millis())
+                }
 
                 // Funktion dem Enemy.pushes-Array hinzufügen
-                e.pushes.push(fn);
-                e.empActive = true;
+                e.pushes.push(p);
             }
         }
     });
@@ -226,7 +228,7 @@ dash() {
 }
 
 layMine() {
-    this.mines.push(new Mine(this.pos, this.PlayerDMG*5, 350));
+    this.mines.push(new Mine(this.pos, this.PlayerDMG*5, this.explosionRadius));
 }
 
 }
@@ -427,6 +429,10 @@ draw() {
 // Override for Laser instead of bullet
 controls(mode) {
     if (mode === 'keyPress') {
+        if (keyCode === 'RETURN') {
+            console.log("pressed something");
+            screenshake(5, millis(), game.effects);
+        }
     } else if (mode === 'mousePress') {
     } else if (mode === 'mouseClick') {
     } else if (mode === 'keyDown') {

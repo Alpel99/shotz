@@ -58,7 +58,7 @@ constructor() {
 
     // enemies
     this.enemies = [];
-    this.maxenemies = 5;
+    this.maxenemies = 15;
 }
 
 end() {
