@@ -61,9 +61,7 @@ update() {
     if (this.specialActive) this.special();
 
     // mines
-    this.mines.forEach(mine => {
-        mine.draw();
-    });
+    this.mines.forEach(mine => mine.draw());
     }
 
 walls() {
@@ -86,27 +84,23 @@ walls() {
     if (ymax > height) this.pos.y = this.pos.y - this.PlayerSPD * dt;
 }
 
-shoot(bullet_obj, delay, timestamp_index) {
-    // timestamp_index controls which timestamp in this.timestamps-array is used
-    if (millis() - this.timestamps[timestamp_index] > delay && game.screen.ammo.amount > 0) {
-        this.bullets.push(bullet_obj);
-        this.timestamps[timestamp_index] = millis();
+shoot() {
+    if (millis() - this.timestamps[0] > this.shotDelay && game.screen.ammo.amount > 0) {
+        let bullet = new Bullet(this, 'yellow', this.dir, p5.Vector.add(this.pos, this.vectors[0]), game.sounds.bullet1);
+        this.bullets.push(bullet);
+        this.timestamps[0] = millis();
         game.screen.ammo.amount--;
-        if(bullet_obj.constructor.name == "Laser") {
-
-          //sound.currentTime = 0;
-          game.sounds.laser1.pause();
-          game.sounds.laser1.currentTime = 0;
-          game.sounds.laser1.play();
-        } else {
-          game.sounds.bullet1.pause();
-          game.sounds.bullet1.currentTime = 0;
-          game.sounds.bullet1.play();
-        }
     }
 
-
-   }
+    // Beispiel für Laser-Seitenschüsse mit geringerer RoF
+    if (millis() - this.timestamps[1] > this.shotDelay+300 && game.screen.ammo.amount > 0) {
+        let bullet1 = new Laser(this, 'yellow', this.vectors[1], p5.Vector.add(this.pos, this.vectors[1]), game.sounds.laser1);
+        let bullet2 = new Laser(this, 'yellow', this.vectors[10], p5.Vector.add(this.pos, this.vectors[10]), game.sounds.laser1);
+        this.bullets.push(bullet1, bullet2);
+        this.timestamps[1] = millis();
+        game.screen.ammo.amount -= 2;
+    }
+}
 
 loadColor() {
 	this.color = color(255);
@@ -120,14 +114,7 @@ controls(mode) {
     } else if (mode === 'mousePress') {
     } else if (mode === 'mouseClick') {
     } else if (mode === 'keyDown') {
-        if (keyIsDown(32)) {
-            this.shoot(new Bullet(this, 'yellow', this.dir, p5.Vector.add(this.pos, this.vectors[0])),
-                       this.shotDelay, 0);
-            // this.shoot(new Bullet(this, 'yellow', this.vectors[1], (p5.Vector.add(this.pos, this.vectors[1]))),
-            //            this.shotDelay+300, 1);
-            // this.shoot(new Bullet(this, 'yellow', this.vectors[10], (p5.Vector.add(this.pos, this.vectors[10]))),
-            //            this.shotDelay+300, 2);
-        }
+        if (keyIsDown(32)) this.shoot();
         if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) this.pos.x -= this.PlayerSPD * dt;
         if (keyIsDown(RIGHT_ARROW)|| keyIsDown(68)) this.pos.x += this.PlayerSPD * dt;
         if (keyIsDown(UP_ARROW)   || keyIsDown(87)) this.pos.y -= this.PlayerSPD * dt;
@@ -155,7 +142,7 @@ collides(obj) { // currently enemy or pickup
 
 emp() {
     // Sound
-    game.sounds.nova1.play();
+    if (!game.sounds.nova1.isPlaying()) game.sounds.nova1.play();
 
     // Zeichnen des Effektes
     push();
@@ -248,7 +235,7 @@ constructor(x, y) {
 
     //this.color = color(user.ships[this.constructor.name].color[0], user.ships[this.constructor.name].color[1], user.ships[this.constructor.name].color[2], user.ships[this.constructor.name].color[3]);
     this.createVectors();
-    this.specialText = "The special fo this ship will increase the single bullet damage";
+    this.specialText = "The special of this ship will increase the single bullet damage";
 }
 
 loadStats() {
@@ -346,7 +333,7 @@ constructor(x, y) {
     //this.color = color(user.ships[this.constructor.name].color[0], user.ships[this.constructor.name].color[1], user.ships[this.constructor.name].color[2], user.ships[this.constructor.name].color[3]);
     this.createVectors();
 
-    this.specialText = "The special of this Ship will\nincreasethe firerate = decrease the shotDelay a little bit\nthis increases the damage output significantly\nBanane mit Sosse";
+    this.specialText = "The special of this Ship will increase the firerate";
 }
 
 loadStats() {
@@ -426,6 +413,15 @@ draw() {
     pop();
 }
 
+shoot() {
+    if (millis() - this.timestamps[0] > this.shotDelay && game.screen.ammo.amount > 0) {
+        let bullet = new Laser(this, 'yellow', this.dir, p5.Vector.add(this.pos, this.vectors[0]), game.sounds.laser1);
+        this.bullets.push(bullet);
+        this.timestamps[0] = millis();
+        game.screen.ammo.amount--;
+    }
+}
+
 // Override for Laser instead of bullet
 controls(mode) {
     if (mode === 'keyPress') {
@@ -436,10 +432,7 @@ controls(mode) {
     } else if (mode === 'mousePress') {
     } else if (mode === 'mouseClick') {
     } else if (mode === 'keyDown') {
-        if (keyIsDown(32)) {
-            this.shoot(new Laser(this, 'yellow', this.dir, p5.Vector.add(this.pos, this.vectors[0])),
-                       this.shotDelay, 0);
-        }
+        if (keyIsDown(32)) this.shoot();
         if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) this.pos.x -= this.PlayerSPD * dt;
         if (keyIsDown(RIGHT_ARROW)|| keyIsDown(68)) this.pos.x += this.PlayerSPD * dt;
         if (keyIsDown(UP_ARROW)   || keyIsDown(87)) this.pos.y -= this.PlayerSPD * dt;

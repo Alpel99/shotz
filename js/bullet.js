@@ -1,16 +1,19 @@
 class Bullet {
-constructor(shooter, color, dir, start) {
+constructor(shooter, color, dir, start, sound) {
     this.id = game.generateID();
     this.shooter = shooter;                          // Who shot? Aktuell nur game.screen.ship, aber perspektivisch auch Enemies
     this.color = color;                              // bullet color - ammo color auf diese Weise übergeben?
     this.pos = createVector(start.x, start.y);       // current bullet position
     this.vel = createVector(dir.x, dir.y);           // shoot direction vector
     this.start = createVector(start.x, start.y);     // bullet start position
+    this.sound = sound;
 
     this.speed = 15;
     this.damage = this.shooter.PlayerDMG;
     this.ammo = game.screen.ammo;
     this.size = this.shooter.PlayerDMG/2;
+
+    this.playSound();
 }
 
 show() {
@@ -19,6 +22,10 @@ show() {
         fill(this.color);
         ellipse(this.pos.x, this.pos.y, this.size);
     pop();
+}
+
+playSound() {
+    this.sound.play();
 }
 
 // onHit() {
@@ -53,8 +60,8 @@ update() {
 
 class Laser extends Bullet {
     // etwas schwächer als Bullets (0.8*dmg), aber viel schneller
-    constructor(shooter, color, dir, start) {
-        super(shooter, color, dir, start);
+    constructor(shooter, color, dir, start, sound) {
+        super(shooter, color, dir, start, sound);
         this.damage = 0.8 * (this.shooter.PlayerDMG*game.screen.ammo.damage);
         this.speed = 55;
     }

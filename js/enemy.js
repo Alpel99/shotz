@@ -65,9 +65,8 @@ update() {
         }
         für getroffen werden kein PU
         */
-        game.sounds.hit1.pause();
-        game.sounds.hit1.currentTime = 0;
         game.sounds.hit1.play();
+        screenshake(20, millis(), game.effects);
 
         game.removeFromList(game.screen.enemies, this)
         // Kollision Schiff/Gegner überarbeiten! Abhängig davon womit das Schiff den Gegner trifft, werden ggf. mehrere Lebenspunkte abgezogen. (manche Vektoren doppelt gechecked?)
@@ -404,6 +403,7 @@ update() {
 }
 
 handleHit(obj) {
+    console.log("Enemy Handle hit");
     if (obj instanceof Bullet) {
         // Hit by bullet
         if (!this.isDead(obj.damage)) {
@@ -415,6 +415,8 @@ handleHit(obj) {
         }
     } else if (obj instanceof p5.Vector) {
         // Hit by ship
+        console.log("hit by ship");
+        screenshake(30, millis(), game.effects);
         if (!this.isDead(game.screen.ship.crashDamage)) {
             if ((frameCount - this.frameCount) > 2*frameRate()) {
                 // doesnt work yet - because of multiple ship.vertices?
