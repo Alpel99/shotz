@@ -1,11 +1,13 @@
 class Enemy {
 constructor(color) {
+    this.id = game.generateID();
     this.minsize = 50;
     this.maxsize = 250;
     this.size = floor(random(this.maxsize)) + this.minsize;  // = Größe = HP
 
     this.speed = (1/(this.size*2)*200) * game.screen.speed;
     this.color = color;                                 // = @param: Farbe von Lvl vorgegeben
+    this.color.setAlpha(100);
 
     this.vel = createVector(random(-10,10), random(-10, 10)).normalize();
     this.pos = createVector(0, 0);
@@ -15,7 +17,6 @@ constructor(color) {
     this.score = 5;                         // = Player-points per Kill
     this.dropChance = 0.9;                  // = Chance, dass powerUp fallen gelassen wird
     this.knockbackSensitivity = 1           // = Multiplier für Knockback-Vektor
-    this.empActive = false;                 // = Damit Ship weiß, ob dieser Gegner schon vom EMP betroffen ist
     this.pushes = [];                       // = speichert vorübergehend push-Funktionen, die auf diesen Gegner wirken
 
     this.chase = false;                     // Keine Verwendung bisher
@@ -64,8 +65,9 @@ update() {
         }
         für getroffen werden kein PU
         */
-        game.sounds.play("hit1");
-        game.screen.enemies.splice(game.screen.enemies.indexOf(this), 1);
+        game.sounds.hit1.play();
+        screenshake(20, millis(), game.effects);
+
         // Kollision Schiff/Gegner überarbeiten! Abhängig davon womit das Schiff den Gegner trifft, werden ggf. mehrere Lebenspunkte abgezogen. (manche Vektoren doppelt gechecked?)
         if (game.screen.ship.PlayerHP > 1) {
             game.screen.ship.PlayerHP--;
@@ -96,7 +98,7 @@ update() {
     }
 
     if (this.pushes.length > 0) {
-        this.pushes.forEach(push => push());
+        this.pushes.forEach(push => push.fn());
     }
 
     this.vel.mult(this.speed * dt);
@@ -119,8 +121,7 @@ handleHit(bullet) {
         if (random(1) < this.dropChance) {
             game.choosePowerUp(this.pos.x, this.pos.y);
         }
-        // Diesen Gegner aus Liste entfernen
-        game.screen.enemies.splice(game.screen.enemies.indexOf(this), 1);
+        game.removeFromList(game.screen.enemies, this);
     }
 }
 
@@ -128,7 +129,7 @@ isHit(obj) {
     // returns true, if given bullet or vector has hit this Enemy
     let hit = false;
 
-    if (obj instanceof Bullet) {
+    if (obj instanceof Bullet || obj instanceof Mine) {
         if (dist(obj.pos.x, obj.pos.y, this.pos.x, this.pos.y) < this.size/2 + obj.size/2) {
             hit = true;
         }
@@ -401,6 +402,7 @@ update() {
 }
 
 handleHit(obj) {
+    console.log("Enemy Handle hit");
     if (obj instanceof Bullet) {
         // Hit by bullet
         if (!this.isDead(obj.damage)) {
@@ -408,10 +410,12 @@ handleHit(obj) {
         } else {
             game.screen.score += this.score;
             // Diesen Gegner aus Liste entfernen
-            game.screen.enemies.splice(game.screen.enemies.indexOf(this), 1);
+            game.removeFromList(game.screen.enemies, this);
         }
     } else if (obj instanceof p5.Vector) {
         // Hit by ship
+        console.log("hit by ship");
+        screenshake(30, millis(), game.effects);
         if (!this.isDead(game.screen.ship.crashDamage)) {
             if ((frameCount - this.frameCount) > 2*frameRate()) {
                 // doesnt work yet - because of multiple ship.vertices?
@@ -424,7 +428,7 @@ handleHit(obj) {
         } else {
             game.screen.score += this.score;
             // Diesen Gegner aus Liste entfernen
-            game.screen.enemies.splice(game.screen.enemies.indexOf(this), 1);
+            game.removeFromList(game.screen.enemies, this);
         }
     }
 

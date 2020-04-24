@@ -30,6 +30,10 @@ constructor() {
     this.specialTime = 5;
     this.specialTimestamp = 0;
     this.specialActive = false;
+
+    // mines
+    this.mines = [];
+    this.explosionRadius = 250;
 }
 
 update() {
@@ -47,9 +51,6 @@ update() {
 
     // mods
     this.mods.forEach((mod) => {
-        // console.log("in ship.mods.forEach");
-        // console.log(this.mods);
-        // console.log(mod);
         if (mod.type === 'pickup') mod.draw();
     });
 
@@ -58,6 +59,9 @@ update() {
 
     // special
     if (this.specialActive) this.special();
+
+    // mines
+    this.mines.forEach(mine => mine.draw());
     }
 
 walls() {
@@ -80,11 +84,11 @@ walls() {
     if (ymax > height) this.pos.y = this.pos.y - this.PlayerSPD * dt;
 }
 
-shoot(bullet_obj, delay, timestamp_index) {
-    // timestamp_index controls which timestamp in this.timestamps-array is used
-    if (millis() - this.timestamps[timestamp_index] > delay && game.screen.ammo.amount > 0) {
-        this.bullets.push(bullet_obj);
-        this.timestamps[timestamp_index] = millis();
+shoot() {
+    if (millis() - this.timestamps[0] > this.shotDelay && game.screen.ammo.amount > 0) {
+        let bullet = new Bullet(this, 'yellow', this.dir, p5.Vector.add(this.pos, this.vectors[0]), game.sounds.bullet1);
+        this.bullets.push(bullet);
+        this.timestamps[0] = millis();
         game.screen.ammo.amount--;
         if(bullet_obj.constructor.name == "Laser") {
           //sound.currentTime = 0;
@@ -94,8 +98,15 @@ shoot(bullet_obj, delay, timestamp_index) {
         }
     }
 
-
-   }
+    // Beispiel für Laser-Seitenschüsse mit geringerer RoF
+    if (millis() - this.timestamps[1] > this.shotDelay+300 && game.screen.ammo.amount > 0) {
+        let bullet1 = new Laser(this, 'yellow', this.vectors[1], p5.Vector.add(this.pos, this.vectors[1]), game.sounds.laser1);
+        let bullet2 = new Laser(this, 'yellow', this.vectors[10], p5.Vector.add(this.pos, this.vectors[10]), game.sounds.laser1);
+        this.bullets.push(bullet1, bullet2);
+        this.timestamps[1] = millis();
+        game.screen.ammo.amount -= 2;
+    }
+}
 
 loadColor() {
 	this.color = color(255);
@@ -109,14 +120,7 @@ controls(mode) {
     } else if (mode === 'mousePress') {
     } else if (mode === 'mouseClick') {
     } else if (mode === 'keyDown') {
-        if (keyIsDown(32)) {
-            this.shoot(new Bullet(this, 'yellow', this.dir, p5.Vector.add(this.pos, this.vectors[0])),
-                       this.shotDelay, 0);
-            // this.shoot(new Bullet(this, 'yellow', this.vectors[1], (p5.Vector.add(this.pos, this.vectors[1]))),
-            //            this.shotDelay+300, 1);
-            // this.shoot(new Bullet(this, 'yellow', this.vectors[10], (p5.Vector.add(this.pos, this.vectors[10]))),
-            //            this.shotDelay+300, 2);
-        }
+        if (keyIsDown(32)) this.shoot();
         if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) this.pos.x -= this.PlayerSPD * dt;
         if (keyIsDown(RIGHT_ARROW)|| keyIsDown(68)) this.pos.x += this.PlayerSPD * dt;
         if (keyIsDown(UP_ARROW)   || keyIsDown(87)) this.pos.y -= this.PlayerSPD * dt;
@@ -143,8 +147,8 @@ collides(obj) { // currently enemy or pickup
 }
 
 emp() {
-    //Sounds
-    game.sounds.play("emp3");
+    // Sound
+    if (!game.sounds.nova1.isPlaying()) game.sounds.nova1.play();
     // Zeichnen des Effektes
     push();
         noFill();
@@ -161,7 +165,6 @@ emp() {
     // Deaktivieren des EMP (und Variablen zurücksetzen), wenn komplett gezeichnet
     if (this.empRange > this.empMaxRange) {
         this.empActive = false;
-        game.screen.enemies.forEach(e => e.empActive = false);
         this.empRange = 0;
     }
 
@@ -170,18 +173,25 @@ emp() {
         let toEnemy = createVector(e.pos.x-this.pos.x, e.pos.y-this.pos.y);
 
         if (toEnemy.mag() <= this.empRange) {
-            if (!e.empActive) {
+            // prüfen, ob der Gegner schon von diesem push() betroffen ist
+            let foundPush = false;
+            e.pushes.forEach(push => {
+                if (push.id === e.pushes[e.pushes.length-1].id) foundPush = true;
+            });
+
+            // falls nicht füge ein push() hinzu
+            if (e.pushes.length === 0 || foundPush === false) {
                 // Parameter vorbereiten
                 toEnemy.mult(this.empMaxRange/toEnemy.mag()); // Stärke des Effektes abhängig von Entfernung zum Gegner
 
-                let ts = millis();
-
                 // Funktionsreferenz speichern
-                let fn = e.push.bind(e, toEnemy.mult(1/60), 1500, ts);
+                let p = {
+                    id: game.generateID(),
+                    fn: e.push.bind(e, toEnemy.mult(1/60), 1500, millis())
+                }
 
                 // Funktion dem Enemy.pushes-Array hinzufügen
-                e.pushes.push(fn);
-                e.empActive = true;
+                e.pushes.push(p);
             }
         }
     });
@@ -210,6 +220,10 @@ dash() {
     this.pos.y += this.dir.y*this.PlayerDASH;
 }
 
+layMine() {
+    this.mines.push(new Mine(this.pos, this.PlayerDMG*5, this.explosionRadius));
+}
+
 }
 
 class Ship1 extends Ship {
@@ -227,7 +241,7 @@ constructor(x, y) {
 
     //this.color = color(user.ships[this.constructor.name].color[0], user.ships[this.constructor.name].color[1], user.ships[this.constructor.name].color[2], user.ships[this.constructor.name].color[3]);
     this.createVectors();
-    this.specialText = "The special fo this ship will increase the single bullet damage";
+    this.specialText = "The special of this ship will increase the single bullet damage";
 }
 
 loadStats() {
@@ -325,7 +339,7 @@ constructor(x, y) {
     //this.color = color(user.ships[this.constructor.name].color[0], user.ships[this.constructor.name].color[1], user.ships[this.constructor.name].color[2], user.ships[this.constructor.name].color[3]);
     this.createVectors();
 
-    this.specialText = "The special of this Ship will\nincreasethe firerate = decrease the shotDelay a little bit\nthis increases the damage output significantly\nBanane mit Sosse";
+    this.specialText = "The special of this Ship will increase the firerate";
 }
 
 loadStats() {
@@ -405,16 +419,26 @@ draw() {
     pop();
 }
 
+shoot() {
+    if (millis() - this.timestamps[0] > this.shotDelay && game.screen.ammo.amount > 0) {
+        let bullet = new Laser(this, 'yellow', this.dir, p5.Vector.add(this.pos, this.vectors[0]), game.sounds.laser1);
+        this.bullets.push(bullet);
+        this.timestamps[0] = millis();
+        game.screen.ammo.amount--;
+    }
+}
+
 // Override for Laser instead of bullet
 controls(mode) {
     if (mode === 'keyPress') {
+        if (keyCode === 'RETURN') {
+            console.log("pressed something");
+            screenshake(5, millis(), game.effects);
+        }
     } else if (mode === 'mousePress') {
     } else if (mode === 'mouseClick') {
     } else if (mode === 'keyDown') {
-        if (keyIsDown(32)) {
-            this.shoot(new Laser(this, 'yellow', this.dir, p5.Vector.add(this.pos, this.vectors[0])),
-                       this.shotDelay, 0);
-        }
+        if (keyIsDown(32)) this.shoot();
         if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) this.pos.x -= this.PlayerSPD * dt;
         if (keyIsDown(RIGHT_ARROW)|| keyIsDown(68)) this.pos.x += this.PlayerSPD * dt;
         if (keyIsDown(UP_ARROW)   || keyIsDown(87)) this.pos.y -= this.PlayerSPD * dt;

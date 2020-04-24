@@ -25,69 +25,17 @@ https://trello.com/b/2Vm2EXmP/shotz
 * designs for each ship (just change one specific triangle color every time)
 
 
-## Update Jan 03.03.2020
-- Ship.collides() hinzugefügt = check, ob Ship mit Gegner kollidiert ist.
-
-- EMP eingefügt (wie in Trello beschrieben, mit Ship.emp() und Enemy.push()) - dazu
-  habe ich die enemy location auf Vector umgestellt (this.pos.x, statt this.x) und
-  das update dieser location aufgeräumt. Die Taste "R" löst den emp() nicht direkt aus,
-  sondern setzt ship.empActive auf true. Der Rest passiert dann automatisch.
-
-- PowerUp-Prototyp eingefügt:  
-    **Einziges Augenmerk bisher auf Funktionalität und Skalierbarkeit - nicht beachtet wurden:**  
-        * Balancing  
-        * Kreativität (sowohl der PUs, als auch der Darstellung der Pickups)  
-        * Dropwahrscheinlichkeit PUs zu hoch (besser überprüfbar, während dev -
-          aktuell Enemy.dropChance = 0.9 = 90%)  
-        * Bisher nur Stat-Ups, keine komplexeren (deshalb bisher überall in
-          powerups.js mods:null)  
-
-    **Programmablauf PU:**  
-        0. Alle Powerups werden als Objekt in powerups.js gespeichert (bisher 5)  
-        1. On Enemy-kill (per Bullet oder Crash): Check ob random(1) > Enemy.dropChance  
-        2. Falls Check erfolgreich: game.choosePowerUp() - nimmt ein zufälliges PU
-           aus powerups-Objekt in powerups.js und fügt es ship.mods[] als type:'pickup' hinzu  
-        3. In Ship.update() wird geprüft, ob ein 'pickup'-Objekt in Ship.mods
-           enthalten ist - wenn ja: mod.draw()  
-        4. mod.draw() verweist an game.drawPickup(), das auch die Logik zum
-           Einsammeln und MouseOver enthält (und, perspektivisch, das timeout)  
-        5. Wenn Spieler ein pickup einsammelt, wird mod.onPickup() ausgelöst
-           (Stat+ oder dauerhaftes Mod an Ship.mods senden)  
-
-    **Vorteile:**  
-        * Weitere PowerUps können in einem einheitlichen Format, an einer zentralen
-          Stelle ohne zusätzliche Logik eingefügt werden  
-        * Sobald ein neues PU auf diese Weise eingefügt wurde, wird es automatisiert
-          mit in den Prozess (Programmablauf) einbezogen  
-        * Skalierbar (auch komplexere PUs in diesem Format möglich)  
-
-    **Was fehlt:**  
-        * Fix Health-bar und MaxHealth des Schiffes  
-        * Balancing der PUs (dropChance vs. Effektstärke)  
-        * Überarbeitung des Löschens von PUs beim Einsammeln - bisher verschwinden
-          vereinzelt pickups, wenn zuvor mehrere auf dem Screen waren (evtl. uuid
-          für PUs erstellen, damit eindeutiger Zugriff möglich ist?!)  
-        * Lösung für Timeout finden (Entfernen des Pickups vom Screen, wenn
-          Spieler es zu lange nicht einsammelt - 5Sek?)  
-
-## Update Jan 07.03.2020
-* Minor PowerUp-Balancing (DMG, SPD, Ship.special())  
-* Ship.special() refactored  
-    * adjusted missing dmgUp,  
-    * now activation consistent to emp  
-* Ship.emp() refactored  
-    * scalability,  
-    * correct application of duration,  
-    * now only called once,  
-    * push-fadeout implemented,  
-    * now multiple pushes on single enemy possible  
-
-## Update Jan 08.03.2020
-* Many minor Improvements:  
-    * loadColor now loads color(), instead of Array[255,255,255,255]  
-    * dt to all movements (ship, enemy) for framerate independent movement  
-    * added "this"-context to powerups with .bind() - wrapDraw and wrapOnPickup now obsolete  
-    * new (imho fitting) text font (found on https://fonts.google.com/?category=Sans+Serif,Display,Monospace ; https://p5js.org/reference/#/p5/loadFont)  
-    * added bounding box for specialtext in shipdata.js for better text alignment  
-    * Ship-Position konsequent auf ship.pos umgestellt (ingame, wie auch in den Menus)  
-    * pickup timeout implemented (vanishes after 10 sec, if not collected)
+## Update Jan 21.04.2020
+* Screenshake-Effekt hinzugefügt (impementiert bei Minen-Explosion, und Schiff/Enemy-Kollision)
+* game.removeFromList(list,element)-Funktion hinzugefügt zum Löschen von Objekten aus Listen und an allen relevanten Stellen impementiert
+* Mine überarbeitet - jetzt wird nur noch die Mine gelöscht, die tatsächlich explodiert ist, auch wenn mehrere Minen auf dem Spielfeld liegen
+* enemy.empActive entfernt - nun wird geprüft, ob die Druckwelle in enemy.pushes-Array vermerkt ist. Das ist allgemeiner und so kann auch die Mine die Druckwelle verarbeiten
+* PowerUp ExplosionsradiusUP eingefügt.
+* Ship.shoot()-Funktion so optimiert, dass new Bullet() nicht einmal pro Frame aufgerufen wird, sondern nur, wenn tatsächlich ein Schuss erfolgt (behebt Sound-Bug bei Schuss)
+* Der Soundeffekt für einen Schuss wird jetzt bei Erzeugung der Bullet mit übergeben und einmal im Constructor abgespielt (,also wenn der Schuss abgefeuert wird)
+* Sound-Fehler entfernt (Promise-play wurde durch pause unterbrochen, bevor fertig geladen). Jetzt ist es so organisiert, dass der Sound jeweils nur einmal in der entsprechenden Situation aufgerufen wird und nicht mehr unterbrochen werden muss. (hilfreich: sound.isPlaying(), sound.stop, statt sound.pause() + sound.currentTime = 0)
+* Favicon hinzugefügt (wegen Fehler: Favicon not found 404)
+* Alle Javascript-Dateien in einen JS-Ordner verschoben für mehr Ordnung
+* setFont() korrigiert, damit die Funktion wieder funktioniert
+* Specialbeschreibungen der Schiffe Rechtschreibfehler entfernt.
+* Pickup eingefügt, das die Anzahl der verfügbaren Minen um 2 erhöht.

@@ -18,7 +18,7 @@ new Item(4, "ammo4", data.items.ammo4.amount, 4, color(0), data.items.ammo4.keyC
 new Item(5, "ammo5", data.items.ammo5.amount, 2.5, color(255, 255, 75), data.items.ammo5.keyCode, -1, 0),
 new Item(6, "ISH", data.items.ISH.amount, 0, color(0, 255, 255), data.items.ISH.keyCode, 1, 120),
 new Item(7, "EMP", data.items.EMP.amount, 0, color(255, 255, 200), data.items.EMP.keyCode, 0.2, 20),
-new Item(8, "MINE", data.items.MINE.amount, 100, color(200, 0,0 ), data.items.MINE.keyCode, 0.2, 60),
+new Item(8, "MINE", data.items.MINE.amount, 100, color(200, 0,0 ), data.items.MINE.keyCode, 0.2, 1), // cooldown orig = 60, 6 erscheint aber besser
 new Item(9, "SPC", -1, 10, color(255, 255, 0), data.items.SPC.keyCode, 1, 60),
 new Item(10, "DASH", -1, 10, color(255), data.items.DASH.keyCode, 0.2, 30)
 ];

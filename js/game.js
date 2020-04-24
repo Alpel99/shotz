@@ -3,10 +3,29 @@ class Game {
         this.screen = new Login_menu();
         this.menuOverlay = new MenuOverlay();
         this.sounds = new Sounds();
+        this.effects = [];          // Ein Versuch eines Event-Loops für Effekte, aktuell nur Explosionen
     }
 
 draw() {
+    // translate muss vor allen anderen draw-Operationen ausgeführt werden
+    if (this.effects.length > 0) {
+        this.effects.forEach(ef => {
+            if (ef.type === 'screenshake') {
+                ef.fn();
+            }
+        });
+    }
+
     this.screen.draw();
+
+    // Alle anderen Effekte müssen nach den normalen draw-Operationen ausgeführt werden.
+    if (this.effects.length > 0) {
+        this.effects.forEach(ef => {
+            if(ef.type !== 'screenshake') {
+                ef.fn();
+            }
+        });
+    }
 }
 
 controls(mode) {
@@ -31,7 +50,7 @@ controls(mode) {
 
 choosePowerUp(x, y) {
     // Wählt ein zufälliges Powerup aus dem powerups-Objekt aus und pusht es in ship.mods
-    game.sounds.play("drop1");
+    game.sounds.drop1.play();
 
     let pu = powerups[Math.floor(Math.random()*powerups.length)];
     let ts = millis();
@@ -76,7 +95,7 @@ drawPickup(x, y, pu, pickup, content) {
         const vy = v.y + game.screen.ship.pos.y;
         if (vx >= x && vx <= x+60 && vy >= y && vy <= y+60) {
             pu.pickup.onPickup(pu);
-            game.sounds.play("pupickup1");
+            game.sounds.drop1.play();
         }
     });
 
@@ -124,5 +143,21 @@ deletePickUp(pickup) {
 generateID () {
     // Erzeugt eine zufällige id
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+}
+
+
+removeFromList(list, element) {
+    // Typische Operation ein Element von einer Liste entfernen, wenn es nicht mehr dargestellt werden soll
+    // Bedingung: das Element hat eine ID (game.generateID())
+    // Parameter:
+    // list: Liste, aus der das Element entfernt werden soll
+    // element: Element, das aus der Liste entfernt werden soll
+
+    for (let i = 0; i < list.length; i++) {
+        if (list[i].id === element.id) {
+            list.splice(i, 1);
+            break;
+        }
+    }
 }
 }

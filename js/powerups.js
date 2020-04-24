@@ -114,5 +114,49 @@ const powerups = [
             }
         },
         mod: null
+    },
+    {
+        name: 'explRadiusUP',
+        count: 'multiple',  // Wie oft kann es eingesammelt werden? unique/multiple
+        pickup: {           // Alles zum sammelbaren Icon
+            name: 'explRadiusUP',
+            type: 'pickup',
+            description: 'Erhöht die den Explosionsradius Deiner Minen.',
+            onPickup: function() {
+                game.screen.ship.explosionRadius += 50;
+                game.deletePickUp(this);
+            },
+            draw: function(x, y, pu) {
+                // hier wird das Aussehen des pickups (innerhalb des Vierecks) an game.drawPickup() übergeben
+                let content = () => {
+                    textSize(20);
+                    text("ER+", x+5, y+30);
+                }
+                game.drawPickup(x, y, pu, this, content);
+            }
+        },
+        mod: null
+    },
+    {
+        name: 'extraMines',
+        count: 'multiple',  // Wie oft kann es eingesammelt werden? unique/multiple
+        pickup: {           // Alles zum sammelbaren Icon
+            name: 'extraMines',
+            type: 'pickup',
+            description: 'Zwei zusätzliche Minen.',
+            onPickup: function() {
+                user.items[7].amount += 2;
+                game.deletePickUp(this);
+            },
+            draw: function(x, y, pu) {
+                // hier wird das Aussehen des pickups (innerhalb des Vierecks) an game.drawPickup() übergeben
+                let content = () => {
+                    textSize(20);
+                    text("M2+", x+5, y+30);
+                }
+                game.drawPickup(x, y, pu, this, content);
+            }
+        },
+        mod: null
     }
 ]

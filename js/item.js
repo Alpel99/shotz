@@ -214,8 +214,8 @@ this.activeCounter = this.activeTime;
         case "MINE":
             if(this.amount > 0) {
                 this.amount--;
+                game.screen.ship.layMine();
             }
-            //mine gelegt, wenn wer rein fliegt: damage
             break;
         case "EMP":
             if(this.amount > 0) {

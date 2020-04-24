@@ -7,8 +7,6 @@ let game,   // game-Objekt
     dt,     // delta time -
     img_item, //image for items
     data;   //userdata for local development
-    //font;   // text font für das gesamte Spiel (es ist auch möglich mehrere zu laden, um spezifsche Texte hervorzuheben)
-
 let socket;
 
 function preload() {
@@ -20,12 +18,13 @@ function preload() {
     user = new User();
     game = new Game();
 
-    //setFont('assets/fonts/Oxanium/Oxanium-Medium.ttf');
 }
 
 function setup() {
     fr = 60;
     frameRate(fr);
+
+    setFont('assets/fonts/Oxanium/Oxanium-Medium.ttf');
 
     cvn = createCanvas(width, height);
 
@@ -109,11 +108,6 @@ function localSockets() {
   }
 }
 
-function setFont(str) {
-  var font = loadFont(str);
-  textFont(font);
-}
-
 // function windowResized() {
 //     let pxRatio = width/height;
 //     console.log(pxRatio);
@@ -122,3 +116,8 @@ function setFont(str) {
 //     resizeCanvas(windowWidth-20, (windowWidth/pxRatio)-20);
 //     cvn.scale(1/pxRatio);
 // }
+
+function setFont(path) {
+    let font = loadFont(path);
+    textFont(font);
+}
