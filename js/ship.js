@@ -90,6 +90,12 @@ shoot() {
         this.bullets.push(bullet);
         this.timestamps[0] = millis();
         game.screen.ammo.amount--;
+        if(bullet_obj.constructor.name == "Laser") {
+          //sound.currentTime = 0;
+          game.sounds.play("laser1")
+        } else {
+          game.sounds.bullet1.play("bullet1");
+        }
     }
 
     // Beispiel für Laser-Seitenschüsse mit geringerer RoF
@@ -143,7 +149,6 @@ collides(obj) { // currently enemy or pickup
 emp() {
     // Sound
     if (!game.sounds.nova1.isPlaying()) game.sounds.nova1.play();
-
     // Zeichnen des Effektes
     push();
         noFill();
@@ -210,6 +215,7 @@ special() {
 }
 
 dash() {
+    game.sounds.play("dash1");
     this.pos.x += this.dir.x*this.PlayerDASH;
     this.pos.y += this.dir.y*this.PlayerDASH;
 }

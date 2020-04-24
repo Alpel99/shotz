@@ -68,7 +68,6 @@ update() {
         game.sounds.hit1.play();
         screenshake(20, millis(), game.effects);
 
-        game.removeFromList(game.screen.enemies, this)
         // Kollision Schiff/Gegner überarbeiten! Abhängig davon womit das Schiff den Gegner trifft, werden ggf. mehrere Lebenspunkte abgezogen. (manche Vektoren doppelt gechecked?)
         if (game.screen.ship.PlayerHP > 1) {
             game.screen.ship.PlayerHP--;

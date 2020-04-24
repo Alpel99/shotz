@@ -43,7 +43,8 @@ class CreditsItem {
 
   draw() {
     push();
-      textSize(55);
+      this.size = Math.abs((height/2)-this.y)**1.2;
+      textSize(60-this.size/(height/12));
       fill(game.screen.color1);
       textAlign(CENTER);
       text(this.string, this.x, this.y);
