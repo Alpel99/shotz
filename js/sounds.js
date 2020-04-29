@@ -13,7 +13,7 @@ class Sounds {
         this.bullet1    = this.addSound('effect_bullet1');
         this.explosion1 = this.addSound('effect_explosion1');
         this.nova1      = this.addSound('effect_nova1');
-        this.menu_click = this.addSound('menu_click');
+        //this.menu_click = this.addSound('menu_click'); plz no
         this.menu_deny  = this.addSound('menu_deny');
         this.menu1      = this.addSound("menu_hover1");
 

@@ -5,6 +5,8 @@ class Game {
         this.sounds = new Sounds();
         this.effects = [];          // Ein Versuch eines Event-Loops für Effekte, aktuell nur Explosionen
         this.local = false; //used for socket differences
+        this.connectionerror = new Popup(500, 350, color(255,0,0), color(255), "ERROR", "Your connection got corrupted please login again.");
+        this.userdataerror = new Popup(500, 350, color(255,0,0), color(255), "ERROR", "The user data doesn't match with the server. Please login again.");
     }
 
 draw() {
@@ -19,6 +21,13 @@ draw() {
 
     this.screen.draw();
 
+    if(this.connectionerror.visible == true) {
+      this.connectionerror.draw();
+    }
+    if(this.userdataerror.visible == true) {
+      this.userdataerror.draw();
+    }
+
     // Alle anderen Effekte müssen nach den normalen draw-Operationen ausgeführt werden.
     if (this.effects.length > 0) {
         this.effects.forEach(ef => {
@@ -30,23 +39,33 @@ draw() {
 }
 
 controls(mode) {
-    if (mode === 'keyPress') {
-        if (keyCode === ESCAPE ||
-            //keyCode === 81 || //Q
-            keyCode === BACKSPACE) {
-            if (this.screen.back()) this.screen.back();
-        }
-	if(keyCode === 222) {
-		//Ä
-		this.sendData();
-	}
-  if(keyCode === 186) {
-    //Ü -- download userdata.json
-    var data = user.sendData();
-      saveJSON(data, 'userdata.json');
-  }
+  if (mode === 'keyPress') {
+    if (keyCode === ESCAPE ||
+      //keyCode === 81 || //Q
+      keyCode === BACKSPACE) {
+        if (this.screen.back()) this.screen.back();
+      }
+    if(keyCode === 222) { //Ä
+      this.sendData();
     }
-    this.screen.controls(mode);
+    if(keyCode === 186) { //Ü -- download userdata.json
+      var data = user.sendData();
+      saveJSON(data, 'userdata.json');
+    }
+  } else if (mode === 'mouseClick') {
+
+    if(this.connectionerror.close.hover() == true) {
+      this.connectionerror.visible = false;
+      location.reload();
+    }
+
+    if(this.userdataerror.close.hover() == true) {
+      this.userdataerror.visible = false;
+      location.reload();
+    }
+  }
+
+  this.screen.controls(mode);
 }
 
 choosePowerUp(x, y) {

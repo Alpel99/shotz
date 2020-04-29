@@ -117,23 +117,28 @@ io.sockets.on('connection',
 					if(connections[socket.id].level.hp - data.damage > 0) {
 						connections[socket.id].level.hp -= data.damage;
 					} else {
+						connections[socket.id].level.active = false;
+						var userdata = JSON.parse(fs.readFileSync('/data/userdata/' + data.id + '.json', {flags:'r'}));
+
 						if(data.level == 'level1') {
 							var exp = connections[socket.id].level.wave*75 + connections[socket.id].level.score*5;
 							var coinz = Math.floor(connections[socket.id].level.wave/2);
 							var ammo2 = Math.floor(connections[socket.id].level.wave);
+							userdata.money += coinz;
+							userdata.items.ammo2.amount += ammo2;
 							var str1 = "Experience: " + exp;
 					    var str2 = "Coinz: " + coinz;
 					    var str3 = "x2 Ammo: " + ammo2;
 					    var str4 = "";
 						}
-						var userdata = JSON.parse(fs.readFileSync('/data/userdata/' + data.id + '.json', {flags:'r'}));
-
 						userdata.experience.Level1.exp += exp;
 						while(userdata.experience.Level1.exp > user.experience.Level1.lvl*1000) {
 				        userdata.experience.Level1.exp -= user.experience.Level1.lvl*1000;
 				        userdata.experience.Level1.lvl++;
 				        userdata.skillpoints++;
 				    }
+
+						fs.writeFileSync('/data/userdata/' + data.id + '.json', JSON.stringify(userdata), {flags: 'w'});
 
 						var loot = {
 							l1: str1,
@@ -143,6 +148,7 @@ io.sockets.on('connection',
 							lvl: data.level
 						}
 						io.to(socket.id).emit('gameover', loot);
+						io.to(socket.id).emit('userdata', userdata);
 					}
 				}
 			}

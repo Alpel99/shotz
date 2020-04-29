@@ -97,6 +97,16 @@ function sockets() {
       game.screen.mode = "post";
   });
 
+  socket.on('connectionerror',
+    function(data) {
+      game.screen.connectionerror.visible = true;
+  });
+
+  socket.on('userdataerror',
+    function(data) {
+      game.screen.userdataerror.visible = true;
+  });
+
   Game.prototype.sendData = function() {
   	var data = user.sendData();
   	socket.emit('userdatain', data);

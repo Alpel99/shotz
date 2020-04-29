@@ -2,6 +2,7 @@ class Level_menu {
 constructor() {
     this.color0 = color(15,15,128);
     this.color1 = color(128);
+    this.color2 = color(255);
     this.levels = [
         new LevelMenuItem("Level1", user.experience.Level1.exp, user.experience.Level1.lvl*1000),
         new LevelMenuItem("Level2", user.experience.Level2.exp, user.experience.Level2.lvl*1000),
@@ -24,13 +25,25 @@ draw() {
     if (height > 800) this.mod = 5;
     else this.mod = 3;
 
+    this.maxsite = Math.ceil(this.levels.length/this.mod);
+
     for(let i = (this.page-1)*this.mod; i < this.page*this.mod; i++) {
         if (i < this.levels.length) {
             this.levels[i].draw(this.levels[i].checkHover(), height/6 + 150*(i%this.mod));
         }
     }
 
+    this.pages();
     this.menuOverlay.draw();
+}
+
+pages() {
+  push();
+  fill(game.screen.color1);
+  textSize(30);
+  textAlign(CENTER, CENTER);
+  text("Page: " + this.page + "/" + this.maxsite, width/2, height - 40);
+  pop();
 }
 
 back() {
@@ -68,20 +81,23 @@ constructor(t, exp, maxexp) {
     this.text = t;
     this.exp = exp;
     this.maxexp = maxexp;
+
 }
 
 draw(hover, y) {
     this.y = y;
     push();
-    fill(game.screen.color1);
     textAlign(LEFT, TOP);
     textSize(50);
     if(hover === false) {
-        textStyle(NORMAL);
+        fill(game.screen.color1);
+        this.ydiff = 3;
     } else {
-        textStyle(BOLD);
+        textSize(70);
+        this.ydiff = 13;
+        fill(game.screen.color2);
     }
-    text(this.text, this.x, this.y);
+    text(this.text, this.x, this.y - this.ydiff);
     pop();
     this.drawExp();
 }

@@ -48,35 +48,25 @@ controls(mode) {
 	}
     } else if (mode === 'mousePress') {
         if (this.level.checkHover() === true) {
-            game.sounds.menu_click.play();
             game.screen = new Level_menu();
             game.setup = false;
         } else if (this.shop.checkHover() === true) {
-            game.sounds.menu_click.play();
             game.screen = new Shop_menu();
         } else if (this.pvp.checkHover() === true) {
-            game.sounds.menu_deny.play();
             console.log("pvp");
         } else if (this.inventory.checkHover() === true) {
-            game.sounds.menu_deny.play();
            console.log("inventory");
         } else if (this.ships.checkHover() === true) {
-            game.sounds.menu_click.play();
             game.screen = new Ship_menu();
         } else if (this.rankings.checkHover() === true) {
-            game.sounds.menu_deny.play();
             console.log("rankings");
         } else if (this.premium.checkHover() === true) {
-            game.sounds.menu_deny.play();
             console.log("premium");
         } else if (this.user.checkHover() === true) {
-            game.sounds.menu_deny.play();
             console.log("user");
         } else if (this.keys.checkHover() === true) {
-            game.sounds.menu_click.play();
             game.screen = new Keys_menu();
         } else if (this.credits.checkHover() === true) {
-            game.sounds.menu_click.play();
             game.screen = new Credits();
         }
 	if(this.logout.hover() == true) {
@@ -139,6 +129,7 @@ constructor() {
 }
 
 draw() {
+  push();
 	fill(game.screen.color1);
 	if (this.counter > 400) {
 		this.counter = 0;
@@ -198,5 +189,6 @@ draw() {
 		pop();
 	}
 	this.counter = this.counter + 1;
+  pop();
 }
 }
