@@ -93,23 +93,40 @@ back() {
     game.screen = new Ship_menu();
 }
 
+skillup() {
+  if(game.local == true) {
+    for(let i = 0; i < this.skillItems.length; i++) {
+        if(this.skillItems[i].active == true) {
+            user.skillup[this.ship.constructor.name][this.skillItems[i].use]++;
+            user.skillpoints--;
+            game.sendData();
+        }
+    }
+  } else {
+    for(let i = 0; i < this.skillItems.length; i++) {
+        if(this.skillItems[i].active == true) {
+          var skilled = this.skillItems[i];
+        }
+    }
+    var data = {
+      id: user.id,
+      skillup: skilled
+    }
+    socket.emit('skillup', data);
+    }
+}
+
 controls(mode) {
     if (mode === 'keyPress') {
     } else if (mode === 'mousePress') {
-        if(this.skillButton.hover() == true) {
-            if(user.skillpoints > 0) {
-                for(let i = 0; i < this.skillItems.length; i++) {
-                    if(this.skillItems[i].active == true) {
-                        user.skillup[this.ship.constructor.name][this.skillItems[i].use]++;
-                        user.skillpoints--;
-			game.sendData();
-                    }
-                }
-            }
+      if(this.skillButton.hover() == true) {
+        if(user.skillpoints > 0) {
+          this.skillup();
         }
-    if(this.data.hover() == true) {
+      }
+      if(this.data.hover() == true) {
         game.screen = new Shipdata(this.ship);
-    }
+      }
     } else if (mode === 'mouseClick') {
         for(let i = 0; i < this.skillItems.length; i++) {
             if(this.mouseHover((width/(this.skillItems.length+1))*(i+1), height*0.7, 100) == true) {

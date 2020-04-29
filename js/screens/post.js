@@ -4,12 +4,17 @@ constructor(c0, c1, c2, lvl, l1, l2, l3, l4) {
     this.color1 = c1;
     this.color2 = c2;
     this.lvl = lvl;
+    if(typeof lvl === 'string' || lvl instanceof String) {
+      this.text = this.lvl;
+    } else {
+      this.text = this.lvl.name;
+    }
+
     //check with server:
     this.loot1 = l1;
     this.loot2 = l2;
     this.loot3 = l3;
     this.loot4 = l4;
-    this.text = this.lvl.name;
     this.name = "post";
 
     this.menuOverlay = new MenuOverlay();

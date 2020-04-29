@@ -5,6 +5,9 @@ class Sounds {
         this.path = 'assets/sounds/';
         this.hit1       = this.addAudio('effect_hit1');
         this.drop1      = this.addAudio('effect_drop1');
+        this.pupickup1  = this.addSound("pupickup2");
+        this.emp3       = this.addSound("emp3");
+        this.dash1      = this.addSound("teleport1");
 
         this.laser1     = this.addSound('effect_laser1');
         this.bullet1    = this.addSound('effect_bullet1');
@@ -12,6 +15,7 @@ class Sounds {
         this.nova1      = this.addSound('effect_nova1');
         this.menu_click = this.addSound('menu_click');
         this.menu_deny  = this.addSound('menu_deny');
+        this.menu1      = this.addSound("menu_hover1");
 
         this.bullet1.playMode('sustain');
         this.bullet1.setVolume(0.5);

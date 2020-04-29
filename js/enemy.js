@@ -7,7 +7,7 @@ constructor(color) {
 
     this.speed = (1/(this.size*2)*200) * game.screen.speed;
     this.color = color;                                 // = @param: Farbe von Lvl vorgegeben
-    this.color.setAlpha(100);
+    //this.color.setAlpha(100); ist eine game.color farbe. Warum überhaupt alpha?
 
     this.vel = createVector(random(-10,10), random(-10, 10)).normalize();
     this.pos = createVector(0, 0);
@@ -65,16 +65,27 @@ update() {
         }
         für getroffen werden kein PU
         */
+
+        game.removeFromList(game.screen.enemies, this);
+
         game.sounds.hit1.play();
         screenshake(20, millis(), game.effects);
 
-        // Kollision Schiff/Gegner überarbeiten! Abhängig davon womit das Schiff den Gegner trifft, werden ggf. mehrere Lebenspunkte abgezogen. (manche Vektoren doppelt gechecked?)
-        if (game.screen.ship.PlayerHP > 1) {
-            game.screen.ship.PlayerHP--;
+        // Kollision Schiff/Gegner überarbeiten! Abhängig davon womit das Schiff den Gegner trifft, werden ggf. mehrere Lebenspunkte abgezogen. (manche Vektoren doppelt gechecked?)#
+        if(game.local == true) {
+          if (game.screen.ship.PlayerHP > 1) {
+              game.screen.ship.PlayerHP--;
+          } else {
+              game.screen.ship.PlayerHP = 0;
+              game.screen.end();
+              return;
+          }
         } else {
-            game.screen.ship.PlayerHP = 0;
-            game.screen.end();
-            return;
+          var data = {
+            id: user.id,
+            damage: 1
+          }
+          socket.emit('damage', data);
         }
     }
 
@@ -117,7 +128,15 @@ handleHit(bullet) {
         this.border = game.screen.color3;
         this.border.time = millis() + 100;
     } else {
-        game.screen.score += this.score;
+        if(game.local == true) {
+          game.screen.score += this.score;
+        } else {
+          var data = {
+            id: user.id,
+            ammo: game.screen.ammo.amount
+          }
+          socket.emit('enemyKill', data);
+        }
         if (random(1) < this.dropChance) {
             game.choosePowerUp(this.pos.x, this.pos.y);
         }

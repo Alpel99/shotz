@@ -109,7 +109,7 @@ draw() {
         this.sounds = false;
     } else {
         if(this.sounds == false) {
-          game.sounds.play("menu1");
+          game.sounds.menu1.play();
           this.sounds = true;
         }
         triangle(this.x - 10, this.y, this.x - 10, this.y + 50, this.x - 40, this.y);

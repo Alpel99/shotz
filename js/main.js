@@ -67,14 +67,15 @@ function resizeCanvas() {
 
 //Socketserver
 function sockets() {
+  game.local = false;
   socket = io.connect('http://141.5.110.254', {path: '/socket.io'});
         socket.on('loginsucceed',
                 function(data) {
 			game.screen.handleLogin(data);
         });
 
-        socket.on('registrationsucceed',
-                function(data) {
+  socket.on('registrationsucceed',
+        function(data) {
 			game.screen.handleRegister(data);
         });
 
@@ -82,6 +83,19 @@ function sockets() {
 		function(data) {
 			user.loadData(data);
 	});
+
+  socket.on('score',
+    function(data) {
+      game.screen.wave = data.wave;
+      game.screen.score = data.score;
+      game.screen.speed = data.speed;
+  });
+
+  socket.on('gameover',
+    function(data) {
+      game.screen.post = new Post(game.screen.color0, game.screen.color1, game.screen.color2, data.level, data.l1, data.l2, data.l3, data.l4);
+      game.screen.mode = "post";
+  });
 
   Game.prototype.sendData = function() {
   	var data = user.sendData();
@@ -92,6 +106,7 @@ function sockets() {
 }
 
 function localSockets() {
+    game.local = true;
     game.screen.handleLogin(true);
 
     //load userdata in beginning

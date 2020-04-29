@@ -90,14 +90,15 @@ shoot() {
         this.bullets.push(bullet);
         this.timestamps[0] = millis();
         game.screen.ammo.amount--;
-        if(bullet_obj.constructor.name == "Laser") {
+        if(bullet.constructor.name == "Laser") {
           //sound.currentTime = 0;
-          game.sounds.play("laser1")
+          game.sounds.laser1.play();
         } else {
-          game.sounds.bullet1.play("bullet1");
+          game.sounds.bullet1.play();
         }
     }
 
+    /*
     // Beispiel für Laser-Seitenschüsse mit geringerer RoF
     if (millis() - this.timestamps[1] > this.shotDelay+300 && game.screen.ammo.amount > 0) {
         let bullet1 = new Laser(this, 'yellow', this.vectors[1], p5.Vector.add(this.pos, this.vectors[1]), game.sounds.laser1);
@@ -105,7 +106,7 @@ shoot() {
         this.bullets.push(bullet1, bullet2);
         this.timestamps[1] = millis();
         game.screen.ammo.amount -= 2;
-    }
+    }*/
 }
 
 loadColor() {
@@ -215,7 +216,7 @@ special() {
 }
 
 dash() {
-    game.sounds.play("dash1");
+    game.sounds.dash1.play();
     this.pos.x += this.dir.x*this.PlayerDASH;
     this.pos.y += this.dir.y*this.PlayerDASH;
 }

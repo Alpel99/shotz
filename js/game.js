@@ -4,6 +4,7 @@ class Game {
         this.menuOverlay = new MenuOverlay();
         this.sounds = new Sounds();
         this.effects = [];          // Ein Versuch eines Event-Loops für Effekte, aktuell nur Explosionen
+        this.local = false; //used for socket differences
     }
 
 draw() {

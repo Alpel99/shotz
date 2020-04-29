@@ -40,8 +40,9 @@ constructor() {
     }
 
     var userammo1 = user.items.find(element => element.use == "ammo1");
-    if(userammo1.amount < 10000) {
-        userammo1.amount = 10000;
+    var maxammo = 1000000;
+    if(userammo1.amount < maxammo) {
+        userammo1.amount = maxammo;
     }
 
     // items/etc
@@ -59,9 +60,18 @@ constructor() {
     // enemies
     this.enemies = [];
     this.maxenemies = 15;
+    if(game.local == false) {
+      var data = {
+        id: user.id,
+        ammo: this.ammo.amount,
+        hp: this.ship.PlayerHP
+      }
+      socket.emit('startLevel', data);
+    }
 }
 
 end() {
+    if(game.local == true) {
     //check with server, send to server(this.wave; this.score)
     var exp = this.wave*100 + this.score*10;
     var coinz = floor(this.wave/2);
@@ -84,10 +94,12 @@ end() {
     var str_etc = "";
 
     game.sendData();
-
-    //actually send to the server
     this.post = new Post(this.color0, this.color1, this.color2, this, str_exp, str_coinz, str_ammo, str_etc);
     this.mode = "post";
+  } else {
+    //get data from server
+
+  }
 }
 
 back() {
@@ -103,10 +115,25 @@ draw() {
     if (this.mode == "prep") this.prep.draw();
     else if (this.mode == "run") {
 
-        if (this.score > this.scoreMax) {
-            this.score = 0;
-            this.wave++;
-            this.speed += this.speedincrease;
+        //keeping track of score from server
+        if(game.local == false) {
+          if(this.tick + 100 < millis()) {
+            this.tick = millis();
+            var data = {
+              id: user.id,
+              score: this.score,
+              wave: this.wave
+            }
+            socket.emit(getScore, data);
+          }
+        }
+
+        if(game.local == true) {
+          if (this.score > this.scoreMax) {
+              this.score = 0;
+              this.wave++;
+              this.speed += this.speedincrease;
+          }
         }
 
         user.items.forEach(i => i.update());
